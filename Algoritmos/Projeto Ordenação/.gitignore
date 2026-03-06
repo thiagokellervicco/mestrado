@@ -1,0 +1,12 @@
+# Build
+bin/
+obj/
+out/
+
+# IDE
+.idea/
+.vs/
+*.user
+*.suo
+
+# Relatórios ficam em docs/ (GitHub Pages)
