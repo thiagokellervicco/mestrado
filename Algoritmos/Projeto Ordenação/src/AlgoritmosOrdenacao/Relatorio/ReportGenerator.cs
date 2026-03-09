@@ -39,6 +39,7 @@ public sealed class ReportGenerator(string outputPath)
         sb.AppendLine(GetSampleArraysSection(results));
         sb.AppendLine(GetTablesSection(results));
         sb.AppendLine(GetChartsSection(results));
+        sb.AppendLine(GetScalabilityChartsSection(results));
         sb.AppendLine(GetEfficiencyAnalysisSection());
         sb.AppendLine(GetArraySortDetailsSection());
         sb.AppendLine(GetAssymptoticAnalysisSection());
@@ -82,6 +83,7 @@ public sealed class ReportGenerator(string outputPath)
         code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius: 3px; font-size: 0.9em; }
         .info-maquina { font-size: 0.95rem; color: #b0b0b0; }
         .chart-melhor { margin-top: 0.5rem; padding: 0.5rem 1rem; background: #2d3a2d; border-left: 4px solid #4a9e4a; font-weight: 600; color: #b0e0b0; }
+        .chart-legend-note { margin-bottom: 0.5rem; font-size: 0.95rem; color: #9aa8c2; }
         .observacao { background: #4a4520; padding: 0.75rem 1rem; border-left: 4px solid #c9a959; font-size: 0.95rem; margin: 1rem 0; color: #e0d8b0; }
         .io-table { margin-top: 0.5rem; }
         .io-table code { font-size: 0.8em; word-break: break-all; }
@@ -247,6 +249,7 @@ public sealed class ReportGenerator(string outputPath)
         var sb = new StringBuilder();
         sb.AppendLine("<section>");
         sb.AppendLine("  <h2> Gráficos Comparativos</h2>");
+        sb.AppendLine("  <p class=\"chart-legend-note\">Eixo do tempo em escala log₁₀ (base 10): os saltos de ordem de magnitude aparecem como degraus iguais (10 µs, 100 µs, 1 ms, 1 s).</p>");
 
         var colors = new[]
         {
@@ -275,7 +278,7 @@ public sealed class ReportGenerator(string outputPath)
             var bestIndex = sorted.IndexOf(best);
 
             var labels = string.Join(", ", sorted.Select(r => $"\"{r.Algorithm}\""));
-            var values = string.Join(", ", sorted.Select(r => r.AverageTime.TotalSeconds.ToString(CultureInfo.InvariantCulture)));
+            var values = string.Join(", ", sorted.Select(r => Math.Max(r.AverageTime.TotalSeconds, 1e-9).ToString(CultureInfo.InvariantCulture)));
             var colorsWithBest = GetJsonColorsWithBest(colors, sorted.Count, bestIndex);
 
             sb.AppendLine($"  <h3>{description} - {group.Key.Size:N0} elementos</h3>");
@@ -289,7 +292,7 @@ public sealed class ReportGenerator(string outputPath)
             sb.AppendLine($"    data: {{");
             sb.AppendLine($"      labels: [{labels}],");
             sb.AppendLine($"      datasets: [{{");
-            sb.AppendLine($"        label: 'Tempo (s)',");
+            sb.AppendLine($"        label: 'Tempo',");
             sb.AppendLine($"        data: [{values}],");
             sb.AppendLine($"        backgroundColor: {colorsWithBest}");
             sb.AppendLine($"      }}]");
@@ -297,10 +300,145 @@ public sealed class ReportGenerator(string outputPath)
             sb.AppendLine($"    options: {{");
             sb.AppendLine($"      responsive: true,");
             sb.AppendLine($"      maintainAspectRatio: false,");
-            sb.AppendLine($"      plugins: {{ legend: {{ display: false }} }},");
+            sb.AppendLine($"      plugins: {{");
+            sb.AppendLine($"        legend: {{");
+            sb.AppendLine($"          display: true,");
+            sb.AppendLine($"          position: 'bottom',");
+            sb.AppendLine($"          labels: {{ color: '#9aa8c2', usePointStyle: true }},");
+            sb.AppendLine($"          generateLabels: function(chart) {{");
+            sb.AppendLine($"            var ds = chart.data.datasets[0];");
+            sb.AppendLine($"            return chart.data.labels.map(function(label, i) {{");
+            sb.AppendLine($"              return {{ text: label, fillStyle: ds.backgroundColor[i], hidden: false, index: i }};");
+            sb.AppendLine($"            }});");
+            sb.AppendLine($"          }}");
+            sb.AppendLine($"        }}");
+            sb.AppendLine($"      }},");
             sb.AppendLine($"      scales: {{");
-            sb.AppendLine($"        x: {{ ticks: {{ color: '#9aa8c2' }}, grid: {{ color: '#333' }} }},");
-            sb.AppendLine($"        y: {{ beginAtZero: true, ticks: {{ color: '#9aa8c2' }}, grid: {{ color: '#333' }}, title: {{ display: true, text: 'Tempo (s)', color: '#9aa8c2' }} }}");
+            sb.AppendLine($"        x: {{ ticks: {{ color: '#9aa8c2', maxRotation: 45 }}, grid: {{ color: '#333' }} }},");
+            sb.AppendLine($"        y: {{");
+            sb.AppendLine($"          type: 'logarithmic',");
+            sb.AppendLine($"          min: 1e-7,");
+            sb.AppendLine($"          ticks: {{");
+            sb.AppendLine($"            color: '#9aa8c2',");
+            sb.AppendLine($"            callback: function(value) {{");
+            sb.AppendLine($"              if (value >= 1) return value + ' s';");
+            sb.AppendLine($"              if (value >= 0.001) return (value * 1000).toFixed(0) + ' ms';");
+            sb.AppendLine($"              if (value >= 0.0001) return (value * 1e6).toFixed(0) + ' µs';");
+            sb.AppendLine($"              if (value >= 0.00001) return (value * 1e6).toFixed(0) + ' µs';");
+            sb.AppendLine($"              return (value * 1e6).toFixed(1) + ' µs';");
+            sb.AppendLine($"            }}");
+            sb.AppendLine($"          }},");
+            sb.AppendLine($"          grid: {{ color: '#333' }},");
+            sb.AppendLine($"          title: {{ display: true, text: 'Tempo (escala log₁₀)', color: '#9aa8c2' }}");
+            sb.AppendLine($"        }}");
+            sb.AppendLine($"      }}");
+            sb.AppendLine($"    }}");
+            sb.AppendLine($"  }});");
+            sb.AppendLine($"  </script>");
+        }
+
+        sb.AppendLine("</section>");
+        return sb.ToString();
+    }
+
+    private static string GetScalabilityChartsSection(IReadOnlyList<Core.BenchmarkResult> results)
+    {
+        var sb = new StringBuilder();
+        var byVectorType = results
+            .GroupBy(r => r.VectorType)
+            .OrderBy(g => g.Key)
+            .ToList();
+
+        if (byVectorType.Count == 0)
+            return "";
+
+        var colors = new[]
+        {
+            "rgb(46, 213, 115)",
+            "rgb(255, 138, 101)",
+            "rgb(0, 210, 211)",
+            "rgb(242, 183, 5)",
+            "rgb(233, 69, 96)",
+            "rgb(155, 89, 182)",
+            "rgb(22, 33, 62)",
+            "rgb(15, 52, 96)"
+        };
+
+        sb.AppendLine("<section>");
+        sb.AppendLine("  <h2>Gráficos de Escalabilidade</h2>");
+        sb.AppendLine("  <p class=\"chart-legend-note\">Eixos X (tamanho) e Y (tempo) em escala log₁₀. Os tamanhos 1.000, 10.000 e 100.000 (potências de 10) ficam equidistantes.</p>");
+
+        var sizes = results.Select(r => r.Size).Distinct().OrderBy(x => x).ToList();
+        if (sizes.Count < 2)
+            return sb + "</section>";
+
+        var xMin = sizes.Min() * 0.5;
+        int scalabilityChartId = 1000; // Evitar conflito com ids dos gráficos comparativos
+
+        foreach (var vtGroup in byVectorType)
+        {
+            scalabilityChartId++;
+            var description = Core.DataGenerator.GetDescription(vtGroup.Key);
+            var byAlgorithm = vtGroup.GroupBy(r => r.Algorithm).OrderBy(g => g.Key).ToList();
+
+            var datasetsJs = new List<string>();
+            int colorIndex = 0;
+            foreach (var algGroup in byAlgorithm)
+            {
+                var algName = algGroup.Key;
+                var points = sizes.Select(s =>
+                {
+                    var r = algGroup.FirstOrDefault(x => x.Size == s);
+                    return r != null ? $"{{ x: {s}, y: {Math.Max(r.AverageTime.TotalSeconds, 1e-9).ToString(CultureInfo.InvariantCulture)} }}" : null;
+                }).Where(p => p != null).ToList();
+                if (points.Count == 0) continue;
+
+                var pointsStr = string.Join(", ", points);
+                var color = colors[colorIndex % colors.Length];
+                colorIndex++;
+                datasetsJs.Add($"{{ label: \"{algName.Replace("\"", "\\\"")}\", data: [{pointsStr}], borderColor: \"{color}\", backgroundColor: \"{color}\", fill: false, tension: 0.1, pointRadius: 6 }}");
+            }
+
+            if (datasetsJs.Count == 0) continue;
+
+            sb.AppendLine($"  <h3>{description}</h3>");
+            sb.AppendLine($"  <div class=\"chart-container\">");
+            sb.AppendLine($"    <canvas id=\"scalabilityChart{scalabilityChartId}\"></canvas>");
+            sb.AppendLine($"  </div>");
+            sb.AppendLine($"  <script>");
+            sb.AppendLine($"  new Chart(document.getElementById('scalabilityChart{scalabilityChartId}'), {{");
+            sb.AppendLine($"    type: 'line',");
+            sb.AppendLine($"    data: {{");
+            sb.AppendLine($"      datasets: [{string.Join(", ", datasetsJs)}]");
+            sb.AppendLine($"    }},");
+            sb.AppendLine($"    options: {{");
+            sb.AppendLine($"      responsive: true,");
+            sb.AppendLine($"      maintainAspectRatio: false,");
+            sb.AppendLine($"      plugins: {{ legend: {{ display: true, position: 'bottom', labels: {{ color: '#9aa8c2', usePointStyle: true }} }} }},");
+            sb.AppendLine($"      scales: {{");
+            sb.AppendLine($"        x: {{");
+            sb.AppendLine($"          type: 'logarithmic',");
+            sb.AppendLine($"          min: {xMin.ToString(CultureInfo.InvariantCulture)},");
+            sb.AppendLine($"          ticks: {{ color: '#9aa8c2', callback: function(v) {{ return v >= 1000 ? (v/1000) + 'k' : v; }} }},");
+            sb.AppendLine($"          grid: {{ color: '#333' }},");
+            sb.AppendLine($"          title: {{ display: true, text: 'Tamanho (n) — escala log₁₀', color: '#9aa8c2' }}");
+            sb.AppendLine($"        }},");
+            sb.AppendLine($"        y: {{");
+            sb.AppendLine($"          type: 'logarithmic',");
+            sb.AppendLine($"          min: 1e-7,");
+            sb.AppendLine($"          ticks: {{");
+            sb.AppendLine($"            color: '#9aa8c2',");
+            sb.AppendLine($"            callback: function(value) {{");
+            sb.AppendLine($"              if (value >= 1) return value + ' s';");
+            sb.AppendLine($"              if (value >= 0.001) return (value * 1000).toFixed(0) + ' ms';");
+            sb.AppendLine($"              if (value >= 0.0001) return (value * 1e6).toFixed(0) + ' µs';");
+            sb.AppendLine($"              if (value >= 0.00001) return (value * 1e6).toFixed(0) + ' µs';");
+            sb.AppendLine($"              return (value * 1e6).toFixed(1) + ' µs';");
+            sb.AppendLine($"            }}");
+            sb.AppendLine($"          }},");
+            sb.AppendLine($"          grid: {{ color: '#333' }},");
+            sb.AppendLine($"          title: {{ display: true, text: 'Tempo (escala log₁₀)', color: '#9aa8c2' }}");
+            sb.AppendLine($"        }}");
             sb.AppendLine($"      }}");
             sb.AppendLine($"    }}");
             sb.AppendLine($"  }});");
