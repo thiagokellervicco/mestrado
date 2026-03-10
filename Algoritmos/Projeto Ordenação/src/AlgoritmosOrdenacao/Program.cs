@@ -185,6 +185,8 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.1em 0.3em; border-radius:
 .algoritmos-table td { color: #e0e0e0; }
 .algoritmos-table tr:last-child td { border-bottom: none; }
 .algoritmos-table code { background: #3a3a3a; color: #c9a959; }
+pre { background: #2d2d2d; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #333; margin: 0.75rem 0; }
+pre code { padding: 0; background: transparent; }
   </style>
 </head>
 <body>
@@ -232,6 +234,16 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.1em 0.3em; border-radius:
     <li><strong>Selection Sort (Double)</strong> — Busca menor e maior por passagem, posicionando ambos nas extremidades. Reduz iterações à metade. <em>Variação conhecida na literatura de ordenação.</em></li>
     <li><strong>Merge Sort (Single Aux Array)</strong> — Um único array auxiliar para todo o merge, alocado uma vez. <em>Cormen et al., Introduction to Algorithms, Cap. 2.</em></li>
     <li><strong>Quick Sort (Hoare + Median + Insertion)</strong> — Particionamento de Hoare (<em>Cormen, Cap. 7</em>), pivô mediana-de-três (<em>Sedgewick</em>), Insertion Sort para subarrays pequenos e eliminação de recursão de cauda (<em>padrão em implementações híbridas</em>).</li>
+  </ul>
+
+  <h2>Benchmark em Modo Release</h2>
+  <p>Para rodar o benchmark em modo Release e garantir que o JIT (Just-In-Time compiler) aplique todas as otimizações de performance (como inlining de métodos e eliminação de bounds checking), o comando correto é:</p>
+  <pre><code>dotnet run -c Release --project src/AlgoritmosOrdenacao -- --optimized</code></pre>
+  <p><strong>Por que o <code>-c Release</code> é fundamental?</strong></p>
+  <ul>
+    <li><strong>Otimização de Código:</strong> No modo Debug, o compilador mantém o código ""literal"" para facilitar o rastreio de erros. No modo Release, ele reescreve partes do seu algoritmo para rodar mais rápido na CPU.</li>
+    <li><strong>Performance do GC:</strong> O Garbage Collector se comporta de forma mais agressiva e eficiente em Release, o que pode impactar os tempos de memória que você vê no Merge Sort.</li>
+    <li><strong>Remoção de Instruções NOP:</strong> O modo Debug insere instruções ""vazias"" para permitir que os breakpoints funcionem corretamente. Isso adiciona uma latência que, em 100 mil elementos, se torna muito visível.</li>
   </ul>
 
   <h2>Relatórios</h2>

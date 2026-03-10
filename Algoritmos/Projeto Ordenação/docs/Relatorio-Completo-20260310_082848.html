@@ -65,9 +65,9 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <li><strong>Algoritmos:</strong> Bubble Sort (original), Bubble Sort (melhorado), Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Quick Sort (pivô aleatório), Array.Sort (nativo C#)</li>
     <li><strong>Fontes dos algoritmos:</strong> Implementações clássicas baseadas em Cormen et al. (<a href="https://www.amazon.com.br/Introduction-Algorithms-Thomas-H-Cormen/dp/0262033844" target="_blank" rel="noopener">Introduction to Algorithms</a>, 3ª edição) e literatura padrão de estruturas de dados. Array.Sort utiliza IntroSort nativo da biblioteca .NET.</li>
     <li><strong>Memória:</strong> Cada execução utiliza uma cópia em novo espaço de memória (isolamento total)</li>
-    <li><strong>Iterações:</strong> 4 execuções por combinação; mediana de tempo reportada</li>
+    <li><strong>Iterações:</strong> 5 execuções por combinação; mediana de tempo reportada</li>
     <li><strong>Medição:</strong> System.Diagnostics.Stopwatch (tempo); GC.GetTotalAllocatedBytes (memória alocada durante a execução)</li>
-    <li><strong>Tempo total de execução:</strong> 18 min 2.7 s</li>
+    <li><strong>Tempo total de execução:</strong> 5 min 14.3 s</li>
   </ul>
 </section>
 
@@ -79,52 +79,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Array.Sort (C# Nativo) ★</td>
-        <td>0.000018 s</td>
-        <td>40 B</td>
-        <td>0.000015 s</td>
-        <td>0.000033 s</td>
-      </tr>
-      <tr>
-        <td>Quick Sort</td>
-        <td>0.000080 s</td>
+        <td>0.000028 s</td>
         <td>712 B</td>
-        <td>0.000075 s</td>
-        <td>0.000099 s</td>
+        <td>0.000026 s</td>
+        <td>0.000037 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.000087 s</td>
+        <td>0.000156 s</td>
         <td>712 B</td>
-        <td>0.000086 s</td>
-        <td>0.000091 s</td>
+        <td>0.000144 s</td>
+        <td>0.000197 s</td>
+      </tr>
+      <tr>
+        <td>Quick Sort</td>
+        <td>0.000163 s</td>
+        <td>712 B</td>
+        <td>0.000145 s</td>
+        <td>0.000220 s</td>
       </tr>
       <tr>
         <td>Merge Sort</td>
-        <td>0.000103 s</td>
+        <td>0.000183 s</td>
         <td>90.84 KB</td>
-        <td>0.000100 s</td>
-        <td>0.000108 s</td>
+        <td>0.000160 s</td>
+        <td>0.000184 s</td>
       </tr>
       <tr>
         <td>Insertion Sort</td>
-        <td>0.000597 s</td>
+        <td>0.000196 s</td>
         <td>712 B</td>
-        <td>0.000591 s</td>
-        <td>0.000602 s</td>
+        <td>0.000194 s</td>
+        <td>0.000246 s</td>
       </tr>
       <tr>
         <td>Selection Sort</td>
-        <td>0.000865 s</td>
+        <td>0.000394 s</td>
         <td>712 B</td>
-        <td>0.000839 s</td>
-        <td>0.001039 s</td>
+        <td>0.000390 s</td>
+        <td>0.000398 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>0.001816 s</td>
+        <td>0.000636 s</td>
         <td>712 B</td>
-        <td>0.001770 s</td>
-        <td>0.001833 s</td>
+        <td>0.000635 s</td>
+        <td>0.000642 s</td>
       </tr>
     </tbody>
   </table>
@@ -134,52 +134,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Array.Sort (C# Nativo) ★</td>
-        <td>0.000368 s</td>
+        <td>0.000399 s</td>
         <td>712 B</td>
-        <td>0.000367 s</td>
-        <td>0.000375 s</td>
-      </tr>
-      <tr>
-        <td>Quick Sort</td>
-        <td>0.000943 s</td>
-        <td>712 B</td>
-        <td>0.000939 s</td>
-        <td>0.000949 s</td>
-      </tr>
-      <tr>
-        <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.001088 s</td>
-        <td>712 B</td>
-        <td>0.001066 s</td>
-        <td>0.001102 s</td>
+        <td>0.000384 s</td>
+        <td>0.000404 s</td>
       </tr>
       <tr>
         <td>Merge Sort</td>
-        <td>0.001298 s</td>
+        <td>0.000704 s</td>
         <td>1.02 MB</td>
-        <td>0.001279 s</td>
-        <td>0.001334 s</td>
+        <td>0.000686 s</td>
+        <td>0.000727 s</td>
+      </tr>
+      <tr>
+        <td>Quick Sort</td>
+        <td>0.001164 s</td>
+        <td>712 B</td>
+        <td>0.001162 s</td>
+        <td>0.001182 s</td>
+      </tr>
+      <tr>
+        <td>Quick Sort (Pivô Aleatório)</td>
+        <td>0.001337 s</td>
+        <td>712 B</td>
+        <td>0.001299 s</td>
+        <td>0.001363 s</td>
       </tr>
       <tr>
         <td>Insertion Sort</td>
-        <td>0.055682 s</td>
+        <td>0.016696 s</td>
         <td>712 B</td>
-        <td>0.055607 s</td>
-        <td>0.055801 s</td>
+        <td>0.016692 s</td>
+        <td>0.016786 s</td>
       </tr>
       <tr>
         <td>Selection Sort</td>
-        <td>0.081878 s</td>
+        <td>0.034718 s</td>
         <td>712 B</td>
-        <td>0.079258 s</td>
-        <td>0.087676 s</td>
+        <td>0.034230 s</td>
+        <td>0.042214 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>0.231990 s</td>
+        <td>0.062323 s</td>
         <td>712 B</td>
-        <td>0.231846 s</td>
-        <td>0.237532 s</td>
+        <td>0.061754 s</td>
+        <td>0.062752 s</td>
       </tr>
     </tbody>
   </table>
@@ -189,52 +189,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Array.Sort (C# Nativo) ★</td>
-        <td>0.006391 s</td>
+        <td>0.005396 s</td>
         <td>712 B</td>
-        <td>0.006328 s</td>
-        <td>0.006664 s</td>
+        <td>0.005367 s</td>
+        <td>0.005431 s</td>
       </tr>
       <tr>
         <td>Quick Sort</td>
-        <td>0.016346 s</td>
+        <td>0.005983 s</td>
         <td>712 B</td>
-        <td>0.016033 s</td>
-        <td>0.016489 s</td>
+        <td>0.005980 s</td>
+        <td>0.006205 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.017678 s</td>
+        <td>0.006822 s</td>
         <td>712 B</td>
-        <td>0.017417 s</td>
-        <td>0.017904 s</td>
+        <td>0.006741 s</td>
+        <td>0.006916 s</td>
       </tr>
       <tr>
         <td>Merge Sort</td>
-        <td>0.021423 s</td>
+        <td>0.009369 s</td>
         <td>11.47 MB</td>
-        <td>0.020741 s</td>
-        <td>0.021996 s</td>
+        <td>0.009022 s</td>
+        <td>0.009655 s</td>
       </tr>
       <tr>
         <td>Insertion Sort</td>
-        <td>7.746295 s</td>
+        <td>1.875446 s</td>
         <td>712 B</td>
-        <td>7.626997 s</td>
-        <td>8.804924 s</td>
+        <td>1.859555 s</td>
+        <td>1.893816 s</td>
       </tr>
       <tr>
         <td>Selection Sort</td>
-        <td>10.597603 s</td>
+        <td>3.632292 s</td>
         <td>712 B</td>
-        <td>10.512971 s</td>
-        <td>10.654142 s</td>
+        <td>3.524824 s</td>
+        <td>3.640625 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>36.167868 s</td>
+        <td>13.031129 s</td>
         <td>712 B</td>
-        <td>34.017362 s</td>
-        <td>36.775511 s</td>
+        <td>12.992901 s</td>
+        <td>13.254834 s</td>
       </tr>
     </tbody>
   </table>
@@ -243,53 +243,53 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <thead><tr><th>Algoritmo</th><th>Tempo Médio (mediana)</th><th>Memória (mediana)</th><th>Tempo Mín</th><th>Tempo Máx</th></tr></thead>
     <tbody>
       <tr>
-        <td>Insertion Sort ★</td>
-        <td>0.000003 s</td>
-        <td>40 B</td>
-        <td>0.000003 s</td>
-        <td>0.000003 s</td>
+        <td>Array.Sort (C# Nativo) ★</td>
+        <td>0.000004 s</td>
+        <td>712 B</td>
+        <td>0.000004 s</td>
+        <td>0.000005 s</td>
       </tr>
       <tr>
-        <td>Array.Sort (C# Nativo)</td>
-        <td>0.000003 s</td>
-        <td>40 B</td>
-        <td>0.000003 s</td>
-        <td>0.000004 s</td>
+        <td>Insertion Sort</td>
+        <td>0.000008 s</td>
+        <td>712 B</td>
+        <td>0.000007 s</td>
+        <td>0.000008 s</td>
       </tr>
       <tr>
         <td>Merge Sort</td>
-        <td>0.000052 s</td>
+        <td>0.000104 s</td>
         <td>90.84 KB</td>
-        <td>0.000051 s</td>
-        <td>0.000064 s</td>
+        <td>0.000103 s</td>
+        <td>0.000122 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.000056 s</td>
+        <td>0.000114 s</td>
         <td>712 B</td>
-        <td>0.000052 s</td>
-        <td>0.000060 s</td>
+        <td>0.000106 s</td>
+        <td>0.000338 s</td>
       </tr>
       <tr>
         <td>Selection Sort</td>
-        <td>0.000774 s</td>
+        <td>0.000353 s</td>
         <td>712 B</td>
-        <td>0.000770 s</td>
-        <td>0.000793 s</td>
+        <td>0.000350 s</td>
+        <td>0.000381 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>0.000831 s</td>
+        <td>0.000357 s</td>
         <td>712 B</td>
-        <td>0.000821 s</td>
-        <td>0.000855 s</td>
+        <td>0.000354 s</td>
+        <td>0.000359 s</td>
       </tr>
       <tr>
         <td>Quick Sort</td>
-        <td>0.002005 s</td>
+        <td>0.004016 s</td>
         <td>712 B</td>
-        <td>0.002002 s</td>
-        <td>0.002031 s</td>
+        <td>0.003991 s</td>
+        <td>0.004257 s</td>
       </tr>
     </tbody>
   </table>
@@ -299,52 +299,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Insertion Sort ★</td>
-        <td>0.000029 s</td>
+        <td>0.000018 s</td>
         <td>712 B</td>
-        <td>0.000029 s</td>
-        <td>0.000032 s</td>
-      </tr>
-      <tr>
-        <td>Array.Sort (C# Nativo)</td>
-        <td>0.000547 s</td>
-        <td>712 B</td>
-        <td>0.000508 s</td>
-        <td>0.000658 s</td>
+        <td>0.000017 s</td>
+        <td>0.000019 s</td>
       </tr>
       <tr>
         <td>Merge Sort</td>
-        <td>0.000587 s</td>
+        <td>0.000283 s</td>
         <td>1.02 MB</td>
-        <td>0.000583 s</td>
-        <td>0.000607 s</td>
+        <td>0.000280 s</td>
+        <td>0.000284 s</td>
+      </tr>
+      <tr>
+        <td>Array.Sort (C# Nativo)</td>
+        <td>0.000546 s</td>
+        <td>712 B</td>
+        <td>0.000500 s</td>
+        <td>0.000676 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.000749 s</td>
+        <td>0.001247 s</td>
         <td>712 B</td>
-        <td>0.000736 s</td>
-        <td>0.000782 s</td>
+        <td>0.001217 s</td>
+        <td>0.001286 s</td>
       </tr>
       <tr>
         <td>Selection Sort</td>
-        <td>0.076992 s</td>
+        <td>0.033600 s</td>
         <td>712 B</td>
-        <td>0.076736 s</td>
-        <td>0.082918 s</td>
+        <td>0.033546 s</td>
+        <td>0.038118 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>0.081064 s</td>
+        <td>0.033605 s</td>
         <td>712 B</td>
-        <td>0.081042 s</td>
-        <td>0.081497 s</td>
+        <td>0.033582 s</td>
+        <td>0.033865 s</td>
       </tr>
       <tr>
         <td>Quick Sort</td>
-        <td>0.198477 s</td>
+        <td>0.035721 s</td>
         <td>712 B</td>
-        <td>0.195914 s</td>
-        <td>0.208748 s</td>
+        <td>0.035713 s</td>
+        <td>0.042287 s</td>
       </tr>
     </tbody>
   </table>
@@ -354,52 +354,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Insertion Sort ★</td>
-        <td>0.000462 s</td>
+        <td>0.000134 s</td>
         <td>712 B</td>
-        <td>0.000431 s</td>
-        <td>0.000765 s</td>
+        <td>0.000131 s</td>
+        <td>0.000141 s</td>
       </tr>
       <tr>
         <td>Array.Sort (C# Nativo)</td>
-        <td>0.000840 s</td>
+        <td>0.000698 s</td>
         <td>712 B</td>
-        <td>0.000821 s</td>
-        <td>0.001149 s</td>
-      </tr>
-      <tr>
-        <td>Merge Sort</td>
-        <td>0.009222 s</td>
-        <td>11.47 MB</td>
-        <td>0.008770 s</td>
-        <td>0.009603 s</td>
+        <td>0.000678 s</td>
+        <td>0.000709 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.010728 s</td>
+        <td>0.003274 s</td>
         <td>712 B</td>
-        <td>0.010300 s</td>
-        <td>0.010884 s</td>
+        <td>0.003093 s</td>
+        <td>0.003424 s</td>
       </tr>
       <tr>
-        <td>Selection Sort</td>
-        <td>10.931833 s</td>
-        <td>712 B</td>
-        <td>10.657886 s</td>
-        <td>10.973176 s</td>
+        <td>Merge Sort</td>
+        <td>0.003691 s</td>
+        <td>11.47 MB</td>
+        <td>0.003641 s</td>
+        <td>0.003791 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>11.497254 s</td>
+        <td>3.722786 s</td>
         <td>712 B</td>
-        <td>11.456666 s</td>
-        <td>11.795471 s</td>
+        <td>3.669221 s</td>
+        <td>3.733855 s</td>
+      </tr>
+      <tr>
+        <td>Selection Sort</td>
+        <td>3.816788 s</td>
+        <td>712 B</td>
+        <td>3.657878 s</td>
+        <td>3.871799 s</td>
       </tr>
       <tr>
         <td>Quick Sort</td>
-        <td>27.798652 s</td>
+        <td>4.153934 s</td>
         <td>712 B</td>
-        <td>27.317870 s</td>
-        <td>29.297084 s</td>
+        <td>4.073465 s</td>
+        <td>4.259382 s</td>
       </tr>
     </tbody>
   </table>
@@ -409,52 +409,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Array.Sort (C# Nativo) ★</td>
-        <td>0.000008 s</td>
+        <td>0.000007 s</td>
         <td>712 B</td>
         <td>0.000006 s</td>
-        <td>0.000018 s</td>
-      </tr>
-      <tr>
-        <td>Merge Sort</td>
-        <td>0.000052 s</td>
-        <td>90.84 KB</td>
-        <td>0.000052 s</td>
-        <td>0.000053 s</td>
+        <td>0.000008 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.000063 s</td>
+        <td>0.000105 s</td>
         <td>712 B</td>
-        <td>0.000060 s</td>
-        <td>0.000122 s</td>
+        <td>0.000103 s</td>
+        <td>0.000115 s</td>
       </tr>
       <tr>
-        <td>Selection Sort</td>
-        <td>0.000857 s</td>
-        <td>712 B</td>
-        <td>0.000851 s</td>
-        <td>0.000862 s</td>
+        <td>Merge Sort</td>
+        <td>0.000132 s</td>
+        <td>90.84 KB</td>
+        <td>0.000129 s</td>
+        <td>0.000155 s</td>
       </tr>
       <tr>
         <td>Insertion Sort</td>
-        <td>0.001176 s</td>
+        <td>0.000353 s</td>
         <td>712 B</td>
-        <td>0.001161 s</td>
-        <td>0.001179 s</td>
+        <td>0.000352 s</td>
+        <td>0.000355 s</td>
       </tr>
       <tr>
-        <td>Quick Sort</td>
-        <td>0.001357 s</td>
+        <td>Selection Sort</td>
+        <td>0.000444 s</td>
         <td>712 B</td>
-        <td>0.001353 s</td>
-        <td>0.001367 s</td>
+        <td>0.000441 s</td>
+        <td>0.000444 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>0.002096 s</td>
+        <td>0.000779 s</td>
         <td>712 B</td>
-        <td>0.002089 s</td>
-        <td>0.002132 s</td>
+        <td>0.000777 s</td>
+        <td>0.000789 s</td>
+      </tr>
+      <tr>
+        <td>Quick Sort</td>
+        <td>0.002981 s</td>
+        <td>712 B</td>
+        <td>0.002977 s</td>
+        <td>0.002990 s</td>
       </tr>
     </tbody>
   </table>
@@ -464,52 +464,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Array.Sort (C# Nativo) ★</td>
-        <td>0.000088 s</td>
+        <td>0.000091 s</td>
         <td>712 B</td>
-        <td>0.000086 s</td>
-        <td>0.000096 s</td>
+        <td>0.000089 s</td>
+        <td>0.000092 s</td>
       </tr>
       <tr>
         <td>Merge Sort</td>
-        <td>0.000605 s</td>
+        <td>0.000272 s</td>
         <td>1.02 MB</td>
-        <td>0.000605 s</td>
-        <td>0.000611 s</td>
+        <td>0.000270 s</td>
+        <td>0.000275 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.000723 s</td>
+        <td>0.000302 s</td>
         <td>712 B</td>
-        <td>0.000700 s</td>
-        <td>0.000732 s</td>
-      </tr>
-      <tr>
-        <td>Selection Sort</td>
-        <td>0.082308 s</td>
-        <td>712 B</td>
-        <td>0.082131 s</td>
-        <td>0.082694 s</td>
+        <td>0.000295 s</td>
+        <td>0.000316 s</td>
       </tr>
       <tr>
         <td>Insertion Sort</td>
-        <td>0.115626 s</td>
+        <td>0.033602 s</td>
         <td>712 B</td>
-        <td>0.114931 s</td>
-        <td>0.120123 s</td>
+        <td>0.033562 s</td>
+        <td>0.033880 s</td>
       </tr>
       <tr>
         <td>Quick Sort</td>
-        <td>0.135238 s</td>
+        <td>0.034682 s</td>
         <td>712 B</td>
-        <td>0.132760 s</td>
-        <td>0.136284 s</td>
+        <td>0.034676 s</td>
+        <td>0.034715 s</td>
+      </tr>
+      <tr>
+        <td>Selection Sort</td>
+        <td>0.042042 s</td>
+        <td>712 B</td>
+        <td>0.041973 s</td>
+        <td>0.042050 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>0.218392 s</td>
+        <td>0.076708 s</td>
         <td>712 B</td>
-        <td>0.216066 s</td>
-        <td>0.226069 s</td>
+        <td>0.075640 s</td>
+        <td>0.079625 s</td>
       </tr>
     </tbody>
   </table>
@@ -519,52 +519,52 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
     <tbody>
       <tr>
         <td>Array.Sort (C# Nativo) ★</td>
-        <td>0.001473 s</td>
+        <td>0.001225 s</td>
         <td>712 B</td>
-        <td>0.001469 s</td>
-        <td>0.001478 s</td>
-      </tr>
-      <tr>
-        <td>Merge Sort</td>
-        <td>0.009560 s</td>
-        <td>11.47 MB</td>
-        <td>0.008779 s</td>
-        <td>0.009776 s</td>
+        <td>0.001221 s</td>
+        <td>0.001234 s</td>
       </tr>
       <tr>
         <td>Quick Sort (Pivô Aleatório)</td>
-        <td>0.010918 s</td>
+        <td>0.003756 s</td>
         <td>712 B</td>
-        <td>0.010481 s</td>
-        <td>0.011259 s</td>
+        <td>0.003694 s</td>
+        <td>0.003797 s</td>
       </tr>
       <tr>
-        <td>Selection Sort</td>
-        <td>11.734826 s</td>
-        <td>712 B</td>
-        <td>11.081165 s</td>
-        <td>11.993999 s</td>
+        <td>Merge Sort</td>
+        <td>0.003759 s</td>
+        <td>11.47 MB</td>
+        <td>0.003599 s</td>
+        <td>0.004081 s</td>
       </tr>
       <tr>
         <td>Insertion Sort</td>
-        <td>15.612636 s</td>
+        <td>4.032055 s</td>
         <td>712 B</td>
-        <td>15.471354 s</td>
-        <td>15.756053 s</td>
+        <td>3.849757 s</td>
+        <td>4.542739 s</td>
       </tr>
       <tr>
         <td>Quick Sort</td>
-        <td>17.660085 s</td>
+        <td>4.214492 s</td>
         <td>712 B</td>
-        <td>17.608677 s</td>
-        <td>18.022418 s</td>
+        <td>4.054982 s</td>
+        <td>4.405789 s</td>
+      </tr>
+      <tr>
+        <td>Selection Sort</td>
+        <td>4.793675 s</td>
+        <td>712 B</td>
+        <td>4.707872 s</td>
+        <td>5.010962 s</td>
       </tr>
       <tr>
         <td>Bubble Sort (Original)</td>
-        <td>29.639881 s</td>
+        <td>8.583482 s</td>
         <td>712 B</td>
-        <td>29.300762 s</td>
-        <td>30.501613 s</td>
+        <td>8.283555 s</td>
+        <td>8.805395 s</td>
       </tr>
     </tbody>
   </table>
@@ -576,7 +576,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Aleatório - 1,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart1"></canvas>
-    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000018 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000028 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart1'), {
@@ -585,7 +585,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [1.84E-05, 0.0018158, 0.0005967, 0.0001035, 7.97E-05, 8.66E-05, 0.0008645],
+        data: [2.8E-05, 0.0006363, 0.0001958, 0.0001828, 0.0001627, 0.0001557, 0.0003936],
         backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -630,7 +630,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Aleatório - 10,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart2"></canvas>
-    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000368 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000399 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart2'), {
@@ -639,7 +639,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [0.0003678, 0.2319901, 0.0556822, 0.0012977, 0.000943, 0.0010878, 0.0818783],
+        data: [0.0003994, 0.0623235, 0.0166963, 0.0007035, 0.0011636, 0.0013367, 0.034718],
         backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -684,7 +684,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Aleatório - 100,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart3"></canvas>
-    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.006391 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.005396 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart3'), {
@@ -693,7 +693,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [0.0063913, 36.1678682, 7.7462948, 0.0214226, 0.0163465, 0.0176781, 10.5976025],
+        data: [0.0053962, 13.0311294, 1.8754462, 0.0093688, 0.0059831, 0.0068221, 3.6322917],
         backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -738,7 +738,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Crescente - 1,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart4"></canvas>
-    <p class="chart-melhor">★ Melhor: Insertion Sort (0.000003 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000004 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart4'), {
@@ -747,8 +747,8 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [3.5E-06, 0.000831, 3E-06, 5.19E-05, 0.0020047, 5.64E-05, 0.0007742],
-        backgroundColor: ["rgb(22, 33, 62)", "rgb(15, 52, 96)", "rgb(46, 213, 115)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
+        data: [4.2E-06, 0.0003569, 8E-06, 0.0001041, 0.0040156, 0.0001141, 0.000353],
+        backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
     options: {
@@ -792,7 +792,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Crescente - 10,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart5"></canvas>
-    <p class="chart-melhor">★ Melhor: Insertion Sort (0.000029 s)</p>
+    <p class="chart-melhor">★ Melhor: Insertion Sort (0.000018 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart5'), {
@@ -801,7 +801,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [0.0005467, 0.0810644, 2.93E-05, 0.0005866, 0.1984765, 0.0007492, 0.0769918],
+        data: [0.0005457, 0.0336048, 1.76E-05, 0.0002831, 0.0357212, 0.0012469, 0.0335996],
         backgroundColor: ["rgb(22, 33, 62)", "rgb(15, 52, 96)", "rgb(46, 213, 115)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -846,7 +846,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Crescente - 100,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart6"></canvas>
-    <p class="chart-melhor">★ Melhor: Insertion Sort (0.000462 s)</p>
+    <p class="chart-melhor">★ Melhor: Insertion Sort (0.000134 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart6'), {
@@ -855,7 +855,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [0.0008405, 11.497254, 0.0004617, 0.0092218, 27.7986521, 0.0107284, 10.9318327],
+        data: [0.000698, 3.722786, 0.0001339, 0.0036907, 4.1539342, 0.0032742, 3.8167881],
         backgroundColor: ["rgb(22, 33, 62)", "rgb(15, 52, 96)", "rgb(46, 213, 115)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -900,7 +900,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Decrescente - 1,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart7"></canvas>
-    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000008 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000007 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart7'), {
@@ -909,7 +909,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [7.5E-06, 0.0020962, 0.0011756, 5.2E-05, 0.0013568, 6.34E-05, 0.0008566],
+        data: [7E-06, 0.0007793, 0.0003533, 0.0001319, 0.0029813, 0.0001052, 0.0004436],
         backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -954,7 +954,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Decrescente - 10,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart8"></canvas>
-    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000088 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.000091 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart8'), {
@@ -963,7 +963,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [8.78E-05, 0.2183925, 0.1156257, 0.0006052, 0.1352384, 0.0007231, 0.0823077],
+        data: [9.07E-05, 0.0767078, 0.0336019, 0.0002721, 0.0346818, 0.0003024, 0.042042],
         backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },
@@ -1008,7 +1008,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
   <h3>Decrescente - 100,000 elementos</h3>
   <div class="chart-container">
     <canvas id="chart9"></canvas>
-    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.001473 s)</p>
+    <p class="chart-melhor">★ Melhor: Array.Sort (C# Nativo) (0.001225 s)</p>
   </div>
   <script>
   new Chart(document.getElementById('chart9'), {
@@ -1017,7 +1017,7 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.15em 0.4em; border-radius
       labels: ["Array.Sort (C# Nativo)", "Bubble Sort (Original)", "Insertion Sort", "Merge Sort", "Quick Sort", "Quick Sort (Pivô Aleatório)", "Selection Sort"],
       datasets: [{
         label: 'Tempo',
-        data: [0.0014732, 29.6398807, 15.6126357, 0.0095595, 17.6600854, 0.0109182, 11.7348257],
+        data: [0.0012247, 8.5834822, 4.0320553, 0.003759, 4.214492, 0.0037562, 4.7936755],
         backgroundColor: ["rgb(46, 213, 115)", "rgb(15, 52, 96)", "rgb(233, 69, 96)", "rgb(242, 183, 5)", "rgb(46, 213, 115)", "rgb(0, 210, 211)", "rgb(155, 89, 182)"]
       }]
     },

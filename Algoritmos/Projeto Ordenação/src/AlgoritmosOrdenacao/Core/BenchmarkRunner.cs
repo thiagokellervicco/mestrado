@@ -79,6 +79,7 @@ public sealed class BenchmarkRunner(bool ultraMode = false, bool optimizedMode =
                         var copy = new int[size];
                         Array.Copy(originalArray, copy, size);
 
+                        // Limpa a sujeira de execuções passadas
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
                         GC.Collect();

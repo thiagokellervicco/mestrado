@@ -117,7 +117,7 @@ public sealed class ReportGenerator(string outputPath)
                 <li><strong>Algoritmos:</strong> Bubble Sort (original), Bubble Sort (melhorado), Selection Sort, Insertion Sort, Merge Sort, Quick Sort, Quick Sort (pivô aleatório), Array.Sort (nativo C#)</li>
                 <li><strong>Fontes dos algoritmos:</strong> Implementações clássicas baseadas em Cormen et al. (<a href="https://www.amazon.com.br/Introduction-Algorithms-Thomas-H-Cormen/dp/0262033844" target="_blank" rel="noopener">Introduction to Algorithms</a>, 3ª edição) e literatura padrão de estruturas de dados. Array.Sort utiliza IntroSort nativo da biblioteca .NET.</li>
                 <li><strong>Memória:</strong> Cada execução utiliza uma cópia em novo espaço de memória (isolamento total)</li>
-                <li><strong>Iterações:</strong> 4 execuções por combinação; mediana de tempo reportada</li>
+                <li><strong>Iterações:</strong> 5 execuções por combinação; mediana de tempo reportada</li>
                 <li><strong>Medição:</strong> System.Diagnostics.Stopwatch (tempo); GC.GetTotalAllocatedBytes (memória alocada durante a execução)</li>
                 {totalTimeLine}
               </ul>

@@ -33,6 +33,8 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.1em 0.3em; border-radius:
 .algoritmos-table td { color: #e0e0e0; }
 .algoritmos-table tr:last-child td { border-bottom: none; }
 .algoritmos-table code { background: #3a3a3a; color: #c9a959; }
+pre { background: #2d2d2d; padding: 1rem; border-radius: 6px; overflow-x: auto; border: 1px solid #333; margin: 0.75rem 0; }
+pre code { padding: 0; background: transparent; }
   </style>
 </head>
 <body>
@@ -82,15 +84,23 @@ code { background: #3a3a3a; color: #c9a959; padding: 0.1em 0.3em; border-radius:
     <li><strong>Quick Sort (Hoare + Median + Insertion)</strong> — Particionamento de Hoare (<em>Cormen, Cap. 7</em>), pivô mediana-de-três (<em>Sedgewick</em>), Insertion Sort para subarrays pequenos e eliminação de recursão de cauda (<em>padrão em implementações híbridas</em>).</li>
   </ul>
 
+  <h2>Benchmark em Modo Release</h2>
+  <p>Para rodar o benchmark em modo Release e garantir que o JIT (Just-In-Time compiler) aplique todas as otimizações de performance (como inlining de métodos e eliminação de bounds checking), o comando correto é:</p>
+  <pre><code>dotnet run -c Release --project src/AlgoritmosOrdenacao -- --optimized</code></pre>
+  <p><strong>Por que o <code>-c Release</code> é fundamental?</strong></p>
+  <ul>
+    <li><strong>Otimização de Código:</strong> No modo Debug, o compilador mantém o código "literal" para facilitar o rastreio de erros. No modo Release, ele reescreve partes do seu algoritmo para rodar mais rápido na CPU.</li>
+    <li><strong>Performance do GC:</strong> O Garbage Collector se comporta de forma mais agressiva e eficiente em Release, o que pode impactar os tempos de memória que você vê no Merge Sort.</li>
+    <li><strong>Remoção de Instruções NOP:</strong> O modo Debug insere instruções "vazias" para permitir que os breakpoints funcionem corretamente. Isso adiciona uma latência que, em 100 mil elementos, se torna muito visível.</li>
+  </ul>
+
   <h2>Relatórios</h2>
   <p>Clique para visualizar cada relatório com metodologia, resultados e gráficos.</p>
   <div class="report-grid">
-    <a href="Relatorio-Otimizado-20260309_234834.html" class="report-card">Otimizado (09/03/2026 23:48)</a>
-    <a href="Relatorio-Otimizado-20260309_234825.html" class="report-card">Otimizado (09/03/2026 23:48)</a>
-    <a href="Relatorio-Completo-20260309_234840.html" class="report-card">Completo (09/03/2026 23:48)</a>
-    <a href="Relatorio-Completo-20260309_234829.html" class="report-card">Completo (09/03/2026 23:48)</a>
-    <a href="Relatorio-Completo-20260309_232309.html" class="report-card">Completo (09/03/2026 23:23)</a>
-    <a href="Relatorio-Completo-20260309_225321.html" class="report-card">Completo (09/03/2026 22:53)</a>
+    <a href="Relatorio-Otimizado-20260310_082844.html" class="report-card">Otimizado (10/03/2026 08:28)</a>
+    <a href="Relatorio-Otimizado-20260310_082827.html" class="report-card">Otimizado (10/03/2026 08:28)</a>
+    <a href="Relatorio-Completo-20260310_082848.html" class="report-card">Completo (10/03/2026 08:28)</a>
+    <a href="Relatorio-Completo-20260310_082838.html" class="report-card">Completo (10/03/2026 08:28)</a>
   </div>
 
   <a href="https://github.com/thiagokellervicco/MestradoMackenzie/tree/master/Algoritmos/Projeto%20Ordena%C3%A7%C3%A3o" target="_blank" rel="noopener" class="github-link">Ver código no GitHub</a>
