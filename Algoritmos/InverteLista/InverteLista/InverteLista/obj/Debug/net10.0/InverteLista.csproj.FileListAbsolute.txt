@@ -1,0 +1,15 @@
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/bin/Debug/net10.0/InverteLista
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/bin/Debug/net10.0/InverteLista.deps.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/bin/Debug/net10.0/InverteLista.runtimeconfig.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/bin/Debug/net10.0/InverteLista.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/bin/Debug/net10.0/InverteLista.pdb
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.GeneratedMSBuildEditorConfig.editorconfig
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.AssemblyInfoInputs.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.AssemblyInfo.cs
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.csproj.CoreCompileInputs.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.sourcelink.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/refint/InverteLista.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.pdb
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/InverteLista.genruntimeconfig.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/InverteLista/InverteLista/InverteLista/obj/Debug/net10.0/ref/InverteLista.dll
