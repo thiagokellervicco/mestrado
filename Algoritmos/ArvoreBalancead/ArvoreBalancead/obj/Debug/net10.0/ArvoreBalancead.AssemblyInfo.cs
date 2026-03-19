@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("InverteLista")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("ArvoreBalancead")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da335459c57e480442444aa81b085a568f671be6")]
-[assembly: System.Reflection.AssemblyProductAttribute("InverteLista")]
-[assembly: System.Reflection.AssemblyTitleAttribute("InverteLista")]
+[assembly: System.Reflection.AssemblyProductAttribute("ArvoreBalancead")]
+[assembly: System.Reflection.AssemblyTitleAttribute("ArvoreBalancead")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.

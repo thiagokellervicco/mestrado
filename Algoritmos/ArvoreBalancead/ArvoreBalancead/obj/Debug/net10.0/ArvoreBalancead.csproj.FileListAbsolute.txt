@@ -1,0 +1,15 @@
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.GeneratedMSBuildEditorConfig.editorconfig
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.AssemblyInfoInputs.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.AssemblyInfo.cs
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.csproj.CoreCompileInputs.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.sourcelink.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/bin/Debug/net10.0/ArvoreBalancead
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/bin/Debug/net10.0/ArvoreBalancead.deps.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/bin/Debug/net10.0/ArvoreBalancead.runtimeconfig.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/bin/Debug/net10.0/ArvoreBalancead.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/bin/Debug/net10.0/ArvoreBalancead.pdb
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/refint/ArvoreBalancead.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.pdb
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ArvoreBalancead.genruntimeconfig.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ArvoreBalancead/ArvoreBalancead/obj/Debug/net10.0/ref/ArvoreBalancead.dll
