@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatórios — ABB vs AVL · Keller &amp; Diniz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0f;
+      --surface: #16161a;
+      --surface-hover: #1e1e24;
+      --text: #e8e6e3;
+      --muted: #9a9690;
+      --accent: #c9a959;
+      --border: rgba(255,255,255,0.08);
+      --py: #5eead4;
+      --cs: #a78bfa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.55;
+    }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 1.75rem;
+    }
+    .back:hover { color: var(--accent); }
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.65rem, 4vw, 2.1rem);
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+    .authors {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .authors strong { color: var(--text); font-weight: 500; }
+    .lead {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      display: block;
+      padding: 1rem 1.15rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      margin-bottom: 0.65rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      background: var(--surface-hover);
+      border-color: rgba(201, 169, 89, 0.35);
+    }
+    .card strong { font-weight: 600; }
+    .card .hint { font-size: 0.78rem; color: var(--accent); margin-top: 0.35rem; display: block; }
+    h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 2rem 0 0.75rem;
+    }
+    ul.reports { list-style: none; }
+    li { margin-bottom: 0.5rem; }
+    a.report {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    a.report:hover {
+      background: var(--surface-hover);
+      border-color: rgba(201, 169, 89, 0.25);
+    }
+    .report-main { min-width: 0; }
+    .report-title { font-weight: 500; font-size: 0.95rem; }
+    .report-file { font-size: 0.78rem; color: var(--muted); font-family: ui-monospace, monospace; margin-top: 0.2rem; word-break: break-all; }
+    .badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .badge-python { background: rgba(94, 234, 212, 0.12); color: var(--py); border: 1px solid rgba(94, 234, 212, 0.25); }
+    .badge-csharp { background: rgba(167, 139, 250, 0.12); color: var(--cs); border: 1px solid rgba(167, 139, 250, 0.25); }
+    .badge-other { background: rgba(255,255,255,0.06); color: var(--muted); border: 1px solid var(--border); }
+    .empty { color: var(--muted); font-size: 0.9rem; padding: 1rem 0; }
+    .code-grid {
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 520px) {
+      .code-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .code-cell {
+      padding: 1rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .code-cell:hover { border-color: rgba(201, 169, 89, 0.25); }
+    .code-cell .lang {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+    }
+    .code-cell .lang.py { color: var(--py); }
+    .code-cell .lang.cs { color: var(--cs); }
+    .code-cell .title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .code-cell .sub { font-size: 0.8rem; color: var(--muted); line-height: 1.45; margin-bottom: 0.65rem; }
+    a.code-link {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+      margin-top: 0.45rem;
+      padding: 0.35rem 0;
+      border-top: 1px solid var(--border);
+    }
+    a.code-link:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+    a.code-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+    a.code-link .dim { color: var(--muted); font-size: 0.78rem; font-weight: 400; }
+    footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="../../../algoritmos-e-programacao.html">← Dashboard ABB vs AVL</a>
+
+    <h1>Relatórios de execução</h1>
+    <p class="authors"><strong>Trabalho em dupla:</strong> Thiago Keller e Ricardo Diniz · Algoritmos e Programação</p>
+
+    <h2>Código-fonte no GitHub</h2>
+    <p class="lead" style="margin-bottom: 0.75rem;">Repositório <strong>mestrado</strong> — pastas e ficheiros principais do projeto ABB/AVL.</p>
+    <div class="code-grid">
+      <div class="code-cell">
+        <div class="lang py">Python</div>
+        <div class="title">Pacote <code style="font-size:0.85em">src/python</code></div>
+        <div class="sub">Árvores, dataset, benchmark e geração de relatório HTML.</div>
+        <a class="code-link" href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria/src/python" target="_blank" rel="noopener noreferrer">Pasta <span class="dim">src/python</span> no GitHub →</a>
+        <a class="code-link" href="https://github.com/thiagokellervicco/mestrado/blob/master/Algoritmos/Projeto%20Arvore%20Binaria/projeto2_arvore.py" target="_blank" rel="noopener noreferrer">Entrada <span class="dim">projeto2_arvore.py</span> (raiz) →</a>
+      </div>
+      <div class="code-cell">
+        <div class="lang cs">C#</div>
+        <div class="title">Solution em <code style="font-size:0.85em">src/csharp</code></div>
+        <div class="sub">Consola, árvores, carregamento CSV/XLSX e relatório HTML.</div>
+        <a class="code-link" href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria/src/csharp" target="_blank" rel="noopener noreferrer">Pasta <span class="dim">src/csharp</span> no GitHub →</a>
+        <a class="code-link" href="https://github.com/thiagokellervicco/mestrado/blob/master/Algoritmos/Projeto%20Arvore%20Binaria/src/csharp/ProjetoArvoreBinaria/Program.cs" target="_blank" rel="noopener noreferrer">Entrada <span class="dim">Program.cs</span> →</a>
+      </div>
+    </div>
+
+    <h2>Histórico</h2>
+    <ul class="reports" id="lista-relatorios"></ul>
+    <p class="empty" id="lista-vazia" hidden>Nenhum relatório com carimbo de data. Execute <code style="font-size:0.85em">python3 projeto2_arvore.py</code> na raiz do projeto ou <code style="font-size:0.85em">dotnet run</code> em <code style="font-size:0.85em">src/csharp</code>.</p>
+
+  </div>
+
+  <script>window.PROJETO_ARVORE_RELATORIOS = [];</script>
+  <script src="reports_data.js"></script>
+  <script>
+    (function () {
+      var ul = document.getElementById('lista-relatorios');
+      var empty = document.getElementById('lista-vazia');
+      var items = window.PROJETO_ARVORE_RELATORIOS || [];
+
+      function badgeClass(lang) {
+        var u = (lang || '').toLowerCase();
+        if (u.indexOf('python') !== -1) return 'badge badge-python';
+        if (u.indexOf('c#') !== -1 || u.indexOf('csharp') !== -1) return 'badge badge-csharp';
+        return 'badge badge-other';
+      }
+
+      if (!items.length) {
+        if (empty) empty.hidden = false;
+        return;
+      }
+
+      items.forEach(function (r) {
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.className = 'report';
+        a.href = r.file;
+
+        var main = document.createElement('div');
+        main.className = 'report-main';
+        var title = document.createElement('div');
+        title.className = 'report-title';
+        title.textContent = r.label || r.file;
+        var fn = document.createElement('div');
+        fn.className = 'report-file';
+        fn.textContent = r.file;
+        main.appendChild(title);
+        main.appendChild(fn);
+
+        var b = document.createElement('span');
+        b.className = badgeClass(r.language);
+        b.textContent = r.language || '?';
+
+        a.appendChild(main);
+        a.appendChild(b);
+        li.appendChild(a);
+        ul.appendChild(li);
+      });
+    })();
+  </script>
+</body>
+</html>

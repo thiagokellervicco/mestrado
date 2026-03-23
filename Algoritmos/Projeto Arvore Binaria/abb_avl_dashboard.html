@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABB vs AVL — Dashboard · Keller &amp; Diniz</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08090f;
+    --surface: #0f1219;
+    --surface2: #141824;
+    --border: #1c2438;
+    --abb: #00c8f5;
+    --abb-dim: rgba(0,200,245,0.10);
+    --avl: #ff5e2e;
+    --avl-dim: rgba(255,94,46,0.10);
+    --text: #dde3f0;
+    --muted: #5c6b88;
+    --accent: #9eff47;
+    --accent-dim: rgba(158,255,71,0.09);
+    --grid: rgba(255,255,255,0.035);
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0;}
+  body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+  .wrap{position:relative;z-index:1;max-width:1340px;margin:0 auto;padding:44px 24px 88px;}
+
+  .hdr{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;margin-bottom:60px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+  .badge{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(158,255,71,.2);padding:4px 12px;display:inline-block;margin-bottom:18px;}
+  h1{font-size:clamp(30px,5vw,60px);font-weight:800;line-height:1;letter-spacing:-.035em;}
+  h1 .a{color:var(--abb);}h1 .v{color:var(--avl);}
+  .sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:.05em;line-height:1.8;}
+  .meta{text-align:right;font-family:var(--mono);font-size:11px;color:var(--muted);line-height:2.1;}
+  .meta span{color:var(--text);}
+
+  .sec{margin-bottom:60px;}
+  .slabel{font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;display:flex;align-items:center;gap:12px;}
+  .slabel::after{content:'';flex:1;height:1px;background:var(--border);}
+
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media(max-width:980px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+  @media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+  .card{background:var(--surface);border:1px solid var(--border);padding:22px 24px;position:relative;overflow:hidden;animation:fu .5s ease both;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+  .abb-card::before{background:var(--abb);}.avl-card::before{background:var(--avl);}.neu-card::before{background:var(--accent);}
+  .clabel{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .cval{font-size:34px;font-weight:800;letter-spacing:-.04em;line-height:1;}
+  .cval.a{color:var(--abb);}.cval.v{color:var(--avl);}.cval.ac{color:var(--accent);}
+  .csub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5;}
+  .cbadge{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;padding:3px 8px;text-transform:uppercase;}
+  .ba{background:var(--abb-dim);color:var(--abb);border:1px solid rgba(0,200,245,.2);}
+  .bv{background:var(--avl-dim);color:var(--avl);border:1px solid rgba(255,94,46,.2);}
+  .bw{background:rgba(158,255,71,.1);color:var(--accent);border:1px solid rgba(158,255,71,.25);}
+
+  .cc{background:var(--surface);border:1px solid var(--border);padding:28px;animation:fu .6s ease both;}
+  .ct{font-size:14px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px;}
+  .cd{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:22px;}
+  .cw{position:relative;height:280px;}
+  .cwt{position:relative;height:360px;}
+
+  .sysrow{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+  .sysrow:last-child{border-bottom:none;}
+  .sk{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;}
+  .sv{font-family:var(--mono);font-size:11px;color:var(--text);font-weight:700;text-align:right;max-width:58%;}
+  .stitle{font-family:var(--mono);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+
+  .tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px;}
+  .tbl th{text-align:left;padding:9px 13px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+  .tbl th:not(:first-child){text-align:right;}
+  .tbl td{padding:10px 13px;border-bottom:1px solid rgba(255,255,255,.025);vertical-align:middle;}
+  .tbl td:not(:first-child){text-align:right;}
+  .tbl tr:last-child td{border-bottom:none;}
+  .tbl tr:hover td{background:rgba(255,255,255,.018);}
+  .ta{color:var(--abb);}.tv{color:var(--avl);}.top{color:var(--text);}
+  .chip{display:inline-flex;align-items:center;font-size:9.5px;padding:2px 7px;letter-spacing:.08em;}
+  .ca{background:var(--abb-dim);color:var(--abb);}
+  .cv{background:var(--avl-dim);color:var(--avl);}
+  .ct2{background:rgba(158,255,71,.08);color:var(--accent);}
+
+  .hviz{display:flex;align-items:flex-end;justify-content:center;gap:60px;height:190px;padding:16px 0;}
+  .hbw{display:flex;flex-direction:column;align-items:center;gap:10px;height:100%;justify-content:flex-end;}
+  .hbar{width:72px;border-radius:3px 3px 0 0;position:relative;transition:height 1.2s cubic-bezier(.4,0,.2,1);}
+  .hbar.ab{background:linear-gradient(to top,#002a35,var(--abb));}
+  .hbar.av{background:linear-gradient(to top,#3d1508,var(--avl));}
+  .htag{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;white-space:nowrap;padding:2px 6px;letter-spacing:.08em;}
+  .hnum{font-family:var(--mono);font-size:22px;font-weight:700;}
+  .hname{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+
+  .ins{padding:14px 18px;margin-top:18px;font-family:var(--mono);font-size:11px;line-height:1.75;}
+  .ins.ac{background:var(--accent-dim);border:1px solid rgba(158,255,71,.18);color:var(--accent);}
+  .ins.ai{background:var(--abb-dim);border:1px solid rgba(0,200,245,.18);color:var(--abb);}
+  .ins.vi{background:var(--avl-dim);border:1px solid rgba(255,94,46,.18);color:var(--avl);}
+
+  .leg{display:flex;gap:22px;margin-bottom:18px;}
+  .li{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;}
+  .ld{width:10px;height:10px;border-radius:2px;}
+
+  .score{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .scbox{padding:24px;text-align:center;}
+  .scbox.ai{background:var(--abb-dim);border:1px solid rgba(0,200,245,.2);}
+  .scbox.vi{background:var(--avl-dim);border:1px solid rgba(255,94,46,.2);}
+  .scnum{font-size:52px;font-weight:800;letter-spacing:-.05em;line-height:1;}
+  .sclbl{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;}
+  .scsub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:8px;}
+
+  .notebox{background:rgba(255,255,255,.03);border:1px solid var(--border);padding:12px 16px;font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.7;margin-top:12px;}
+  .notebox span{color:var(--accent);}
+  .footer{border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;color:var(--muted);}
+  @keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  .d1{animation-delay:.04s;}.d2{animation-delay:.08s;}.d3{animation-delay:.12s;}.d4{animation-delay:.16s;}.d5{animation-delay:.20s;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hdr">
+  <div>
+    <div class="badge">Projeto 2 · Estruturas de Dados · Dados Reais de Execução</div>
+    <h1><span class="a">ABB</span><span style="color:var(--border)"> vs </span><span class="v">AVL</span><br>
+    <span style="font-size:.52em;letter-spacing:-.02em;color:var(--muted)">Benchmark de Desempenho</span></h1>
+    <p class="sub">
+      // Autores: Thiago Keller · Ricardo Diniz · trabalho em dupla<br>
+      // Dataset: student_performance_prediction_dataset2.xlsx<br>
+      // 10.512 registros · 25 atributos · Chave de ordenação: student_id<br>
+      // Código executado e medido em tempo real nesta sessão · todos os números são reais
+    </p>
+  </div>
+  <div class="meta">
+    <div>Registros <span>10.512</span></div>
+    <div>Repetições <span>5×</span></div>
+    <div>Linguagem <span>Python 3</span></div>
+    <div>Recursion limit <span>50.000</span></div>
+    <div>ID min <span>31</span></div>
+    <div>ID max <span>299.998</span></div>
+  </div>
+</header>
+
+<!-- 01 SISTEMA -->
+<section class="sec">
+  <div class="slabel">01 — Sistema de Execução</div>
+  <div class="g3">
+    <div class="card neu-card d1">
+      <div class="stitle">// Sistema Operacional</div>
+      <div class="sysrow"><span class="sk">OS</span><span class="sv">Linux 4.4.0</span></div>
+      <div class="sysrow"><span class="sk">Arquitetura</span><span class="sv">x86_64</span></div>
+      <div class="sysrow"><span class="sk">Python</span><span class="sv">CPython 3.x</span></div>
+      <div class="sysrow"><span class="sk">sys.setrecursionlimit</span><span class="sv">50.000</span></div>
+    </div>
+    <div class="card neu-card d2">
+      <div class="stitle">// Processador</div>
+      <div class="sysrow"><span class="sk">Núcleos físicos</span><span class="sv">2</span></div>
+      <div class="sysrow"><span class="sk">Núcleos lógicos</span><span class="sv">2</span></div>
+      <div class="sysrow"><span class="sk">Clock</span><span class="sv">2.100 MHz</span></div>
+      <div class="sysrow"><span class="sk">Timer usado</span><span class="sv">time.perf_counter()</span></div>
+    </div>
+    <div class="card neu-card d3">
+      <div class="stitle">// Memória RAM</div>
+      <div class="sysrow"><span class="sk">Total</span><span class="sv">9,66 GB</span></div>
+      <div class="sysrow"><span class="sk">Disponível</span><span class="sv">9,53 GB</span></div>
+      <div class="sysrow"><span class="sk">Usada</span><span class="sv">0,14 GB (1,4%)</span></div>
+      <div class="sysrow"><span class="sk">Bibl. medição</span><span class="sv">psutil 5.x</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 DATASET -->
+<section class="sec">
+  <div class="slabel">02 — Detalhes do Dataset</div>
+  <div class="g4" style="margin-bottom:16px;">
+    <div class="card neu-card d1">
+      <div class="clabel">Total de Registros</div>
+      <div class="cval ac">10.512</div>
+      <div class="csub">linhas no arquivo .xlsx</div>
+    </div>
+    <div class="card neu-card d2">
+      <div class="clabel">Atributos por Aluno</div>
+      <div class="cval ac">25</div>
+      <div class="csub">campos por registro</div>
+    </div>
+    <div class="card neu-card d3">
+      <div class="clabel">Aprovados / Reprovados</div>
+      <div class="cval ac" style="font-size:24px;">4.371 / 6.141</div>
+      <div class="csub">41,6% Pass · 58,4% Fail</div>
+    </div>
+    <div class="card neu-card d4">
+      <div class="clabel">Nota Final — Média ± DP</div>
+      <div class="cval ac">47,43</div>
+      <div class="csub">± 11,91 · escala 0–100</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="cc d1">
+      <div class="ct">Distribuição por Categoria de Nota</div>
+      <div class="cd">// grade_category: A (≥90) / B (80–89) / C (70–79) / D (60–69) / F (&lt;60)</div>
+      <div class="cw"><canvas id="gradeChart"></canvas></div>
+    </div>
+    <div class="cc d2">
+      <div class="ct">Distribuição Etária</div>
+      <div class="cd">// 7 faixas etárias uniformes · 15 a 21 anos · ~1.500 alunos por idade</div>
+      <div class="cw"><canvas id="ageChart"></canvas></div>
+    </div>
+  </div>
+  <div class="g3" style="margin-top:16px;">
+    <div class="cc d1">
+      <div class="ct">Renda Familiar</div>
+      <div class="cd">// family_income</div>
+      <div class="cw" style="height:200px;"><canvas id="incomeChart"></canvas></div>
+    </div>
+    <div class="cc d2">
+      <div class="ct">Tipo de Escola</div>
+      <div class="cd">// school_type</div>
+      <div class="cw" style="height:200px;"><canvas id="schoolChart"></canvas></div>
+    </div>
+    <div class="cc d3">
+      <div class="ct">Acesso à Internet</div>
+      <div class="cd">// internet_access</div>
+      <div class="cw" style="height:200px;"><canvas id="internetChart"></canvas></div>
+    </div>
+  </div>
+  <div class="notebox" style="margin-top:16px;">
+    <span>Observação:</span> 6.140 de 10.512 alunos (58,4%) ficaram com nota F — a nota média de 47,43 reflete alta taxa de reprovação. Os student_ids variam aleatoriamente no intervalo [31 – 299.998], o que impede a degeneração da ABB em lista ligada. Ambas as árvores armazenaram os 10.512 registros sem colisões de chave.
+  </div>
+</section>
+
+<!-- 03 ESTRUTURA -->
+<section class="sec">
+  <div class="slabel">03 — Tabela 1: Estrutura das Árvores</div>
+  <div class="g4" style="margin-bottom:16px;">
+    <div class="card abb-card d1">
+      <div class="cbadge ba">ABB</div>
+      <div class="clabel">Total de Nós</div>
+      <div class="cval a">10.512</div>
+      <div class="csub">todos os registros inseridos</div>
+    </div>
+    <div class="card avl-card d2">
+      <div class="cbadge bv">AVL</div>
+      <div class="clabel">Total de Nós</div>
+      <div class="cval v">10.512</div>
+      <div class="csub">todos os registros inseridos</div>
+    </div>
+    <div class="card abb-card d3">
+      <div class="cbadge ba">ABB</div>
+      <div class="clabel">Altura da Árvore</div>
+      <div class="cval a">30</div>
+      <div class="csub">calculada por BFS iterativo</div>
+    </div>
+    <div class="card avl-card d4">
+      <div class="cbadge bw">✓ Melhor</div>
+      <div class="clabel">Altura da Árvore</div>
+      <div class="cval v">16</div>
+      <div class="csub">garantido pelo rebalanceamento</div>
+    </div>
+  </div>
+  <div class="cc d5">
+    <div class="ct">Comparativo Visual de Altura</div>
+    <div class="cd">// Altura determina o número máximo de comparações em qualquer busca por ID</div>
+    <div class="hviz">
+      <div class="hbw">
+        <div class="hbar ab" id="abBar" style="height:0%;">
+          <span class="htag" style="color:var(--abb)">h = 30</span>
+        </div>
+        <div class="hnum" style="color:var(--abb)">30</div>
+        <div class="hname">ABB</div>
+      </div>
+      <div class="hbw">
+        <div class="hbar av" id="avBar" style="height:0%;">
+          <span class="htag" style="color:var(--avl)">h = 16</span>
+        </div>
+        <div class="hnum" style="color:var(--avl)">16</div>
+        <div class="hname">AVL</div>
+      </div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Métrica</th><th>ABB</th><th>AVL</th><th>Diferença</th></tr></thead>
+      <tbody>
+        <tr><td class="top">Altura medida</td><td class="ta">30</td><td class="tv">16</td><td style="text-align:right;color:var(--accent)">AVL −46,7%</td></tr>
+        <tr><td class="top">log₂(10.512) — ideal</td><td colspan="2" style="text-align:center;color:var(--muted)">≈ 13,4</td><td style="text-align:right;color:var(--muted)">referência teórica</td></tr>
+        <tr><td class="top">Razão altura / log₂(n)</td><td class="ta">2,24×</td><td class="tv">1,19×</td><td style="text-align:right;color:var(--accent)">AVL ≈ ótimo teórico</td></tr>
+        <tr><td class="top">ID mínimo</td><td class="ta">31</td><td class="tv">31</td><td style="text-align:right;color:var(--muted)">igual</td></tr>
+        <tr><td class="top">ID máximo</td><td class="ta">299.998</td><td class="tv">299.998</td><td style="text-align:right;color:var(--muted)">igual</td></tr>
+      </tbody>
+    </table>
+    <div class="ins ac">
+      <strong>IDs aleatórios favorecem a ABB, mas a AVL ainda vence.</strong> Com chaves aleatórias em [31–299.998], a ABB não degenera em lista ligada — sua altura ficou em 30 (2,24× o ideal). A AVL, com rotações garantindo |FB| ≤ 1, atingiu altura 16 (1,19× o ideal), muito próxima do teórico log₂(10.512) ≈ 13,4. Em IDs sequenciais, a ABB chegaria a altura 10.512; a AVL permaneceria em ~16.
+    </div>
+  </div>
+</section>
+
+<!-- 04 INSERÇÃO -->
+<section class="sec">
+  <div class="slabel">04 — Tabela 2: Tempo de Inserção (média 3 execuções completas)</div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card abb-card d1">
+      <div class="cbadge bw">✓ Vencedor</div>
+      <div class="clabel">ABB — Inserção (10.512 nós)</div>
+      <div class="cval a">45,8 ms</div>
+      <div class="csub">sem overhead de rotação · inserção direta</div>
+    </div>
+    <div class="card avl-card d2">
+      <div class="clabel">AVL — Inserção (10.512 nós)</div>
+      <div class="cval v">103,2 ms</div>
+      <div class="csub">Δ +57,4 ms · ABB é 2,25× mais rápida</div>
+    </div>
+  </div>
+  <div class="cc d3">
+    <div class="ct">Inserção: ABB vs AVL — 10.512 registros</div>
+    <div class="cd">// Tempo total para carregar o dataset completo (média de 3 execuções, ms)</div>
+    <div class="cw"><canvas id="insChart"></canvas></div>
+    <div class="ins ai">
+      <strong>ABB 2,25× mais rápida na inserção.</strong> Para cada nó, a AVL executa: inserção padrão + atualização de altura + verificação do fator de balanceamento + rotação quando |FB| &gt; 1. Esse overhead acumulou +57,4 ms para 10.512 inserções. A ABB simplesmente desce a árvore até o local correto e insere.
+    </div>
+  </div>
+</section>
+
+<!-- 05 OPERAÇÕES -->
+<section class="sec">
+  <div class="slabel">05 — Tabela 3: Tempo Médio das Operações (5 execuções cada)</div>
+  <div class="cc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+      <div>
+        <div class="ct">Benchmark Completo de Operações — Dados Reais</div>
+        <div class="cd">// Todos os tempos em milissegundos · medidos com time.perf_counter() · 5 repetições</div>
+      </div>
+      <div class="leg">
+        <div class="li"><div class="ld" style="background:var(--abb)"></div>ABB</div>
+        <div class="li"><div class="ld" style="background:var(--avl)"></div>AVL</div>
+      </div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Operação</th><th>ABB (ms)</th><th>AVL (ms)</th><th>Δ (ms)</th><th>Vencedor</th></tr></thead>
+      <tbody id="opsBody"></tbody>
+    </table>
+    <div style="margin-top:28px;"><div class="cwt"><canvas id="opsChart"></canvas></div></div>
+  </div>
+</section>
+
+<!-- 06 REMOÇÃO -->
+<section class="sec">
+  <div class="slabel">06 — Tabela 4: Tempo de Remoção (5 nós, medição direta sem reconstrução)</div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card abb-card d1">
+      <div class="cbadge bw">✓ Vencedor</div>
+      <div class="clabel">ABB — Remoção de 5 nós</div>
+      <div class="cval a">32,2 µs</div>
+      <div class="csub">0,0322 ms · sem rebalanceamento</div>
+    </div>
+    <div class="card avl-card d2">
+      <div class="clabel">AVL — Remoção de 5 nós</div>
+      <div class="cval v">60,1 µs</div>
+      <div class="csub">0,0601 ms · Δ +27,9 µs · 1,87× mais lenta</div>
+    </div>
+  </div>
+  <div class="cc d3">
+    <div class="ct">Inserção × Remoção — Comparação por Estrutura</div>
+    <div class="cd">// Esquerda: inserção total em ms | Direita: remoção de 5 nós em µs</div>
+    <div class="g2" style="gap:16px;margin-top:4px;">
+      <div class="cw"><canvas id="remChart1"></canvas></div>
+      <div class="cw"><canvas id="remChart2"></canvas></div>
+    </div>
+    <div class="ins vi">
+      <strong>AVL paga overhead em toda modificação da estrutura.</strong> Na inserção (+57,4 ms total) e na remoção (+27,9 µs), a AVL executa rotações para manter |FB| ≤ 1 em todos os ancestrais do nó afetado. Este é o custo da garantia O(log n) em buscas — um trade-off deliberado de desempenho em escrita por consistência em leitura.
+    </div>
+  </div>
+</section>
+
+<!-- 07 BUSCAS -->
+<section class="sec">
+  <div class="slabel">07 — Resultados Quantitativos das Buscas</div>
+  <div class="g4" style="margin-bottom:16px;">
+    <div class="card neu-card d1">
+      <div class="clabel">Aprovados (Pass)</div>
+      <div class="cval ac">4.371</div>
+      <div class="csub">41,6% · buscar_aprovados()</div>
+    </div>
+    <div class="card neu-card d2">
+      <div class="clabel">Reprovados (Fail)</div>
+      <div class="cval ac">6.141</div>
+      <div class="csub">58,4% · buscar_reprovados()</div>
+    </div>
+    <div class="card neu-card d3">
+      <div class="clabel">Nota ≥ 70 (A, B, C)</div>
+      <div class="cval ac">304</div>
+      <div class="csub">2,9% do total · buscar_por_nota(70,100)</div>
+    </div>
+    <div class="card neu-card d4">
+      <div class="clabel">Faixa IDs [75.022–150.014]</div>
+      <div class="cval ac">2.577</div>
+      <div class="csub">buscar_por_faixa() com poda AVL/ABB</div>
+    </div>
+  </div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card neu-card d1">
+      <div class="clabel">Idade = 20 anos</div>
+      <div class="cval ac">1.464</div>
+      <div class="csub">buscar_por_idade(20) · O(n) sem poda</div>
+    </div>
+    <div class="card neu-card d2">
+      <div class="clabel">Gênero Female</div>
+      <div class="cval ac">4.983</div>
+      <div class="csub">buscar_por_genero("Female") · O(n) sem poda</div>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="ct">Volume de Registros Encontrados por Tipo de Busca</div>
+    <div class="cd">// ABB e AVL retornam exatamente os mesmos resultados — o tempo de execução é que difere</div>
+    <div class="cw"><canvas id="countChart"></canvas></div>
+    <div class="ins ac">
+      <strong>Buscas por campo secundário são O(n) em ambas as árvores.</strong> Como a árvore é indexada por student_id, buscas por pass_fail, age, gender e final_grade precisam visitar todos os nós. A busca por faixa de IDs é mais eficiente: usa a estrutura ordenada para descartar subárvores inteiras. A AVL foi levemente mais rápida em quase todos os traversals por conta da menor profundidade da pilha de recursão.
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESUMO -->
+<section class="sec">
+  <div class="slabel">08 — Resumo Comparativo Final</div>
+  <div class="cc">
+    <div class="ct" style="margin-bottom:18px;">Placar Geral: ABB vs AVL — Dados Reais de Execução</div>
+    <div class="score" style="margin-bottom:24px;">
+      <div class="scbox ai">
+        <div class="sclbl" style="color:var(--abb)">ABB Vence em</div>
+        <div class="scnum" style="color:var(--abb)">2</div>
+        <div class="scsub">Inserção (2,25×) · Remoção (1,87×)</div>
+      </div>
+      <div class="scbox vi">
+        <div class="sclbl" style="color:var(--avl)">AVL Vence em</div>
+        <div class="scnum" style="color:var(--avl)">9</div>
+        <div class="scsub">Altura · 8 buscas e traversals de 10</div>
+      </div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Critério</th><th>ABB</th><th>AVL</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td class="top">Altura</td><td class="ta">30</td><td class="tv">16</td><td style="text-align:right"><span class="chip cv">AVL −46,7%</span></td></tr>
+        <tr><td class="top">Inserção 10.512 nós (ms)</td><td class="ta">45,8</td><td class="tv">103,2</td><td style="text-align:right"><span class="chip ca">ABB 2,25× mais rápida</span></td></tr>
+        <tr><td class="top">Busca pontual 1 ID (ms)</td><td class="ta">0,0034</td><td class="tv">0,0026</td><td style="text-align:right"><span class="chip cv">AVL −23,5%</span></td></tr>
+        <tr><td class="top">Em-Ordem traversal (ms)</td><td class="ta">1,6288</td><td class="tv">1,3819</td><td style="text-align:right"><span class="chip cv">AVL −15,2%</span></td></tr>
+        <tr><td class="top">Pré-Ordem traversal (ms)</td><td class="ta">3,9298</td><td class="tv">1,6650</td><td style="text-align:right"><span class="chip cv">AVL −57,6%</span></td></tr>
+        <tr><td class="top">Pós-Ordem traversal (ms)</td><td class="ta">1,5282</td><td class="tv">1,3478</td><td style="text-align:right"><span class="chip cv">AVL −11,8%</span></td></tr>
+        <tr><td class="top">Busca por faixa de IDs (ms)</td><td class="ta">0,8286</td><td class="tv">0,6705</td><td style="text-align:right"><span class="chip cv">AVL −19,1%</span></td></tr>
+        <tr><td class="top">Busca por nota 70–100 (ms)</td><td class="ta">2,3400</td><td class="tv">2,1262</td><td style="text-align:right"><span class="chip cv">AVL −9,1%</span></td></tr>
+        <tr><td class="top">Buscar aprovados (ms)</td><td class="ta">3,3550</td><td class="tv">3,0909</td><td style="text-align:right"><span class="chip cv">AVL −7,9%</span></td></tr>
+        <tr><td class="top">Buscar reprovados (ms)</td><td class="ta">5,5960</td><td class="tv">3,0076</td><td style="text-align:right"><span class="chip cv">AVL −46,3%</span></td></tr>
+        <tr><td class="top">Busca por idade 20 (ms)</td><td class="ta">2,6120</td><td class="tv">2,4969</td><td style="text-align:right"><span class="chip cv">AVL −4,4%</span></td></tr>
+        <tr><td class="top">Busca por gênero Female (ms)</td><td class="ta">3,0639</td><td class="tv">3,1161</td><td style="text-align:right"><span class="chip ca">ABB +1,7% (empate)</span></td></tr>
+        <tr><td class="top">Remoção 5 nós (µs)</td><td class="ta">32,2</td><td class="tv">60,1</td><td style="text-align:right"><span class="chip ca">ABB 1,87× mais rápida</span></td></tr>
+        <tr><td class="top">Garantia O(log n) qualquer entrada</td><td class="ta">❌</td><td class="tv">✅</td><td style="text-align:right"><span class="chip cv">AVL</span></td></tr>
+      </tbody>
+    </table>
+    <div class="ins ac" style="margin-top:20px;">
+      <strong>Conclusão com dados reais:</strong> A ABB venceu apenas em inserção (2,25× mais rápida) e remoção (1,87× mais rápida), operações de escrita que exigem reorganização estrutural na AVL. Em todas as buscas e traversals, a AVL foi mais eficiente — reflexo direto da altura 47% menor (30→16). O caso mais expressivo: "Buscar reprovados" com ABB=5,596ms vs AVL=3,008ms (diferença de 46,3%), provavelmente causado por desequilíbrio localizado na subárvore percorrida.
+    </div>
+    <div class="ins vi" style="margin-top:8px;">
+      <strong>Caso extremo não testado:</strong> Se os IDs fossem inseridos em ordem crescente (1, 2, 3, ..., 10.512), a ABB degeneraria em lista ligada com altura 10.512 e busca O(n). A AVL manteria altura ≤ 16 independentemente da ordem de inserção — esse é o valor real da garantia AVL em cenários do mundo real.
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div>Thiago Keller · Ricardo Diniz · Projeto 2 · ABB &amp; AVL · student_performance_prediction_dataset2.xlsx · 10.512 registros · Execução real</div>
+  <div>Python 3 · pandas · dataclasses · psutil · time.perf_counter()</div>
+</footer>
+</div>
+
+<script>
+const OPS = [
+  { name:"Busca pontual (1 ID)",          abb:0.0034, avl:0.0026, winner:"AVL" },
+  { name:"Em-Ordem (traversal completo)", abb:1.6288, avl:1.3819, winner:"AVL" },
+  { name:"Pré-Ordem (traversal completo)",abb:3.9298, avl:1.6650, winner:"AVL" },
+  { name:"Pós-Ordem (traversal completo)",abb:1.5282, avl:1.3478, winner:"AVL" },
+  { name:"Busca por faixa de IDs",        abb:0.8286, avl:0.6705, winner:"AVL" },
+  { name:"Busca por nota (70–100)",       abb:2.3400, avl:2.1262, winner:"AVL" },
+  { name:"Buscar aprovados",              abb:3.3550, avl:3.0909, winner:"AVL" },
+  { name:"Buscar reprovados",             abb:5.5960, avl:3.0076, winner:"AVL" },
+  { name:"Busca por idade (20 anos)",     abb:2.6120, avl:2.4969, winner:"AVL" },
+  { name:"Busca por gênero (Female)",     abb:3.0639, avl:3.1161, winner:"ABB" },
+];
+
+const tbody = document.getElementById('opsBody');
+OPS.forEach(op => {
+  const d = (op.avl - op.abb).toFixed(4);
+  const wc = op.winner==='ABB'?'ca':'cv';
+  tbody.innerHTML += `<tr>
+    <td class="top">${op.name}</td>
+    <td class="ta">${op.abb.toFixed(4)}</td>
+    <td class="tv">${op.avl.toFixed(4)}</td>
+    <td style="text-align:right;font-family:var(--mono);font-size:11px;color:${Number(d)>=0?'var(--avl)':'var(--abb)'}">${Number(d)>=0?'+':''}${d}</td>
+    <td style="text-align:right"><span class="chip ${wc}">${op.winner}</span></td>
+  </tr>`;
+});
+
+Chart.defaults.color='#5c6b88';
+Chart.defaults.font.family="'Space Mono',monospace";
+Chart.defaults.font.size=10;
+const grid='rgba(255,255,255,0.045)';
+const AC='#00c8f5', VC='#ff5e2e', AA='rgba(0,200,245,.72)', VA='rgba(255,94,46,.72)';
+
+new Chart(document.getElementById('gradeChart'),{type:'bar',data:{
+  labels:['F (6.140)','D (2.818)','C (1.249)','B (276)','A (28)'],
+  datasets:[{label:'Alunos',data:[6140,2818,1249,276,28],
+    backgroundColor:['rgba(255,94,46,.75)','rgba(255,140,40,.7)','rgba(255,210,50,.65)','rgba(80,200,120,.7)','rgba(0,200,245,.75)'],
+    borderColor:['#ff5e2e','#ff8c28','#ffd232','#50c878','#00c8f5'],borderWidth:1.5,borderRadius:2}]
+},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:grid}}}}});
+
+new Chart(document.getElementById('ageChart'),{type:'bar',data:{
+  labels:['15','16','17','18','19','20','21'],
+  datasets:[{label:'Alunos',data:[1479,1523,1473,1492,1511,1464,1570],
+    backgroundColor:'rgba(158,255,71,.65)',borderColor:'#9eff47',borderWidth:1.5,borderRadius:2}]
+},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:grid}}}}});
+
+new Chart(document.getElementById('incomeChart'),{type:'doughnut',data:{
+  labels:['Medium (4.756)','Low (3.684)','High (2.072)'],
+  datasets:[{data:[4756,3684,2072],backgroundColor:[AA,VA,'rgba(158,255,71,.7)'],
+    borderColor:[AC,VC,'#9eff47'],borderWidth:2,hoverOffset:6}]
+},options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true}}}}});
+
+new Chart(document.getElementById('schoolChart'),{type:'doughnut',data:{
+  labels:['Pública (6.843)','Privada (3.669)'],
+  datasets:[{data:[6843,3669],backgroundColor:[AA,VA],borderColor:[AC,VC],borderWidth:2,hoverOffset:6}]
+},options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true}}}}});
+
+new Chart(document.getElementById('internetChart'),{type:'doughnut',data:{
+  labels:['Sim (8.901)','Não (1.611)'],
+  datasets:[{data:[8901,1611],backgroundColor:['rgba(158,255,71,.7)',VA],borderColor:['#9eff47',VC],borderWidth:2,hoverOffset:6}]
+},options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:12,usePointStyle:true}}}}});
+
+new Chart(document.getElementById('insChart'),{type:'bar',data:{
+  labels:['ABB — 45,8 ms ✓','AVL — 103,2 ms'],
+  datasets:[{label:'Inserção (ms)',data:[45.8,103.2],backgroundColor:[AA,VA],
+    borderColor:[AC,VC],borderWidth:2,borderRadius:3,barThickness:90}]
+},options:{
+  indexAxis:'y',
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x.toFixed(1)} ms`}}},
+  scales:{x:{grid:{color:grid},title:{display:true,text:'Tempo (ms)',color:'#5c6b88'}},y:{grid:{display:false}}}
+}});
+
+new Chart(document.getElementById('opsChart'),{type:'bar',data:{
+  labels:OPS.map(o=>o.name.replace(' (traversal completo)','')),
+  datasets:[
+    {label:'ABB',data:OPS.map(o=>o.abb),backgroundColor:AA,borderColor:AC,borderWidth:1.5,borderRadius:2},
+    {label:'AVL',data:OPS.map(o=>o.avl),backgroundColor:VA,borderColor:VC,borderWidth:1.5,borderRadius:2}
+  ]
+},options:{
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:20}},
+    tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(4)} ms`}}},
+  scales:{x:{grid:{display:false},ticks:{maxRotation:28,minRotation:20}},
+    y:{grid:{color:grid},title:{display:true,text:'Tempo médio (ms)',color:'#5c6b88'}}}
+}});
+
+new Chart(document.getElementById('remChart1'),{type:'bar',data:{
+  labels:['ABB','AVL'],
+  datasets:[{label:'Inserção (ms)',data:[45.8,103.2],backgroundColor:[AA,VA],borderColor:[AC,VC],borderWidth:1.5,borderRadius:2,barThickness:64}]
+},options:{
+  plugins:{legend:{display:false},title:{display:true,text:'Inserção — 10.512 nós (ms)',color:'#dde3f0',font:{size:11}}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid}}}
+}});
+
+new Chart(document.getElementById('remChart2'),{type:'bar',data:{
+  labels:['ABB','AVL'],
+  datasets:[{label:'Remoção (µs)',data:[32.2,60.1],backgroundColor:[AA,VA],borderColor:[AC,VC],borderWidth:1.5,borderRadius:2,barThickness:64}]
+},options:{
+  plugins:{legend:{display:false},title:{display:true,text:'Remoção — 5 nós (µs)',color:'#dde3f0',font:{size:11}}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid}}}
+}});
+
+new Chart(document.getElementById('countChart'),{type:'bar',data:{
+  labels:['Aprovados','Reprovados','Nota ≥ 70','Faixa IDs\n[75k–150k]','Idade\n20 anos','Gênero\nFemale'],
+  datasets:[{label:'Registros',data:[4371,6141,304,2577,1464,4983],
+    backgroundColor:[AA,VA,'rgba(158,255,71,.65)','rgba(255,200,60,.65)','rgba(160,100,255,.65)','rgba(60,200,200,.65)'],
+    borderColor:[AC,VC,'#9eff47','#ffc83c','#a064ff','#3cc8c8'],borderWidth:1.5,borderRadius:2}]
+},options:{
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y.toLocaleString('pt-BR')} registros`}}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid},title:{display:true,text:'Registros',color:'#5c6b88'}}}
+}});
+
+setTimeout(()=>{
+  document.getElementById('abBar').style.height='100%';
+  document.getElementById('avBar').style.height='53.3%';
+},700);
+</script>
+</body>
+</html>
