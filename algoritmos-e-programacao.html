@@ -129,6 +129,44 @@
       align-items: center;
       gap: 0.35rem;
     }
+
+    /* Projetos com entrega / nota na disciplina */
+    .project-card--entrega {
+      border-left: 3px solid var(--accent);
+    }
+
+    .project-card__entrega-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-card__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 6px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .project-card__icon svg {
+      width: 1.15rem;
+      height: 1.15rem;
+    }
+
+    .project-card__entrega-text {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      line-height: 1.3;
+    }
   </style>
 </head>
 <body>
@@ -137,14 +175,43 @@
 
     <span class="badge">Matéria</span>
     <h1>Algoritmos e <em>Programação</em></h1>
-    <p class="subtitle">Projetos em C# — estruturas de dados e algoritmos clássicos</p>
+    <p class="subtitle">Projetos em C# e Python — estruturas de dados e algoritmos clássicos</p>
 
     <h2 class="section-title">Projetos</h2>
     <ul class="project-list">
       <li>
-        <a href="Algoritmos/Projeto Ordenação/docs/index.html" class="project-card">
+        <a href="Algoritmos/Projeto Ordenação/docs/index.html" class="project-card project-card--entrega">
+          <div class="project-card__entrega-bar">
+            <span class="project-card__icon" aria-hidden="true" title="Entrega avaliada na disciplina">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="15" width="5" height="6" rx="1"/>
+                <rect x="9.5" y="10" width="5" height="11" rx="1"/>
+                <rect x="16" y="5" width="5" height="16" rx="1"/>
+              </svg>
+            </span>
+            <span class="project-card__entrega-text">Entrega avaliada na disciplina</span>
+          </div>
           <h3>Algoritmos de Ordenação</h3>
           <p>Comparação de desempenho entre algoritmos clássicos de ordenação em C# — Bubble Sort, Selection, Insertion, Merge Sort, Quick Sort e versões otimizadas, com relatórios em HTML e análise de complexidade assintótica.</p>
+          <span class="link-hint">Ver projeto e relatórios →</span>
+        </a>
+      </li>
+      <li>
+        <a href="Algoritmos/Projeto Arvore Binaria/reports/index.html" class="project-card project-card--entrega">
+          <div class="project-card__entrega-bar">
+            <span class="project-card__icon" aria-hidden="true" title="Entrega avaliada na disciplina">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="4.5" r="2.35" fill="currentColor" stroke="none"/>
+                <path d="M12 6.9v3.2"/>
+                <path d="M12 10.1L6.5 17.2M12 10.1l5.5 7.1"/>
+                <circle cx="6.5" cy="19.5" r="2.35" fill="currentColor" stroke="none"/>
+                <circle cx="17.5" cy="19.5" r="2.35" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
+            <span class="project-card__entrega-text">Entrega avaliada na disciplina</span>
+          </div>
+          <h3>Árvore binária de busca vs AVL</h3>
+          <p>Comparação ABB e AVL sobre dataset de desempenho de estudantes (CSV/Excel): inserção, buscas, faixas, remoções e benchmark médio. Implementações espelhadas em Python e C#. <br><em>Trabalho em dupla: Thiago Keller e Ricardo Diniz.</em></p>
           <span class="link-hint">Ver projeto e relatórios →</span>
         </a>
       </li>
