@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Proposta de pesquisa de mestrado — IA, manutenibilidade, DDD, SOLID e Clean Code em ambientes poliglotas. Mackenzie 2026.">
+  <title>Proposta de Pesquisa — Mestrado</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2e/Mackenzie_M.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0f;
+      --surface: #16161a;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e6e3;
+      --text-muted: #9a9690;
+      --accent: #c9a959;
+      --accent-dim: rgba(201, 169, 89, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    .layout {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    .page-hero {
+      margin-bottom: 2.5rem;
+      padding: 1.75rem 1.5rem 2rem;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      background: linear-gradient(165deg, var(--surface) 0%, rgba(22, 22, 26, 0.35) 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    @media (min-width: 540px) {
+      .page-hero {
+        padding: 2rem 2rem 2.25rem;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    .page-hero .badge {
+      margin-bottom: 1rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+      max-width: 20em;
+    }
+
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-rule {
+      width: 3.5rem;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      margin-bottom: 1.1rem;
+      border-radius: 1px;
+    }
+
+    .doc-lead {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      max-width: 38rem;
+      line-height: 1.7;
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    article {
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    .title-blockquote {
+      margin: 1.75rem 0 2.25rem;
+      padding: 1.25rem 1.35rem;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-dim);
+      border-radius: 0 6px 6px 0;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.5;
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    article h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 2.25rem 0 0.85rem;
+      letter-spacing: -0.01em;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      text-align: start;
+    }
+
+    article h2:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    article p {
+      margin-bottom: 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    article ul {
+      margin: 0.5rem 0 1rem 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    article li {
+      margin-bottom: 0.45rem;
+      text-align: justify;
+    }
+
+    article li::marker { color: var(--accent); }
+
+    article ol {
+      margin: 0.5rem 0 1rem 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    article ol > li { margin-bottom: 0.45rem; }
+
+    .nested-list {
+      margin: 0.45rem 0 0.25rem 1rem;
+    }
+
+    article strong { font-weight: 600; color: var(--text); }
+
+    .id-list {
+      list-style: none;
+      margin-left: 0;
+    }
+
+    .id-list li {
+      padding-left: 0;
+      margin-bottom: 0.6rem;
+      text-align: justify;
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .back-link { display: none; }
+      .page-hero {
+        background: #f6f6f6;
+        border-color: #ddd;
+        box-shadow: none;
+      }
+      .title-blockquote { border-color: #333; background: #f5f5f5; }
+      article h2 { border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <a href="index.html" class="back-link">← Voltar ao portfólio</a>
+
+    <div class="page-hero">
+      <span class="badge">Proposta de pesquisa</span>
+      <h1>Mestrado em Computação <em>Aplicada</em></h1>
+      <div class="hero-rule" aria-hidden="true"></div>
+      <p class="doc-lead">Proposta para Pesquisa — Universidade Presbiteriana Mackenzie.</p>
+    </div>
+
+    <article>
+      <ul class="id-list">
+        <li><strong>Linha de pesquisa:</strong> Engenharia de Software e Sistemas Inteligentes</li>
+        <li><strong>Área de interesse:</strong> Qualidade de software, IA generativa e arquitetura distribuída</li>
+      </ul>
+
+      <h2>1. Título provisório</h2>
+      <p class="title-blockquote">A influência de assistentes de IA na manutenibilidade de software: uma análise da eficácia de padrões DDD, SOLID e Clean Code em ambientes poliglotas.</p>
+
+      <h2>2. Delimitação do problema</h2>
+      <p>O desenvolvimento moderno de software enfrenta o fenômeno do <strong>“Grande Rollback”</strong>: um movimento de retorno aos fundamentos (DDD, SOLID, Clean Architecture) após anos de complexidade acidental excessiva em sistemas distribuídos.</p>
+      <p>Com a ascensão das LLMs (GitHub Copilot, Cursor, Claude, ChatGPT), surge o risco da <strong>“dívida técnica automatizada”</strong>. O problema central desta pesquisa é verificar se a IA, ao focar na velocidade de escrita, está negligenciando a <strong>complexidade essencial</strong> do software e elevando a <strong>complexidade acidental</strong>, violando princípios de design que garantem a manutenibilidade em ecossistemas poliglotas.</p>
+
+      <h2>3. Fundamentação teórica (o paradoxo de Brooks)</h2>
+      <p>A pesquisa ancora-se no ensaio clássico de Frederick Brooks, <em>No Silver Bullet: Essence and Accidents of Software Engineering</em> (1987):</p>
+      <ul>
+        <li><strong>Complexidade essencial:</strong> a dificuldade intrínseca de modelar o domínio de negócio (foco do <strong>DDD</strong>).</li>
+        <li><strong>Complexidade acidental:</strong> dificuldades da implementação técnica e sintaxe (onde a IA atua).</li>
+        <li><strong>Hipótese:</strong> a IA atua como uma “falsa bala de prata”. Ao reduzir o esforço acidental de codificação, ela pode induzir o desenvolvedor a negligenciar a complexidade essencial, resultando em arquiteturas frágeis e quebras de contrato do <strong>SOLID</strong>.</li>
+      </ul>
+
+      <h2>4. Metodologia detalhada</h2>
+      <p>A pesquisa seguirá o modelo de <strong>engenharia de software experimental</strong>:</p>
+      <ol>
+        <li><strong>Definição de baseline:</strong> especificação de um domínio de alta complexidade essencial (ex.: regras fiscais / checkout).</li>
+        <li><strong>Desenvolvimento comparativo:</strong>
+          <ul class="nested-list">
+            <li><strong>Grupo A (manual):</strong> implementação focada em padrões de excelência.</li>
+            <li><strong>Grupo B (IA-assisted):</strong> implementação assistida por IA, priorizando <em>time-to-market</em>.</li>
+          </ul>
+        </li>
+        <li><strong>Auditoria técnica:</strong> extração de dados via análise estática.</li>
+        <li><strong>Análise qualitativa:</strong> avaliação da conformidade do design (bounded contexts) e extensibilidade do código.</li>
+      </ol>
+
+      <h2>5. Métricas e ferramentas de análise</h2>
+      <p>Serão utilizados indicadores objetivos para medir a “saúde” do código:</p>
+      <ul>
+        <li><strong>Métricas:</strong> complexidade ciclomática (McCabe), <strong>LCOM</strong> (coesão / SOLID), acoplamento eferente e aferente (DDD) e <em>Maintainability Index</em> (ISO/IEC 25010).</li>
+        <li><strong>Ferramentas:</strong> <strong>SonarQube</strong> (análise poliglota), <strong>NDepend</strong> (arquitetura .NET) e <strong>CodeScene</strong> (identificação de <em>hotspots</em> técnicos).</li>
+      </ul>
+
+      <h2>6. Justificativa</h2>
+      <p>Esta pesquisa justifica-se pela necessidade premente de um <strong>modelo de governança de IA na engenharia</strong>. Em um cenário de “Grande Rollback”, em que a sustentabilidade do código volta ao centro da estratégia das grandes empresas de tecnologia, entender como a IA impacta a fundação do software é vital para evitar colapsos arquiteturais futuros.</p>
+
+      <h2>7. Professores de interesse</h2>
+      <ul>
+        <li><strong>Dr. Calebe de Paula Bianchini:</strong> qualidade de software e arquitetura.</li>
+        <li><strong>Dr. Fabio Silva Lopes:</strong> complexidade de sistemas e SDLC.</li>
+        <li><strong>Dr. Ismar Frango Silveira:</strong> inteligência artificial generativa.</li>
+      </ul>
+    </article>
+  </div>
+</body>
+</html>
