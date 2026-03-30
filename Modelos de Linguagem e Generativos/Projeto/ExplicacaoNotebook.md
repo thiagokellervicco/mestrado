@@ -14,6 +14,10 @@ Na prática, ele:
 
 Esse notebook representa, portanto, o **módulo de geração sintética** do trabalho.
 
+Link do notebook no Google Colab:
+
+- https://colab.research.google.com/drive/1GUEIalxhL5_DF2hvsKSIsAHUc00Q7-zG?usp=sharing
+
 ---
 
 ## 2) O que entra e o que sai
