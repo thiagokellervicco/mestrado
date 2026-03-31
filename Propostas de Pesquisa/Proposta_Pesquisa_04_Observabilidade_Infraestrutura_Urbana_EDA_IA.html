@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Proposta de pesquisa 04 — observabilidade de infraestrutura urbana com EDA, IA e Smart Cities. Mackenzie 2026.">
+  <title>Proposta 04 — Observabilidade urbana com EDA e IA — Mestrado</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2e/Mackenzie_M.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0f;
+      --surface: #16161a;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e6e3;
+      --text-muted: #9a9690;
+      --accent: #c9a959;
+      --accent-dim: rgba(201, 169, 89, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+
+    .layout {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    .page-hero {
+      margin-bottom: 2.5rem;
+      padding: 1.75rem 1.5rem 2rem;
+      margin-left: -1.5rem;
+      margin-right: -1.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      background: linear-gradient(165deg, var(--surface) 0%, rgba(22, 22, 26, 0.35) 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    @media (min-width: 540px) {
+      .page-hero {
+        padding: 2rem 2rem 2.25rem;
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+
+    .page-hero .badge { margin-bottom: 1rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.85rem;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+      max-width: 20em;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-rule {
+      width: 3.5rem;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      margin-bottom: 1.1rem;
+      border-radius: 1px;
+    }
+
+    .doc-lead {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      max-width: 38rem;
+      line-height: 1.7;
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    article {
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    .title-blockquote {
+      margin: 1.75rem 0 2.25rem;
+      padding: 1.25rem 1.35rem;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-dim);
+      border-radius: 0 6px 6px 0;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.5;
+      text-align: justify;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    article h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 2.25rem 0 0.85rem;
+      letter-spacing: -0.01em;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+      text-align: start;
+    }
+
+    article h2:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    article p {
+      margin-bottom: 0.9rem;
+      font-size: 0.95rem;
+    }
+
+    article ul {
+      margin: 0.5rem 0 1rem 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    article li {
+      margin-bottom: 0.45rem;
+      text-align: justify;
+    }
+    article li::marker { color: var(--accent); }
+
+    article ol {
+      margin: 0.5rem 0 1rem 1.25rem;
+      font-size: 0.95rem;
+    }
+    article ol > li { margin-bottom: 0.45rem; }
+
+    article strong { font-weight: 600; color: var(--text); }
+
+    .id-list {
+      list-style: none;
+      margin-left: 0;
+    }
+    .id-list li {
+      padding-left: 0;
+      margin-bottom: 0.6rem;
+      text-align: justify;
+    }
+
+    .doc-footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .back-link { display: none; }
+      .page-hero {
+        background: #f6f6f6;
+        border-color: #ddd;
+        box-shadow: none;
+      }
+      .title-blockquote { border-color: #333; background: #f5f5f5; }
+      article h2 { border-color: #ccc; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <a href="index.html" class="back-link">← Voltar às propostas</a>
+
+    <div class="page-hero">
+      <span class="badge">Proposta 04</span>
+      <h1>Mestrado em Computação <em>Aplicada</em></h1>
+      <div class="hero-rule" aria-hidden="true"></div>
+      <p class="doc-lead">Proposta para Pesquisa — Universidade Presbiteriana Mackenzie.</p>
+    </div>
+
+    <article>
+      <h2>1. Identificação</h2>
+      <ul class="id-list">
+        <li><strong>Candidato:</strong> Thiago Keller</li>
+        <li><strong>Linha de Pesquisa:</strong> Engenharia de Software e Sistemas Inteligentes</li>
+        <li><strong>Foco:</strong> Inspeção de pontes e viadutos com drones, IA aplicada e observabilidade para manutenção preventiva.</li>
+      </ul>
+
+      <h2>2. Título provisório</h2>
+      <p class="title-blockquote">Arquitetura de Inspeção Assistida por Drones para Pontes e Viadutos: um modelo de detecção de anomalias com IA e suporte à decisão preventiva.</p>
+
+      <h2>3. O Problema (A "Dor" da Gestão Pública)</h2>
+      <p>A inspeção de pontes e viadutos ainda depende de processos manuais, caros e com baixa frequência. Mesmo quando drones são usados, muitas vezes eles funcionam apenas como ferramenta de captura de imagem, mantendo a análise em etapas posteriores e sem integração com decisão operacional.</p>
+      <p>O desafio científico é: <strong>como construir e validar uma arquitetura de inspeção com drones que detecte anomalias estruturais com IA, reduza falsos negativos e gere priorização técnica confiável para manutenção preventiva?</strong></p>
+
+      <h2>4. Base Teórica (Visão Computacional e IA Confiável)</h2>
+      <p>A <strong>Visão Computacional</strong> é o núcleo tecnológico deste projeto. Sem ela, o drone atua apenas como câmera; com ela, torna-se um sensor inteligente capaz de interpretar o estado da estrutura.</p>
+      <p>Nesta proposta, Visão Computacional não se limita à captura de imagem. O objetivo é extrair informação semântica para apoiar decisão técnica de manutenção.</p>
+      <ol>
+        <li><strong>Detecção e classificação de patologias (core):</strong> uso de redes neurais convolucionais (CNNs), como YOLO ou EfficientDet, para identificar anomalias em tempo real ou em pós-processamento.
+          <ul>
+            <li><strong>Segmentação semântica:</strong> além de identificar a rachadura, o modelo delimita seu contorno (pixel a pixel), permitindo estimar área e extensão do dano.</li>
+            <li><strong>Classificação:</strong> diferencia rachadura estrutural, mancha de umidade e desplacamento do concreto (com possível exposição da armadura).</li>
+          </ul>
+        </li>
+        <li><strong>Fotogrametria e reconstrução 3D:</strong> para gerar valor operacional, o defeito precisa ser localizado no espaço.
+          <ul>
+            <li><strong>Nuvem de pontos:</strong> transformação de imagens 2D do drone em modelo 3D (gêmeo digital simplificado) da ponte/viaduto.</li>
+            <li><strong>Mapeamento de textura:</strong> projeção das anomalias detectadas no modelo 3D para indicar exatamente a viga, pilar ou junta afetada.</li>
+          </ul>
+        </li>
+        <li><strong>Estimativa de severidade (metrologia visual):</strong> conversão de pixels para milímetros com base em distância/câmera, permitindo estimar abertura de fissuras e distinguir dano crítico de ocorrência estética.</li>
+        <li><strong>Visão Computacional na borda (Edge CV):</strong> uso de versões leves dos modelos (TensorFlow Lite/ONNX) em nó de borda para reduzir latência e consumo de banda, inclusive em decisões de voo assistidas (ex.: aproximar para detalhar uma anomalia detectada).</li>
+      </ol>
+
+      <h2>5. Por que este recorte (pontes e viadutos)?</h2>
+      <p>Para um mestrado, o recorte em pontes e viadutos permite profundidade técnica, acesso a métricas objetivas e validação com especialistas, sem transformar a pesquisa em um projeto amplo de plataforma urbana.</p>
+      <ul>
+        <li><strong>Alta criticidade:</strong> Falhas nesses ativos têm impacto direto em segurança e mobilidade urbana.</li>
+        <li><strong>Viabilidade de campo:</strong> Drones já são acessíveis para inspeção visual e permitem coleta padronizada.</li>
+        <li><strong>Medição clara:</strong> É possível comparar desempenho do modelo com laudo técnico de engenheiros.</li>
+        <li><strong>Potencial de extensão:</strong> Após validação, a arquitetura pode ser adaptada para outros ativos urbanos.</li>
+      </ul>
+
+      <h2>6. Pergunta de Pesquisa, Hipóteses e Métricas</h2>
+      <p><strong>Pergunta de pesquisa:</strong> uma arquitetura de inspeção com drones e IA explicável melhora a detecção de anomalias em pontes e viadutos e reduz o tempo entre inspeção e priorização de manutenção, em comparação ao fluxo manual tradicional?</p>
+      <ul>
+        <li><strong>Hipótese H1 (Confiabilidade):</strong> O modelo manterá <strong>recall &gt;= 0,85</strong> em fissuras, corrosão superficial e desplacamento.</li>
+        <li><strong>Hipótese H2 (Eficiência Operacional):</strong> O tempo entre inspeção e emissão de relatório priorizado será reduzido em pelo menos <strong>30%</strong>.</li>
+        <li><strong>Hipótese H3 (Qualidade da Decisão):</strong> O score de risco terá concordância técnica de pelo menos <strong>80%</strong> com avaliação de engenheiros.</li>
+      </ul>
+      <p><strong>Métricas principais:</strong> precisão, recall e F1 por tipo de anomalia; taxa de falsos negativos; tempo ponta a ponta (coleta → inferência → relatório); concordância entre score automático e laudo técnico; robustez do modelo em diferentes condições de iluminação e clima.</p>
+
+      <h2>7. Metodologia (Piloto de Inspeção com Drones)</h2>
+      <ol>
+        <li><strong>Planejamento de Missão:</strong> Definição de rotas e protocolo de captura padronizada para inspeção visual de pontes e viadutos.</li>
+        <li><strong>Coleta e Curadoria:</strong> Construção de base rotulada com imagens de anomalias estruturais (fissuras, corrosão superficial e desplacamento).</li>
+        <li><strong>Modelagem com IA:</strong> Treinamento e avaliação comparativa do modelo de visão computacional, com validação cruzada e análise por classe de anomalia.</li>
+        <li><strong>Score de Risco:</strong> Geração de prioridade técnica por ativo com base em severidade visual, recorrência e contexto climático.</li>
+        <li><strong>Relatório Assistido:</strong> Produção automática de relatório técnico preliminar para apoio ao engenheiro responsável.</li>
+        <li><strong>Validação Profissional:</strong> Comparação dos resultados do sistema com laudos de engenheiros da <strong>Secretaria de Obras de São Paulo</strong>.</li>
+      </ol>
+
+      <h2>8. Recorte de Escopo e Viabilidade</h2>
+      <ul>
+        <li><strong>Recorte Inicial (MVP científico):</strong> Foco exclusivo em pontes e viadutos, sem incluir pavimento, drenagem ou outros domínios urbanos nesta etapa.</li>
+        <li><strong>Escala do Piloto:</strong> Inspeção de um conjunto reduzido de ativos para garantir profundidade analítica e validação técnica consistente.</li>
+        <li><strong>Janela Experimental:</strong> Coleta e avaliação em ciclos quinzenais para comparar estabilidade do modelo em condições climáticas distintas.</li>
+        <li><strong>Critério de Viabilidade:</strong> Uso de drone comercial, protocolo reprodutível de coleta e apoio de especialistas para rotulagem e validação.</li>
+      </ul>
+
+      <h2>9. Diferenciais Tecnológicos</h2>
+      <ul>
+        <li><strong>Independência de Hardware:</strong> O método é agnóstico ao drone e pode ser reproduzido com diferentes plataformas de captura.</li>
+        <li><strong>Rastreabilidade Técnica:</strong> Cada alerta fica vinculado a evidência visual, georreferência e justificativa do score de risco.</li>
+        <li><strong>Expansão futura controlada:</strong> Após validação no recorte de pontes e viadutos, o método pode ser adaptado para outros ativos urbanos.</li>
+      </ul>
+
+      <h2>10. Justificativa e Impacto</h2>
+      <ul>
+        <li><strong>Eficiência Orçamentária:</strong> Apoio à transição de manutenção corretiva para preventiva em ativos de alta criticidade estrutural.</li>
+        <li><strong>Melhoria direta para a cidade:</strong> Maior agilidade na identificação de riscos em pontes e viadutos, com priorização técnica de intervenções e potencial redução de interdições emergenciais.</li>
+        <li><strong>Transparência e Governança Pública:</strong> Painéis com histórico decisório e trilha de auditoria de ponta a ponta, permitindo explicar tecnicamente cada priorização, reduzir subjetividade na alocação de recursos e fortalecer a prestação de contas.</li>
+      </ul>
+
+      <h2>11. Professores de Interesse</h2>
+      <ul>
+        <li><strong>Dr. Fabio Silva Lopes:</strong> Foco em Arquitetura de Sistemas e Gestão da Complexidade.</li>
+        <li><strong>Dr. Calebe de Paula Bianchini:</strong> Foco em Confiabilidade e Qualidade de Sistemas de Missão Crítica.</li>
+        <li><strong>Dr. Ismar Frango Silveira:</strong> Foco em Cidades Inteligentes e Integração de Sistemas Inteligentes.</li>
+      </ul>
+
+      <p class="doc-footer">Março/2026</p>
+    </article>
+  </div>
+</body>
+</html>

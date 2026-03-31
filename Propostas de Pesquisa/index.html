@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Propostas de pesquisa de mestrado — Thiago Keller, Mackenzie.">
+  <title>Propostas de pesquisa — Mestrado</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2e/Mackenzie_M.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0f;
+      --surface: #16161a;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e6e3;
+      --text-muted: #9a9690;
+      --accent: #c9a959;
+      --accent-dim: rgba(201, 169, 89, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .layout {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    .page-hero {
+      margin-bottom: 2.5rem;
+      padding: 2rem 1.75rem;
+      background: linear-gradient(165deg, var(--surface) 0%, rgba(22, 22, 26, 0.35) 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.85rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.65rem;
+      letter-spacing: -0.02em;
+    }
+
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .lead {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 36rem;
+    }
+
+    .proposal-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .proposal-list a {
+      display: block;
+      padding: 1.35rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .proposal-list a:hover {
+      border-color: rgba(201, 169, 89, 0.35);
+      background: var(--accent-dim);
+    }
+
+    .proposal-list .num {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .proposal-list h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.45rem;
+      line-height: 1.35;
+    }
+
+    .proposal-list p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .link-hint {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <a href="../index.html" class="back-link">← Voltar ao portfólio</a>
+
+    <header class="page-hero">
+      <span class="badge">Mestrado em Computação Aplicada</span>
+      <h1>Propostas de <em>pesquisa</em></h1>
+      <p class="lead">Textos para compartilhamento com docentes — Universidade Presbiteriana Mackenzie.</p>
+    </header>
+
+    <ul class="proposal-list">
+      <li>
+        <a href="Proposta_Pesquisa_01_IA_Manutenibilidade_DDD_SOLID.html">
+          <div class="num">Proposta 01</div>
+          <h2>IA, manutenibilidade, DDD, SOLID e Clean Code</h2>
+          <p>A influência de assistentes de IA na manutenibilidade de software: análise de padrões DDD, SOLID e Clean Code em diferentes linguagens.</p>
+          <span class="link-hint">Abrir proposta 01 →</span>
+        </a>
+      </li>
+      <li>
+        <a href="Proposta_Pesquisa_04_Observabilidade_Infraestrutura_Urbana_EDA_IA.html">
+          <div class="num">Proposta 04</div>
+          <h2>Observabilidade de infraestrutura urbana com EDA e IA</h2>
+          <p>Monitoramento de ativos e vias (buracos/trincas), clima e sensores em arquitetura orientada a eventos, com alertas inteligentes e resposta operacional para Smart Cities.</p>
+          <span class="link-hint">Abrir proposta 04 →</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

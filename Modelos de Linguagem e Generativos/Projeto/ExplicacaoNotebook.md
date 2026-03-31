@@ -40,9 +40,88 @@ Em `/content/drive/MyDrive/DadosModeloLinguagens/saida_simulacao`, o notebook gr
 - `sintetico_04829_...csv`
   - tabela sintética final;
 - `sintetico_04829_log_...json`
-  - log detalhado por respondente, bloco e variável;
+  - log detalhado por respondente, bloco e variável; em cada respondente há também **`empirical_seed_index`** (índice da linha do `04829.SAV` usada no bootstrap do perfil sócio), permitindo parear empírico × sintético para métricas no notebook;
 - `llm_run_metadata_...json`
   - metadados de execução (modelo, temperatura, retries, seed etc.).
+
+### 2.1) Tratamento das variáveis (documentar no relatório)
+
+O grupo precisa de uma seção explícita sobre **como cada variável é tratada** do microdado até a saída sintética. Abaixo está o **fluxo real do notebook** (do arquivo ao CSV), para copiar/adaptar no relatório.
+
+#### Pipeline por etapa
+
+1. **Leitura empírica** — `pyreadstat.read_sav("04829.SAV")` → `DataFrame` com **144 colunas** na ordem original; `assert` garante esse número.
+2. **Dicionário** — `survey_dictionary.json` fornece, por variável: nome, rótulo (`label`), `value_labels` (mapa código → texto) e participação em **blocos** (`suggested_llm_blocks`).
+3. **Blocos LLM** — o questionário é enviado ao modelo em partes (blocos); variáveis do bloco `socio_demografia` são listadas em `SOCIO_VARS` quando há bootstrap sócio.
+4. **Por respondente sintético**
+   - sorteia-se uma **linha empírica** (`df_emp.sample(...)`) como semente;
+   - o índice dessa linha é gravado no log como **`empirical_seed_index`** (pareamento empírico × sintético para avaliação);
+   - se `USE_BOOTSTRAP_SOCIO=True`: o bloco `socio_demografia` **não** passa pelo LLM — os valores dessas colunas são **copiados** da linha sorteada;
+   - demais blocos: o modelo (ou mock) devolve um **JSON** com códigos numéricos por variável.
+5. **Validação** — `validate_and_merge` converte respostas para número e confere `value_labels` quando existem; códigos fora do domínio viram `NaN` e entram no log (`invalid_code`, `missing_key`).
+6. **Saída** — uma linha por respondente, **mesmas 144 colunas** que o `.SAV`; faltantes como `NaN` onde aplicável.
+
+#### O que registrar na tabela do relatório
+
+| Tópico | O que registrar |
+|--------|-----------------|
+| **Origem** | Leitura do `04829.SAV` (SPSS) e mapeamento para DataFrame; nomes e ordem das 144 colunas. |
+| **Metadados** | Uso do `survey_dictionary.json`: blocos, texto das perguntas, opções e **códigos numéricos** permitidos por variável. |
+| **Tipos / papel no pipeline** | Escolha única com código fechado (maioria das variáveis com `value_labels`); variáveis **sem** `value_labels` no dicionário exigem cuidado extra na validação e na interpretação das métricas. |
+| **Valores válidos** | Domínio de códigos (`value_labels`); resposta inválida → `NaN` + registro no log. |
+| **Faltantes** | `NaN` no empírico e no sintético; comparar **taxa de missing** por variável antes/depois. |
+| **Bootstrap sócio** | Lista de colunas em `socio_demografia` (copiadas da linha sorteada); restante gerado por bloco. |
+| **Pós-processamento** | Coerção float/int no código; nenhuma recodificação “oculta” além da validação de domínio descrita acima. |
+
+Isso atende ao pedido de **tratamento das variáveis** de forma auditável para o trabalho em grupo.
+
+### 2.2) Métricas separadas (acurácia, precisão, recall, F1, etc.)
+
+Pedido do grupo: **não** resumir tudo em um único número — **separar e nomear** cada métrica (colunas distintas na tabela ou subseções no texto).
+
+#### Comparação adotada no notebook
+
+Na seção **“Avaliação empírico × sintético (métricas separadas)”** do `Percepcao_Racismo_LLM.ipynb`, cada linha sintética é **pareada** com a linha empírica cujo índice está em `empirical_seed_index` no `log`. Para **cada variável** que tenha `value_labels` no dicionário:
+
+- \(y_{\text{true}}\) = código na base empírica (linha pareada);
+- \(y_{\text{pred}}\) = código na base sintética (mesma ordem de linhas).
+
+Linhas em que `y_true` ou `y_pred` é `NaN` são **ignoradas** naquela variável (comparação por variável, não globais misturadas).
+
+#### Glossário — uma métrica por linha (multiclasse)
+
+Considere cada **código de resposta** como uma **classe**. Para a classe \(c\):
+
+| Métrica | Nome em inglês | Ideia (uma frase) |
+|--------|----------------|-------------------|
+| **Acurácia** | _Accuracy_ | Fração de observações em que o código previsto é **igual** ao verdadeiro: \(\frac{1}{N}\sum_i \mathbf{1}[\hat{y}_i = y_i]\). **Uma linha por variável** no notebook (`acuracia`). |
+| **Precisão (classe \(c\))** | _Precision_ | Entre tudo que foi previsto como \(c\), quanto de fato era \(c\): \( \text{TP}_c / (\text{TP}_c + \text{FP}_c) \). |
+| **Revocação / sensibilidade (classe \(c\))** | _Recall_ | Entre todos os verdadeiros \(c\), quanto o modelo “acertou”: \( \text{TP}_c / (\text{TP}_c + \text{FN}_c) \). |
+| **F1 (classe \(c\))** | _F1-score_ | Média harmônica de precisão e revocação na classe \(c\); equilibra os dois quando há desbalanceamento. |
+| **Suporte (classe \(c\))** | _Support_ | Número de exemplos com rótulo verdadeiro \(c\) no conjunto usado naquela variável (útil para não overinterpretar F1 em classes raras). |
+
+#### Agregação **macro** vs **micro** (como no código)
+
+O notebook calcula, por variável, também:
+
+| Coluna no `DataFrame` de métricas | Significado |
+|-----------------------------------|-------------|
+| `precisao_macro`, `recall_macro`, `f1_macro` | Média **não ponderada** das métricas por classe (cada classe pesa igual). |
+| `precisao_micro`, `recall_micro`, `f1_micro` | Agrega **todos** os acertos/erros das classes e depois calcula uma única precisão/recall/F1 (equivale a dar peso proporcional à frequência da classe). |
+
+**Não misturar** macro e micro no texto sem dizer qual foi usada; no relatório, vale apresentar **as duas** ou justificar uma delas.
+
+#### O que não entra nessa tabela automática
+
+- Variáveis **sem** `value_labels` no `survey_dictionary.json` são **puladas** pelo laço de métricas (ou podem ser avaliadas com outras ferramentas: distribuição marginal, teste \(\chi^2\), distância entre distribuições, etc.).
+- Métricas de **classificação** pressupõem códigos comparáveis; não substituem análise de **distribuição** quando o objetivo for só “parecer com o empírico” sem pareamento por linha.
+
+#### Implementação de referência
+
+- Python: `sklearn.metrics` — `accuracy_score`, `precision_recall_fscore_support` com `average="macro"` e `average="micro"`, e `labels=` alinhados aos códigos observados (`labels_used` no notebook).
+- Opcional no relatório: `classification_report` por variável-chave ou `confusion_matrix` para ilustrar erros entre códigos.
+
+Biblioteca de referência em Python: `sklearn.metrics` (`accuracy_score`, `precision_recall_fscore_support`, `classification_report`, `confusion_matrix`), sempre com **rótulos** (`labels=`) alinhados aos códigos do questionário.
 
 ---
 
@@ -198,7 +277,7 @@ Se `LLM_FALLBACK_MOCK_ON_FAILURE=True`, blocos com falha recorrente podem ser pr
 
 Para documentação acadêmica/reprodutibilidade, os artefatos mínimos são:
 
-- notebook executado com configuracao final;
+- notebook executado com configuração final;
 - CSV sintético final;
 - log JSON da rodada;
 - metadata JSON com hiperparâmetros;
@@ -256,12 +335,15 @@ Criar (ou conectar) um script/notebook de avaliação com, no mínimo:
 - comparação de pares relevantes (contingências);
 - taxa de missing por variável;
 - cobertura de códigos válidos;
-- auditoria de incoerências detectadas no log.
+- auditoria de incoerências detectadas no log;
+- **métricas separadas** conforme a seção **2.2** (acurácia, precisão, revocação, F1, suporte — não misturar num único “índice” sem nome);
+- **tratamento das variáveis** documentado conforme a seção **2.1**.
 
 Saídas esperadas:
 
 - tabelas resumo;
 - gráficos comparativos;
+- tabelas por métrica (ou `classification_report` por variável, com leitura explícita no texto);
 - uma seção de interpretação metodológica.
 
 ## 8.5) Seção metodológica no relatório principal
@@ -269,8 +351,8 @@ Saídas esperadas:
 Incluir explicitamente:
 
 - por que blocos foram usados (limite de contexto);
-- por que bootstrap socio foi adotado;
-- modelo e hiperparametros;
+- por que bootstrap sócio foi adotado;
+- modelo e hiperparâmetros;
 - critério de retries e fallback;
 - limitações (possível suavização de respostas, viés de modelo etc.).
 
@@ -313,6 +395,8 @@ Para rodar com mais segurança:
 - [ ] Rodar simulação oficial com parâmetros definidos pelo grupo.
 - [ ] Congelar pacote de rodada (CSV + log + metadata).
 - [ ] Executar módulo comparativo empírico vs sintético.
+- [ ] Documentar **tratamento das variáveis** (seção 2.1) no relatório.
+- [ ] Reportar **métricas separadas** — acurácia, precisão, recall, F1 (e suporte), sem agrupar tudo num único número opaco (seção 2.2).
 - [ ] Inserir resultados e limitações no relatório final.
 - [ ] Referenciar seed, modelo e data para reprodutibilidade.
 
