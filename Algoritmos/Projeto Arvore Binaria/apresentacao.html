@@ -212,13 +212,30 @@
     ul.linklist .path { font-family: var(--mono); font-size: 10px; color: var(--muted); word-break: break-all; line-height: 1.4; }
     ul.linklist .tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--abb); margin-top: 6px; }
     ul.linklist .tag.cs { color: #a78bfa; }
+    .bench-wrap {
+      margin-top: 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0a0c10;
+      min-height: 280px;
+    }
+    .bench-frame {
+      display: block;
+      width: 100%;
+      height: min(62vh, 520px);
+      border: 0;
+    }
     @media print {
       body { overflow: visible; background: #fff; color: #111; }
       .bar { display: none; }
       .deck { height: auto; display: block; padding: 0; }
       .slide { display: block !important; page-break-after: always; max-height: none; }
       .slide:last-child { page-break-after: auto; }
+      .bench-wrap { display: none; }
+      .bench-print-note { display: block !important; font-size: 11px; color: #333; }
     }
+    .bench-print-note { display: none; }
   </style>
 </head>
 <body>
@@ -367,6 +384,16 @@
     </section>
 
     <section class="slide scrollable" data-i="10">
+      <h2>Benchmark — 4 árvores</h2>
+      <p class="muted" style="margin-top:0;">ABB, AVL, ABB+índice auxiliar e AVL+índice — alturas, tempos e abas (visão geral, busca sem chave, inserção/remoção, operações por chave, simulador).</p>
+      <div class="bench-wrap">
+        <iframe class="bench-frame" src="benchmark_arvores.html" title="Benchmark quatro árvores" loading="lazy"></iframe>
+      </div>
+      <p class="bench-print-note">Para impressão: abra <strong>benchmark_arvores.html</strong> no navegador.</p>
+      <p class="muted" style="margin-top:10px;"><a href="benchmark_arvores.html" target="_blank" rel="noopener noreferrer">Abrir em nova aba</a></p>
+    </section>
+
+    <section class="slide scrollable" data-i="11">
       <h2>Outras dimensões — outras formas de busca</h2>
       <p>Neste trabalho a árvore ordena só por <code style="font-family:var(--mono);color:var(--abb);">student_id</code>. Consultas por <strong>nota</strong>, <strong>idade</strong>, <strong>gênero</strong> ou <strong>aprovação</strong> não usam essa ordem: em geral é preciso <strong>varrer</strong> os registros (custo próximo de O(n)), com ganho pequeno de ABB vs AVL.</p>
       <ul>
@@ -378,7 +405,7 @@
       <p class="muted">A escolha depende do que mais se consulta: uma árvore por ID é ótima para “achar o estudante X”; para analíticas por nota ou perfil, costuma-se combinar estruturas ou usar um motor de consulta indexado.</p>
     </section>
 
-    <section class="slide" data-i="11">
+    <section class="slide" data-i="12">
       <h2>Conclusões</h2>
       <ul>
         <li><strong>Carga:</strong> ABB <strong>~94 ms</strong> vs AVL <strong>~191 ms</strong> — inserção sem rotação é mais barata na prática neste dataset.</li>
@@ -388,10 +415,14 @@
       </ul>
     </section>
 
-    <section class="slide scrollable" data-i="12">
+    <section class="slide scrollable" data-i="13">
       <h2>Links — execuções e artefatos</h2>
       <p class="muted" style="margin-top:0;">Abra a partir da pasta do projeto (mesmo nível que <code style="font-family:var(--mono);">apresentacao.html</code>).</p>
       <ul class="linklist">
+        <li>
+          <strong><a href="benchmark_arvores.html">Benchmark — 4 árvores (ABB, AVL, + índice)</a></strong>
+          <span class="path">benchmark_arvores.html</span>
+        </li>
         <li>
           <strong><a href="abb_avl_dashboard.html">Dashboard interativo (Chart.js)</a></strong>
           <span class="path">abb_avl_dashboard.html</span>
@@ -414,7 +445,7 @@
       <p class="muted" style="margin-top:12px;">Repositório no GitHub: <a href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria" target="_blank" rel="noopener noreferrer">Algoritmos/Projeto Arvore Binaria</a></p>
     </section>
 
-    <section class="slide" data-i="13">
+    <section class="slide" data-i="14">
       <h2>Demonstração</h2>
       <p>Na raiz do projeto, com o ambiente Python configurado:</p>
       <div class="card" style="font-family:var(--mono);font-size:12px;color:var(--accent);">
@@ -423,16 +454,29 @@
       <p class="muted" style="margin-top:14px;">Gera métricas no console e relatório HTML em <code style="font-family:var(--mono);font-size:0.9em;">reports/</code>.</p>
     </section>
 
-    <section class="slide" data-i="14">
+    <section class="slide scrollable" data-i="15">
       <h2>Conclusão</h2>
-      <p>Com dados reais de desempenho escolar, a comparação entre <strong>ABB</strong> e <strong>AVL</strong> deixa claro o custo da carga frente ao ganho de altura controlada — e como isso se traduz em tempos de busca, travessia e sobretudo em cenários de manutenção da árvore.</p>
+      <p>Este projeto demonstrou, com dados reais e medições precisas, <strong>três conclusões centrais</strong> sobre estruturas de dados em árvore:</p>
+
+      <div class="card" style="margin-top:14px;">
+        <p style="margin-bottom:0;"><strong>Primeira</strong> — <strong>O balanceamento da AVL tem custo e benefício bem definidos.</strong> A inserção é <strong>2,7×</strong> mais lenta (overhead das rotações), mas o ganho na altura (<strong>h = 16</strong> vs <strong>h = 30</strong>) acelera todas as buscas e travessias. Em sistemas de <strong>leitura intensiva</strong>, a AVL é claramente superior. Em <strong>carga em lote</strong> com poucas consultas, a ABB é preferível.</p>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <p style="margin-bottom:0;"><strong>Segunda</strong> — <strong>Buscas por campo secundário são irredutíveis a O(n) em árvores indexadas por outro campo.</strong> Nenhuma estrutura de árvore, independente do balanceamento, pode pular nós ao buscar por <code style="font-family:var(--mono);font-size:0.9em;">pass_fail</code> ou <code style="font-family:var(--mono);font-size:0.9em;">gender</code> — porque esses campos não participaram da decisão de posicionamento dos nós. A única alternativa eficiente é manter <strong>árvores paralelas</strong> ou <strong>índices externos</strong>.</p>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <p style="margin-bottom:0;"><strong>Terceira</strong> — <strong>O índice auxiliar só vale quando <em>k</em> ≪ <em>n</em> / log <em>n</em>.</strong> Para o dataset com <strong>n = 10.512</strong>, o limiar é <strong>≈ 784</strong> resultados. Buscas com <em>k</em> grande (ex.: aprovados com <strong>k = 4.368</strong>) são sistematicamente mais lentas com índice do que sem — o overhead de <em>k</em> × buscar(id) supera o custo do percurso linear. O resultado contraintuitivo do benchmark é, na verdade, matematicamente previsível pela inequação <strong><em>k</em> × log <em>n</em> &gt; <em>n</em></strong>.</p>
+      </div>
+
       <p style="margin-top:22px;">Obrigado pela atenção.</p>
-      <p class="muted" style="margin-top:28px;">Thiago Keller e Ricardo Diniz</p>
+      <p class="muted" style="margin-top:20px;">Thiago Keller e Ricardo Diniz</p>
     </section>
   </div>
 
   <div class="bar">
-    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">15</span></span>
+    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">16</span></span>
     <div class="dots" id="dots"></div>
   </div>
 
