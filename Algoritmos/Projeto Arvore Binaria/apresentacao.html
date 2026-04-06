@@ -239,17 +239,7 @@
       </div>
     </section>
 
-    <section class="slide" data-i="2">
-      <h2>Dados (execução referência)</h2>
-      <ul>
-        <li><strong>Arquivo:</strong> <code style="font-family:var(--mono);font-size:0.88em;">student_performance_prediction_dataset-2.xlsx</code></li>
-        <li><strong>Linhas carregadas:</strong> <strong>10.512</strong> (registros de estudantes com atributos acadêmicos e demográficos)</li>
-        <li><strong>Chave na árvore:</strong> <code style="font-family:var(--mono);">student_id</code> — ordenação e busca binária na estrutura</li>
-      </ul>
-      <p class="muted">Faixa de IDs observada nesta execução: 31 a 299.998.</p>
-    </section>
-
-    <section class="slide scrollable" data-i="3">
+    <section class="slide scrollable" data-i="2">
       <h2>O que é ABB? O que é AVL?</h2>
       <div class="grid2">
         <div class="mini abb">
@@ -267,6 +257,16 @@
           <p style="margin-top:10px;">O preço é <strong>mais trabalho</strong> em cada inserção/remoção (checagem de altura e rotações) do que numa ABB que não se rebalanceia.</p>
         </div>
       </div>
+    </section>
+
+    <section class="slide" data-i="3">
+      <h2>Dados (execução referência)</h2>
+      <ul>
+        <li><strong>Arquivo:</strong> <code style="font-family:var(--mono);font-size:0.88em;">student_performance_prediction_dataset-2.xlsx</code></li>
+        <li><strong>Linhas carregadas:</strong> <strong>10.512</strong> (registros de estudantes com atributos acadêmicos e demográficos)</li>
+        <li><strong>Chave na árvore:</strong> <code style="font-family:var(--mono);">student_id</code> — ordenação e busca binária na estrutura</li>
+      </ul>
+      <p class="muted">Faixa de IDs observada nesta execução: 31 a 299.998.</p>
     </section>
 
     <section class="slide" data-i="4">
@@ -288,19 +288,7 @@
       <p class="muted">Média de <strong>5 repetições</strong> por operação (exceto carga única), tempos em milissegundos.</p>
     </section>
 
-    <section class="slide scrollable" data-i="6">
-      <h2>Outras dimensões — outras formas de busca</h2>
-      <p>Neste trabalho a árvore ordena só por <code style="font-family:var(--mono);color:var(--abb);">student_id</code>. Consultas por <strong>nota</strong>, <strong>idade</strong>, <strong>gênero</strong> ou <strong>aprovação</strong> não usam essa ordem: em geral é preciso <strong>varrer</strong> os registros (custo próximo de O(n)), com ganho pequeno de ABB vs AVL.</p>
-      <ul>
-        <li><strong>Índices secundários:</strong> outra árvore de busca ou <strong>tabela hash</strong> por atributo (ex.: nota final) — busca O(log n) ou O(1) naquela dimensão, ao preço de mais memória e atualização ao inserir/remover.</li>
-        <li><strong>Várias chaves:</strong> <strong>árvore B/B+</strong> (como em SGBDs) ou chave composta ordenada — boa para intervalos em uma dimensão e para disco.</li>
-        <li><strong>Várias dimensões numéricas:</strong> <strong>k-d tree</strong>, <strong>range tree</strong> ou estruturas de intervalos — faixas em nota <em>e</em> idade ao mesmo tempo, com custos e implementação mais pesados.</li>
-        <li><strong>Filtros categóricos:</strong> <strong>índice invertido</strong> ou mapa <em>valor → lista de IDs</em> — útil para gênero, curso, etc.</li>
-      </ul>
-      <p class="muted">A escolha depende do que mais se consulta: uma árvore por ID é ótima para “achar o estudante X”; para analíticas por nota ou perfil, costuma-se combinar estruturas ou usar um motor de consulta indexado.</p>
-    </section>
-
-    <section class="slide" data-i="7">
+    <section class="slide" data-i="6">
       <h2>Ambiente da medição</h2>
       <table class="tbl" style="margin-top:4px;">
         <thead><tr><th>Item</th><th>Valor</th></tr></thead>
@@ -314,7 +302,7 @@
       <p class="muted">Reproduzir a medição no mesmo tipo de máquina aproxima estes tempos; ordens de grandeza permanecem comparáveis entre ABB e AVL no mesmo hardware.</p>
     </section>
 
-    <section class="slide" data-i="8">
+    <section class="slide" data-i="7">
       <h2>Resultados — estrutura e carga</h2>
       <div class="kpi">
         <div class="box">
@@ -335,7 +323,7 @@
       <p class="muted" style="margin-top:14px;">A AVL reduz a altura de <strong>30</strong> para <strong>16</strong> nós — metade da profundidade máxima da ABB nesta sequência de inserções.</p>
     </section>
 
-    <section class="slide scrollable" data-i="9">
+    <section class="slide scrollable" data-i="8">
       <h2>Resultados — tempo médio por operação (ms)</h2>
       <p class="muted" style="margin-top:0;">Média de 5 execuções · valores do relatório</p>
       <table class="tbl">
@@ -358,7 +346,7 @@
       <p class="muted" style="margin-top:10px;">Diferenças nas travessias são pequenas (todas visitam O(n) nós); ganhos aparecem de forma mais clara em busca pontual, faixa e filtros.</p>
     </section>
 
-    <section class="slide" data-i="10">
+    <section class="slide" data-i="9">
       <h2>Resultados — remoção (5 nós + reconstrução)</h2>
       <div class="kpi" style="grid-template-columns: 1fr 1fr;">
         <div class="box">
@@ -376,6 +364,18 @@
         <strong>AVL</strong> vence por ordens de magnitude neste cenário de teste: árvore mais baixa e inserções/remoções menos custosas quando a estrutura permanece balanceada após reconstrução.
       </div>
       <p class="muted">Média de 5 execuções — mesmo protocolo do relatório.</p>
+    </section>
+
+    <section class="slide scrollable" data-i="10">
+      <h2>Outras dimensões — outras formas de busca</h2>
+      <p>Neste trabalho a árvore ordena só por <code style="font-family:var(--mono);color:var(--abb);">student_id</code>. Consultas por <strong>nota</strong>, <strong>idade</strong>, <strong>gênero</strong> ou <strong>aprovação</strong> não usam essa ordem: em geral é preciso <strong>varrer</strong> os registros (custo próximo de O(n)), com ganho pequeno de ABB vs AVL.</p>
+      <ul>
+        <li><strong>Índices secundários:</strong> outra árvore de busca ou <strong>tabela hash</strong> por atributo (ex.: nota final) — busca O(log n) ou O(1) naquela dimensão, ao preço de mais memória e atualização ao inserir/remover.</li>
+        <li><strong>Várias chaves:</strong> <strong>árvore B/B+</strong> (como em SGBDs) ou chave composta ordenada — boa para intervalos em uma dimensão e para disco.</li>
+        <li><strong>Várias dimensões numéricas:</strong> <strong>k-d tree</strong>, <strong>range tree</strong> ou estruturas de intervalos — faixas em nota <em>e</em> idade ao mesmo tempo, com custos e implementação mais pesados.</li>
+        <li><strong>Filtros categóricos:</strong> <strong>índice invertido</strong> ou mapa <em>valor → lista de IDs</em> — útil para gênero, curso, etc.</li>
+      </ul>
+      <p class="muted">A escolha depende do que mais se consulta: uma árvore por ID é ótima para “achar o estudante X”; para analíticas por nota ou perfil, costuma-se combinar estruturas ou usar um motor de consulta indexado.</p>
     </section>
 
     <section class="slide" data-i="11">
