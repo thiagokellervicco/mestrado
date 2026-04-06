@@ -405,17 +405,7 @@
       <p class="muted">A escolha depende do que mais se consulta: uma árvore por ID é ótima para “achar o estudante X”; para analíticas por nota ou perfil, costuma-se combinar estruturas ou usar um motor de consulta indexado.</p>
     </section>
 
-    <section class="slide" data-i="12">
-      <h2>Conclusões</h2>
-      <ul>
-        <li><strong>Carga:</strong> ABB <strong>~94 ms</strong> vs AVL <strong>~191 ms</strong> — inserção sem rotação é mais barata na prática neste dataset.</li>
-        <li><strong>Forma:</strong> altura <strong>30 → 16</strong> com AVL — confirma o papel do balanceamento.</li>
-        <li><strong>Consultas:</strong> AVL vence em todas as operações listadas no benchmark (diferenças pequenas a moderadas, exceto…).</li>
-        <li><strong>Remoção + reconstrução:</strong> diferença extrema (<strong>37 s</strong> vs <strong>216 ms</strong>) — ponto forte para discutir custo amortizado e profundidade da ABB neste teste.</li>
-      </ul>
-    </section>
-
-    <section class="slide scrollable" data-i="13">
+    <section class="slide scrollable" data-i="12">
       <h2>Links — execuções e artefatos</h2>
       <p class="muted" style="margin-top:0;">Abra a partir da pasta do projeto (mesmo nível que <code style="font-family:var(--mono);">apresentacao.html</code>).</p>
       <ul class="linklist">
@@ -445,7 +435,7 @@
       <p class="muted" style="margin-top:12px;">Repositório no GitHub: <a href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria" target="_blank" rel="noopener noreferrer">Algoritmos/Projeto Arvore Binaria</a></p>
     </section>
 
-    <section class="slide" data-i="14">
+    <section class="slide" data-i="13">
       <h2>Demonstração</h2>
       <p>Na raiz do projeto, com o ambiente Python configurado:</p>
       <div class="card" style="font-family:var(--mono);font-size:12px;color:var(--accent);">
@@ -454,8 +444,15 @@
       <p class="muted" style="margin-top:14px;">Gera métricas no console e relatório HTML em <code style="font-family:var(--mono);font-size:0.9em;">reports/</code>.</p>
     </section>
 
-    <section class="slide scrollable" data-i="15">
+    <section class="slide scrollable" data-i="14">
       <h2>Conclusão</h2>
+      <p class="muted" style="margin-top:0;">Medições neste trabalho:</p>
+      <ul style="margin-bottom:14px;">
+        <li><strong>Carga:</strong> ABB <strong>~94 ms</strong> vs AVL <strong>~191 ms</strong> — inserção sem rotação é mais barata na prática neste dataset.</li>
+        <li><strong>Forma:</strong> altura <strong>30 → 16</strong> com AVL — confirma o papel do balanceamento.</li>
+        <li><strong>Consultas:</strong> AVL vence em todas as operações listadas no benchmark (diferenças pequenas a moderadas, exceto…).</li>
+        <li><strong>Remoção + reconstrução:</strong> diferença extrema (<strong>37 s</strong> vs <strong>216 ms</strong>) — custo amortizado e profundidade da ABB neste teste.</li>
+      </ul>
       <p>Este projeto demonstrou, com dados reais e medições precisas, <strong>três conclusões centrais</strong> sobre estruturas de dados em árvore:</p>
 
       <div class="card" style="margin-top:14px;">
@@ -476,7 +473,7 @@
   </div>
 
   <div class="bar">
-    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">16</span></span>
+    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">15</span></span>
     <div class="dots" id="dots"></div>
   </div>
 
