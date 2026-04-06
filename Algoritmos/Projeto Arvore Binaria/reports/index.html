@@ -50,6 +50,28 @@
       margin-bottom: 1.25rem;
     }
     .authors strong { color: var(--text); font-weight: 500; }
+    .btn-apresentacao {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 1.15rem;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-apresentacao:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      text-decoration: none;
+    }
     .lead {
       color: var(--muted);
       font-size: 0.95rem;
@@ -162,7 +184,8 @@
     <a class="back" href="../../../algoritmos-e-programacao.html">← Dashboard ABB vs AVL</a>
 
     <h1>Relatórios de execução</h1>
-    <p class="authors"><strong>Trabalho em dupla:</strong> Thiago Keller e Ricardo Diniz · Algoritmos e Programação</p>
+    <a class="btn-apresentacao" href="../apresentacao.html">Apresentação em slides</a>
+    <p class="authors"><strong>Autores:</strong> Thiago Keller e Ricardo Diniz · Algoritmos e Programação</p>
 
     <h2>Código-fonte no GitHub</h2>
     <p class="lead" style="margin-bottom: 0.75rem;">Repositório <strong>mestrado</strong> — pastas e ficheiros principais do projeto ABB/AVL.</p>

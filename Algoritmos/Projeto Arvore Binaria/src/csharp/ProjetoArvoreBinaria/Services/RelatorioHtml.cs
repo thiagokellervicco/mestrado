@@ -167,7 +167,7 @@ public static class RelatorioHtml
         sb.AppendLine("<body>");
         sb.AppendLine("  <div class=\"wrap\">");
         sb.AppendLine("    <h1>Relatório — ABB vs AVL (desempenho de estudantes)</h1>");
-        sb.AppendLine("    <p class=\"meta\"><strong>Autores:</strong> Thiago Keller e Ricardo Diniz (trabalho em dupla)</p>");
+        sb.AppendLine("    <p class=\"meta\"><strong>Autores:</strong> Thiago Keller e Ricardo Diniz</p>");
         sb.Append("    <p class=\"meta\"><strong>Linguagem:</strong> ").Append(H(linguagem)).AppendLine("</p>");
         sb.Append("    <p class=\"meta\"><strong>Data/hora da execução:</strong> ").Append(H(agora)).AppendLine("</p>");
         sb.Append("    <p class=\"meta\"><strong>Arquivo de dados:</strong> <code>").Append(H(arquivoDados)).AppendLine("</code></p>");

@@ -182,7 +182,7 @@ def _conteudo_relatorio_html(
 <body>
   <div class="wrap">
     <h1>Relatório — ABB vs AVL (desempenho de estudantes)</h1>
-    <p class="meta"><strong>Autores:</strong> Thiago Keller e Ricardo Diniz (trabalho em dupla)</p>
+    <p class="meta"><strong>Autores:</strong> Thiago Keller e Ricardo Diniz</p>
     <p class="meta"><strong>Linguagem:</strong> {html.escape(linguagem)}</p>
     <p class="meta"><strong>Data/hora da execução:</strong> {html.escape(agora)}</p>
     <p class="meta"><strong>Arquivo de dados:</strong> <code>{arquivo_str}</code></p>

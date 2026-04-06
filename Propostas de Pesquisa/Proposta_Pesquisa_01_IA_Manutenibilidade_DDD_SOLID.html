@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Proposta de pesquisa 01 — IA, manutenibilidade, DDD, SOLID e Clean Code em diferentes linguagens. Mackenzie 2026.">
-  <title>Proposta 01 — IA e manutenibilidade — Mestrado</title>
+  <meta name="description" content="Proposta de pesquisa 01 — IA generativa, complexidade essencial, aderência a DDD e SOLID em sistemas assistidos. Mackenzie 2026.">
+  <title>Proposta 01 — IA generativa, DDD e SOLID — Mestrado</title>
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2e/Mackenzie_M.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -225,14 +225,15 @@
     <article>
       <ul class="id-list">
         <li><strong>Linha de pesquisa:</strong> Engenharia de Software e Sistemas Inteligentes</li>
-        <li><strong>Área de interesse:</strong> Qualidade de software, IA generativa e arquitetura distribuída</li>
+        <li><strong>Área de interesse:</strong> Qualidade de software, IA generativa, DDD/SOLID e aderência arquitetural em sistemas assistidos</li>
       </ul>
 
       <h2>1. Título provisório</h2>
-      <p class="title-blockquote">A influência de assistentes de IA na manutenibilidade de software: uma análise de como funcionam os padrões DDD, SOLID e Clean Code em diferentes linguagens.</p>
+      <p class="title-blockquote">O impacto da IA generativa na complexidade essencial: uma análise da aderência aos padrões DDD e SOLID em sistemas assistidos.</p>
 
       <h2>2. O Problema</h2>
       <p>O desenvolvimento moderno de software enfrenta o fenômeno do <strong>“Grande Rollback”</strong>: um movimento de retorno aos fundamentos (DDD, SOLID, Clean Architecture) após anos de complexidade acidental excessiva em sistemas distribuídos.</p>
+      <p>Para fortalecer a justificativa, incorpora-se o conceito de <strong>inflação da dívida técnica</strong> (<em>technical debt inflation</em>): a IA generativa não apenas produz código — ela o faz em <strong>volume e velocidade</strong> muito superiores ao fluxo tradicional. Se esse código não respeitar SOLID e DDD, a dívida técnica acumula a um ritmo que o <em>refactoring</em> humano dificilmente acompanha. Há o risco de a assistência por IA gerar o que se pode chamar de <strong>“lixo de alta velocidade”</strong>: artefatos que passam em testes pontuais, mas degradam a modelagem do domínio e a evolução sustentável do sistema.</p>
 
       <h2>3. Fundamentação teórica (o paradoxo de Brooks)</h2>
       <p>A pesquisa se baseia no ensaio clássico de Frederick Brooks, <em>No Silver Bullet: Essence and Accidents of Software Engineering</em> (1987):</p>
@@ -243,24 +244,26 @@
       </ul>
 
       <h2>4. Metodologia detalhada</h2>
-      <p>A pesquisa seguirá o modelo de <strong>engenharia de software experimental</strong>:</p>
+      <p>A pesquisa seguirá o modelo de <strong>engenharia de software experimental</strong>. A comparação clássica entre implementação manual e assistida por IA é útil, mas sofre com o <strong>fator humano</strong> (experiência, estilo e familiaridade com DDD variam entre desenvolvedores). Por isso, o desenho enfatiza uma <strong>variável controlada</strong> dentro do uso da IA: a <strong>estratégia de <em>prompting</em></strong>, mantendo o mesmo modelo, a mesma especificação de domínio e, quando possível, o mesmo perfil de executor — de modo a isolar o efeito do guia dado ao assistente.</p>
       <ol>
-        <li><strong>Definição de baseline:</strong> especificação de um domínio de alta complexidade essencial (ex.: regras fiscais / checkout).</li>
-        <li><strong>Desenvolvimento comparativo:</strong>
+        <li><strong>Definição de baseline:</strong> especificação de um domínio de alta complexidade essencial (ex.: regras fiscais / checkout), com critérios de pronto objetivos.</li>
+        <li><strong>Condições experimentais (IA):</strong>
           <ul class="nested-list">
-            <li><strong>Grupo A (manual):</strong> implementação focada em padrões de excelência.</li>
-            <li><strong>Grupo B (IA-assisted):</strong> implementação assistida por IA, priorizando <em>time-to-market</em>.</li>
+            <li><strong>Prompt ingênuo:</strong> pedido genérico ao modelo (ex.: “Gere um sistema de checkout.”), sem imposição explícita de camadas ou princípios.</li>
+            <li><strong>Prompt estruturado:</strong> pedido que exige separação explícita conforme DDD (ex.: Domain Services versus Application Services) e o Princípio da Inversão de Dependência, alinhado a SOLID.</li>
           </ul>
         </li>
-        <li><strong>Auditoria técnica:</strong> extração de dados via análise estática.</li>
-        <li><strong>Análise qualitativa:</strong> avaliação de se o trabalho respeitou os limites do negócio (bounded contexts) e da extensibilidade do código.</li>
+        <li><strong>Referência opcional (manual):</strong> implementação humana com orientação a padrões de excelência, como linha de base arquitetural — reconhecendo que interpretações individuais podem introduzir ruído; os resultados serão interpretados com essa ressalva.</li>
+        <li><strong>Objetivo analítico:</strong> verificar se a IA mantém qualidade quando adequadamente guiada ou se tende, por <em>default</em>, a soluções acopladas e pouco alinhadas ao domínio.</li>
+        <li><strong>Auditoria técnica:</strong> extração de dados via análise estática e regras de qualidade.</li>
+        <li><strong>Análise qualitativa:</strong> avaliação de aderência a bounded contexts, extensibilidade e coerência com a complexidade essencial do problema.</li>
       </ol>
 
       <h2>5. Métricas e ferramentas de análise</h2>
-      <p>Serão utilizados indicadores objetivos para medir a “saúde” do código:</p>
+      <p>Serão utilizados indicadores objetivos para medir a “saúde” do código, com ênfase em métricas valorizadas em engenharia de software:</p>
       <ul>
-        <li><strong>Métricas:</strong> complexidade ciclomática (McCabe), <strong>LCOM</strong> (coesão / SOLID), acoplamento eferente e aferente (DDD) e <em>Maintainability Index</em> (ISO/IEC 25010).</li>
-        <li><strong>Ferramentas:</strong> <strong>SonarQube</strong> (análise em diferentes linguagens), <strong>NDepend</strong> (arquitetura .NET) e <strong>CodeScene</strong> (identificação de <em>hotspots</em> técnicos).</li>
+        <li><strong>Métricas:</strong> complexidade ciclomática (McCabe), <strong>complexidade cognitiva</strong> (legibilidade e carga mental para humanos — a IA frequentemente produz código que passa em testes unitários, mas verboso ou difícil de revisar), <strong>LCOM</strong> (coesão / SOLID), acoplamento eferente e aferente (DDD), <em>Maintainability Index</em> (ISO/IEC 25010) e <strong>violações por 100 linhas de código</strong> (<em>violations per LoC</em>): quantidade de violações relacionadas a SOLID e regras de desenho detectadas pelo SonarQube, normalizada por volume, permitindo comparar código gerado por IA (prompt ingênuo vs. estruturado) e, quando houver baseline, implementação manual.</li>
+        <li><strong>Ferramentas:</strong> <strong>SonarQube</strong> (análise em diferentes linguagens, incluindo regras e complexidade cognitiva), <strong>NDepend</strong> (arquitetura .NET) e <strong>CodeScene</strong> (identificação de <em>hotspots</em> técnicos).</li>
       </ul>
 
       <h2>6. Justificativa</h2>

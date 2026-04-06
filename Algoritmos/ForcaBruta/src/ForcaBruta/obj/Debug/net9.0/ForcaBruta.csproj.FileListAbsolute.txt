@@ -1,0 +1,15 @@
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/bin/Debug/net9.0/ForcaBruta
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/bin/Debug/net9.0/ForcaBruta.deps.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/bin/Debug/net9.0/ForcaBruta.runtimeconfig.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/bin/Debug/net9.0/ForcaBruta.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/bin/Debug/net9.0/ForcaBruta.pdb
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.GeneratedMSBuildEditorConfig.editorconfig
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.AssemblyInfoInputs.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.AssemblyInfo.cs
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.csproj.CoreCompileInputs.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.sourcelink.json
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/refint/ForcaBruta.dll
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.pdb
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ForcaBruta.genruntimeconfig.cache
+/Users/thiagokeller/Dev/Mestrado/Algoritmos/ForcaBruta/src/ForcaBruta/obj/Debug/net9.0/ref/ForcaBruta.dll
