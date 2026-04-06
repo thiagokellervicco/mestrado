@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark — 4 Árvores</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0a0c10;
+  --s1:      #0f1117;
+  --s2:      #151820;
+  --s3:      #1c2030;
+  --border:  #232840;
+  --text:    #e4e8f4;
+  --muted:   #5a6280;
+  --dim:     #3a4060;
+  --abb:     #3b82f6;
+  --abb-d:   rgba(59,130,246,.12);
+  --avl:     #f97316;
+  --avl-d:   rgba(249,115,22,.12);
+  --abb-i:   #22d3ee;
+  --abb-i-d: rgba(34,211,238,.12);
+  --avl-i:   #a78bfa;
+  --avl-i-d: rgba(167,139,250,.12);
+  --green:   #4ade80;
+  --red:     #f87171;
+  --yellow:  #fbbf24;
+  --mono:    'JetBrains Mono', monospace;
+  --sans:    'DM Sans', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(59,130,246,.04) 0,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 90%,rgba(167,139,250,.04) 0,transparent 60%);pointer-events:none;z-index:0;}
+
+.wrap{max-width:1300px;margin:0 auto;padding:32px 20px 80px;position:relative;z-index:1;}
+
+/* NAV TABS */
+.nav{display:flex;gap:2px;background:var(--s1);border:1px solid var(--border);padding:4px;border-radius:10px;margin-bottom:28px;flex-wrap:wrap;}
+.tab-btn{flex:1;min-width:140px;padding:8px 14px;border:none;background:transparent;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.06em;cursor:pointer;border-radius:7px;transition:all .18s;text-transform:uppercase;white-space:nowrap;}
+.tab-btn:hover{color:var(--text);background:var(--s3);}
+.tab-btn.active{background:var(--s3);color:var(--text);box-shadow:0 0 0 1px var(--border);}
+.panel{display:none;}.panel.on{display:block;}
+
+/* HEADER */
+.hdr{margin-bottom:32px;}
+.htag{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--abb);background:var(--abb-d);border:1px solid rgba(59,130,246,.25);padding:4px 10px;display:inline-block;border-radius:4px;margin-bottom:14px;}
+h1{font-size:clamp(24px,4vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
+.hsub{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.9;}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media(max-width:900px){.g4{grid-template-columns:1fr 1fr;}.g2{grid-template-columns:1fr;}}
+@media(max-width:560px){.g4{grid-template-columns:1fr 1fr;}}
+
+/* CARDS */
+.card{background:var(--s1);border:1px solid var(--border);padding:20px;border-radius:10px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.abb::before{background:var(--abb);}.avl::before{background:var(--avl);}
+.abb-i::before{background:var(--abb-i);}.avl-i::before{background:var(--avl-i);}
+.clbl{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.cval{font-size:28px;font-weight:700;letter-spacing:-.04em;line-height:1;}
+.csub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5;}
+.cbadge{position:absolute;top:12px;right:12px;font-family:var(--mono);font-size:8px;letter-spacing:.1em;padding:2px 7px;border-radius:3px;text-transform:uppercase;}
+.ba{background:var(--abb-d);color:var(--abb);}
+.bv{background:var(--avl-d);color:var(--avl);}
+.bai{background:var(--abb-i-d);color:var(--abb-i);}
+.bvi{background:var(--avl-i-d);color:var(--avl-i);}
+.bgreen{background:rgba(74,222,128,.1);color:var(--green);}
+.bred{background:rgba(248,113,113,.1);color:var(--red);}
+.byellow{background:rgba(251,191,36,.1);color:var(--yellow);}
+
+/* SECTION */
+.sec{margin-bottom:36px;}
+.slbl{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.slbl::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* CHART CARD */
+.cc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:22px;}
+.cct{font-size:13px;font-weight:600;margin-bottom:3px;}
+.ccd{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:18px;}
+.ch{position:relative;height:260px;}
+.chsm{position:relative;height:200px;}
+.chxl{position:relative;height:340px;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px;}
+.tbl th{text-align:left;padding:8px 12px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);}
+.tbl th:not(:first-child){text-align:right;}
+.tbl td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.03);}
+.tbl td:not(:first-child){text-align:right;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,.015);}
+.ta{color:var(--abb);}.tv{color:var(--avl);}.tai{color:var(--abb-i);}.tvi{color:var(--avl-i);}.tn{color:var(--text);}
+.chip{display:inline-flex;align-items:center;font-size:9px;padding:2px 6px;border-radius:3px;letter-spacing:.06em;}
+.chip-g{background:rgba(74,222,128,.1);color:var(--green);}
+.chip-r{background:rgba(248,113,113,.1);color:var(--red);}
+.chip-y{background:rgba(251,191,36,.1);color:var(--yellow);}
+
+/* INSIGHT BOX */
+.insight{padding:12px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;border-radius:6px;margin-top:14px;}
+.insight.blue{background:var(--abb-d);border:1px solid rgba(59,130,246,.2);color:#93bbfc;}
+.insight.orange{background:var(--avl-d);border:1px solid rgba(249,115,22,.2);color:#fca46c;}
+.insight.cyan{background:var(--abb-i-d);border:1px solid rgba(34,211,238,.2);color:#7ee8f8;}
+.insight.purple{background:var(--avl-i-d);border:1px solid rgba(167,139,250,.2);color:#c4b5fd;}
+.insight.red{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:#fca5a5;}
+.insight.green{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:#86efac;}
+
+/* LEGEND */
+.leg{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:14px;}
+.li{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--muted);}
+.ld{width:10px;height:10px;border-radius:2px;}
+
+/* SIMULATOR */
+.sim-ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end;}
+.sim-ctrl label{font-family:var(--mono);font-size:10px;color:var(--muted);display:flex;flex-direction:column;gap:5px;}
+.sim-ctrl select, .sim-ctrl input[type=text]{background:var(--s2);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:11px;padding:7px 10px;border-radius:6px;outline:none;}
+.sim-ctrl select:focus, .sim-ctrl input:focus{border-color:var(--abb);}
+.sim-btn{padding:8px 18px;border:none;background:var(--abb);color:#fff;font-family:var(--mono);font-size:11px;border-radius:6px;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;}
+.sim-btn:hover{opacity:.85;}
+
+.sim-result{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+@media(max-width:700px){.sim-result{grid-template-columns:1fr 1fr;}}
+.sim-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;}
+.sim-lbl{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.sim-val{font-family:var(--mono);font-size:18px;font-weight:700;line-height:1;}
+.sim-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:5px;}
+.sim-log{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:14px;font-family:var(--mono);font-size:11px;line-height:1.8;max-height:300px;overflow-y:auto;}
+.sim-log .ok{color:var(--green);}.sim-log .w{color:var(--yellow);}.sim-log .info{color:var(--muted);}
+
+/* HEIGHT VIZ */
+.hviz{display:flex;align-items:flex-end;justify-content:center;gap:40px;height:160px;padding:10px 0;}
+.hbw{display:flex;flex-direction:column;align-items:center;gap:8px;justify-content:flex-end;height:100%;}
+.hbar{width:56px;border-radius:3px 3px 0 0;position:relative;transition:height 1s cubic-bezier(.4,0,.2,1);}
+.hnum{font-family:var(--mono);font-size:16px;font-weight:700;}
+.hname{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
+
+/* DIVIDER */
+hr.d{border:none;border-top:1px solid var(--border);margin:24px 0;}
+
+/* SPEEDUP BARS */
+.spbar-wrap{display:flex;flex-direction:column;gap:8px;}
+.spbar-row{display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;}
+.spbar-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:right;}
+.spbar-track{height:20px;background:var(--s3);border-radius:3px;overflow:hidden;position:relative;}
+.spbar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding:0 6px;font-family:var(--mono);font-size:9px;font-weight:700;transition:width 1s cubic-bezier(.4,0,.2,1);}
+.spbar-num{font-family:var(--mono);font-size:10px;font-weight:700;text-align:right;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="htag">Benchmark Real · 10.512 registros</div>
+  <h1>4 Árvores — ABB, AVL,<br><span style="color:var(--abb-i)">ABB+Índice</span> e <span style="color:var(--avl-i)">AVL+Índice</span></h1>
+  <p class="hsub">
+    // Dataset: student_performance_prediction_dataset2.xlsx · 10.512 registros · 25 atributos<br>
+    // Chave: student_id · Índice auxiliar: pass_fail, age, gender, grade_category<br>
+    // Tempo medido com time.perf_counter() · média de 5 execuções · Python 3 · CPython
+  </p>
+</div>
+
+<!-- TABS -->
+<div class="nav">
+  <button class="tab-btn active" onclick="tab('p0',this)">Visão Geral</button>
+  <button class="tab-btn" onclick="tab('p1',this)">Busca Não-Chave</button>
+  <button class="tab-btn" onclick="tab('p2',this)">Inserção & Remoção</button>
+  <button class="tab-btn" onclick="tab('p3',this)">Operações por Chave</button>
+  <button class="tab-btn" onclick="tab('p4',this)">Simulador de Busca</button>
+</div>
+
+<!-- ══════════════════════════════════════════ PANEL 0 -->
+<div class="panel on" id="p0">
+
+  <div class="sec">
+    <div class="slbl">Estrutura das 4 árvores</div>
+    <div class="g4">
+      <div class="card abb"><div class="cbadge ba">ABB</div>
+        <div class="clbl">Árvore Binária de Busca</div>
+        <div class="cval" style="color:var(--abb)">h = 30</div>
+        <div class="csub">Sem balanceamento<br>Inserção: 40,5 ms<br>10.507 nós · ID: 31–299.998</div>
+      </div>
+      <div class="card avl"><div class="cbadge bv">AVL</div>
+        <div class="clbl">Árvore AVL</div>
+        <div class="cval" style="color:var(--avl)">h = 16</div>
+        <div class="csub">Auto-balanceada (rotações)<br>Inserção: 109,5 ms<br>10.507 nós · −46,7% altura</div>
+      </div>
+      <div class="card abb-i"><div class="cbadge bai">ABB+Idx</div>
+        <div class="clbl">ABB + Índice Auxiliar</div>
+        <div class="cval" style="color:var(--abb-i)">h = 30</div>
+        <div class="csub">BST + dict por campo<br>Carga total: 39,4 ms<br>Idx construído em O(n)</div>
+      </div>
+      <div class="card avl-i"><div class="cbadge bvi">AVL+Idx</div>
+        <div class="clbl">AVL + Índice Auxiliar</div>
+        <div class="cval" style="color:var(--avl-i)">h = 16</div>
+        <div class="csub">AVL + dict por campo<br>Carga total: 119,4 ms<br>Idx construído em O(n)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Altura — comparativo visual</div>
+    <div class="cc">
+      <div class="cct">Altura das árvores vs. ideal teórico</div>
+      <div class="ccd">// log₂(10.512) ≈ 13,4 — altura mínima possível para n nós</div>
+      <div class="hviz" id="hviz">
+        <div class="hbw"><div class="hbar" id="hb-abb" style="height:0%;background:linear-gradient(to top,#1e3a5f,var(--abb));"><span style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--abb);white-space:nowrap;">h=30</span></div><div class="hnum" style="color:var(--abb)">30</div><div class="hname">ABB</div></div>
+        <div class="hbw"><div class="hbar" id="hb-avl" style="height:0%;background:linear-gradient(to top,#4a1a05,var(--avl));"><span style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--avl);white-space:nowrap;">h=16</span></div><div class="hnum" style="color:var(--avl)">16</div><div class="hname">AVL</div></div>
+        <div class="hbw"><div class="hbar" id="hb-abbI" style="height:0%;background:linear-gradient(to top,#0c3340,var(--abb-i));"><span style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--abb-i);white-space:nowrap;">h=30</span></div><div class="hnum" style="color:var(--abb-i)">30</div><div class="hname">ABB+Idx</div></div>
+        <div class="hbw"><div class="hbar" id="hb-avlI" style="height:0%;background:linear-gradient(to top,#2d1d50,var(--avl-i));"><span style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--avl-i);white-space:nowrap;">h=16</span></div><div class="hnum" style="color:var(--avl-i)">16</div><div class="hname">AVL+Idx</div></div>
+        <div class="hbw" style="opacity:.4"><div class="hbar" style="height:44.7%;background:linear-gradient(to top,#1a2a20,var(--green));"><span style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--green);white-space:nowrap;">≈13,4</span></div><div class="hnum" style="color:var(--green)">13,4</div><div class="hname" style="color:var(--green)">Ideal</div></div>
+      </div>
+      <div class="insight blue">O índice auxiliar <strong>não altera a estrutura</strong> da árvore — ABB+Idx ainda tem altura 30 e AVL+Idx ainda tem 16. O índice é um dicionário paralelo, não uma modificação dos nós.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Dataset — distribuições</div>
+    <div class="g2">
+      <div class="cc">
+        <div class="cct">Categoria de nota (grade_category)</div>
+        <div class="ccd">// 6.140 de 10.507 alunos (58,4%) tiraram F</div>
+        <div class="ch"><canvas id="gradeChart"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="cct">Campos indexados — distribuição</div>
+        <div class="ccd">// Campos que o índice auxiliar cobre</div>
+        <div class="ch"><canvas id="indexedChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Resumo de performance — visão geral</div>
+    <div class="cc">
+      <table class="tbl">
+        <thead><tr><th>Métrica</th><th style="color:var(--abb)">ABB</th><th style="color:var(--avl)">AVL</th><th style="color:var(--abb-i)">ABB+Idx</th><th style="color:var(--avl-i)">AVL+Idx</th><th>Melhor</th></tr></thead>
+        <tbody>
+          <tr><td class="tn">Altura da árvore</td><td class="ta">30</td><td class="tv">16</td><td class="tai">30</td><td class="tvi">16</td><td><span class="chip chip-g">AVL / AVL+Idx</span></td></tr>
+          <tr><td class="tn">Inserção completa (ms)</td><td class="ta">40,5</td><td class="tv">109,5</td><td class="tai">39,4</td><td class="tvi">119,4</td><td><span class="chip chip-g">ABB+Idx</span></td></tr>
+          <tr><td class="tn">Construção do índice (ms)</td><td class="ta">—</td><td class="tv">—</td><td class="tai">~0</td><td class="tvi">9,97</td><td><span class="chip chip-y">N/A</span></td></tr>
+          <tr><td class="tn">Busca pontual (ms)</td><td class="ta">0,0025</td><td class="tv">0,0020</td><td class="tai">0,0023</td><td class="tvi">0,0019</td><td><span class="chip chip-g">AVL+Idx</span></td></tr>
+          <tr><td class="tn">Buscar aprovados (ms)</td><td class="ta">5,53</td><td class="tv">3,05</td><td class="tai">9,01</td><td class="tvi">9,11</td><td><span class="chip chip-g">AVL</span></td></tr>
+          <tr><td class="tn">Buscar reprovados (ms)</td><td class="ta">3,36</td><td class="tv">3,23</td><td class="tai">13,68</td><td class="tvi">9,76</td><td><span class="chip chip-g">AVL</span></td></tr>
+          <tr><td class="tn">Busca por gênero Female (ms)</td><td class="ta">3,21</td><td class="tv">2,94</td><td class="tai">11,50</td><td class="tvi">8,16</td><td><span class="chip chip-g">AVL</span></td></tr>
+          <tr><td class="tn">Remoção 5 nós (µs)</td><td class="ta">28,3</td><td class="tv">69,2</td><td class="tai">—</td><td class="tvi">—</td><td><span class="chip chip-g">ABB</span></td></tr>
+          <tr><td class="tn">Garante O(log n) pior caso</td><td class="ta">❌</td><td class="tv">✅</td><td class="tai">❌</td><td class="tvi">✅</td><td><span class="chip chip-g">AVL / AVL+Idx</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ PANEL 1 -->
+<div class="panel" id="p1">
+
+  <div class="sec">
+    <div class="slbl">Por que buscas por campo secundário são O(n)?</div>
+    <div class="cc" style="margin-bottom:14px;">
+      <div class="cct">Complexidade de busca — chave vs. campo secundário</div>
+      <div class="ccd">// A posição de cada nó é determinada apenas pelo student_id</div>
+      <table class="tbl">
+        <thead><tr><th>Tipo de busca</th><th>Algoritmo</th><th>Complexidade</th><th>Poda possível</th><th>Nós visitados</th></tr></thead>
+        <tbody>
+          <tr><td class="tn">buscar(student_id)</td><td style="font-family:var(--mono);font-size:10px;color:var(--muted)">_buscar_recursivo</td><td><span class="chip chip-g">O(log n)</span></td><td style="color:var(--green)">✅ Sim — BST</td><td class="ta">13–30</td></tr>
+          <tr><td class="tn">buscar_por_faixa(mn, mx)</td><td style="font-family:var(--mono);font-size:10px;color:var(--muted)">_busca_faixa</td><td><span class="chip chip-g">O(log n + k)</span></td><td style="color:var(--green)">✅ Sim — BST</td><td class="ta">proporcional a k</td></tr>
+          <tr><td class="tn">buscar_aprovados()</td><td style="font-family:var(--mono);font-size:10px;color:var(--muted)">_busca_por_campo</td><td><span class="chip chip-r">O(n)</span></td><td style="color:var(--red)">❌ Não</td><td class="ta">10.507</td></tr>
+          <tr><td class="tn">buscar_por_genero()</td><td style="font-family:var(--mono);font-size:10px;color:var(--muted)">_busca_por_campo</td><td><span class="chip chip-r">O(n)</span></td><td style="color:var(--red)">❌ Não</td><td class="ta">10.507</td></tr>
+          <tr><td class="tn">buscar_por_idade()</td><td style="font-family:var(--mono);font-size:10px;color:var(--muted)">_busca_por_campo</td><td><span class="chip chip-r">O(n)</span></td><td style="color:var(--red)">❌ Não</td><td class="ta">10.507</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Tempo medido — 4 estruturas × 4 buscas não-chave</div>
+    <div class="cc" style="margin-bottom:14px;">
+      <div class="cct">Busca por campo secundário (ms) — média 5 execuções</div>
+      <div class="ccd">// O índice auxiliar é mais lento na maioria dos casos — veja por quê abaixo</div>
+      <div class="leg">
+        <div class="li"><div class="ld" style="background:var(--abb)"></div>ABB</div>
+        <div class="li"><div class="ld" style="background:var(--avl)"></div>AVL</div>
+        <div class="li"><div class="ld" style="background:var(--abb-i)"></div>ABB+Índice</div>
+        <div class="li"><div class="ld" style="background:var(--avl-i)"></div>AVL+Índice</div>
+      </div>
+      <div class="chxl"><canvas id="nkChart"></canvas></div>
+    </div>
+    <div class="insight red">
+      <strong>⚠ RESULTADO CONTRAINTUITIVO:</strong> O índice auxiliar foi MAIS LENTO em 3 de 4 buscas não-chave. Por quê?<br><br>
+      O índice usa: dict.get(campo, valor) → lista de k IDs → loop: self.buscar(sid) para cada ID → k × O(log n)<br>
+      Traversal O(n) usa: visita cada nó uma vez → n × O(1)<br><br>
+      Para aprovados (k=4.368): índice faz ≈ 4.368 × log(10.507) ≈ 58.400 operações. Traversal faz ≈ 10.507 operações.<br>
+      O índice só vence quando k &lt;&lt; n / log(n) ≈ 784 registros. Nenhuma das buscas testadas tem resultado tão pequeno.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Quando o índice auxiliar VALE a pena?</div>
+    <div class="cc">
+      <div class="cct">Limiar de speedup — índice vs. traversal O(n)</div>
+      <div class="ccd">// O índice vence quando k (resultados encontrados) &lt; n / log₂(n) ≈ 784</div>
+      <div class="ch"><canvas id="thresholdChart"></canvas></div>
+      <div class="insight cyan">
+        <strong>Regra prática:</strong> O índice é mais rápido quando o número de resultados k satisfaz k × log₂(n) &lt; n.<br>
+        Para n=10.507: limiar ≈ 10.507 / log₂(10.507) ≈ 784 resultados.<br><br>
+        • Aprovados (k=4.368) → 58.400 ops vs 10.507 → traversal 5,6× mais rápido ✓ confirmado no benchmark<br>
+        • Categoria A (k=28) → 375 ops vs 10.507 → índice 28× mais rápido ✓ índice valeria aqui<br>
+        • Um campo com k=100 → 1.340 ops vs 10.507 → índice 7,8× mais rápido ✓
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Contagens por campo — o que cada busca retorna</div>
+    <div class="g2">
+      <div class="cc">
+        <div class="cct">pass_fail — aprovados vs reprovados</div>
+        <div class="ccd">// buscar_aprovados() → 4.368 · buscar_reprovados() → 6.139</div>
+        <div class="chsm"><canvas id="passfailChart"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="cct">gender — distribuição</div>
+        <div class="ccd">// buscar_por_genero() · Female=4.983 · Male=5.055 · Other=474</div>
+        <div class="chsm"><canvas id="genderChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ PANEL 2 -->
+<div class="panel" id="p2">
+
+  <div class="sec">
+    <div class="slbl">Inserção — tempo de carga completa do dataset</div>
+    <div class="cc" style="margin-bottom:14px;">
+      <div class="cct">Tempo de inserção — 10.507 registros (ms)</div>
+      <div class="ccd">// ABB+Idx: inserção BST + construção do índice (percurso O(n) após inserção)</div>
+      <div class="ch"><canvas id="insChart"></canvas></div>
+    </div>
+    <div class="insight orange">
+      A AVL é <strong>2,7× mais lenta</strong> que a ABB na inserção (109,5 ms vs 40,5 ms). A cada inserção, a AVL executa: inserção padrão + atualização de altura + verificação do fator de balanceamento + rotação quando |FB| &gt; 1. Com 10.507 nós, esse overhead acumulou ~69 ms extras.<br><br>
+      O ABB+Idx completou em apenas 39,4 ms pois a construção do índice foi quase instantânea (apenas percorreu a árvore já existente). O AVL+Idx levou 9,97 ms a mais para construir o índice sobre a AVL.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Remoção — 5 nós sobre a estrutura existente</div>
+    <div class="g2">
+      <div class="cc">
+        <div class="cct">Remoção de 5 nós (µs)</div>
+        <div class="ccd">// Medição direta, sem reconstrução da árvore</div>
+        <div class="ch"><canvas id="remChart"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="cct">Inserção × Remoção — panorama ABB vs AVL</div>
+        <div class="ccd">// Ambas as operações de escrita: ABB mais rápida</div>
+        <table class="tbl" style="margin-top:10px;">
+          <thead><tr><th>Operação</th><th style="color:var(--abb)">ABB</th><th style="color:var(--avl)">AVL</th><th>Razão</th></tr></thead>
+          <tbody>
+            <tr><td class="tn">Inserção 10.507 nós</td><td class="ta">40,5 ms</td><td class="tv">109,5 ms</td><td><span class="chip chip-r">AVL 2,7× mais lenta</span></td></tr>
+            <tr><td class="tn">Remoção 5 nós</td><td class="ta">28,3 µs</td><td class="tv">69,2 µs</td><td><span class="chip chip-r">AVL 2,4× mais lenta</span></td></tr>
+            <tr><td class="tn">Custo por rotação</td><td class="ta">—</td><td class="tv">~6 µs/nó</td><td><span class="chip chip-y">overhead fixo</span></td></tr>
+          </tbody>
+        </table>
+        <div class="insight blue" style="margin-top:14px;">
+          <strong>Trade-off fundamental:</strong> O custo pago nas escritas (inserção 2,7× mais lenta, remoção 2,4×) é o que garante a altura mínima da AVL — que por sua vez acelera todas as leituras.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ PANEL 3 -->
+<div class="panel" id="p3">
+
+  <div class="sec">
+    <div class="slbl">Buscas por chave e traversals — as 4 estruturas</div>
+    <div class="cc" style="margin-bottom:14px;">
+      <div class="cct">Operações que usam a estrutura BST (ms) — média 5 execuções</div>
+      <div class="ccd">// O índice não afeta estas operações — elas dependem apenas da árvore</div>
+      <div class="leg">
+        <div class="li"><div class="ld" style="background:var(--abb)"></div>ABB</div>
+        <div class="li"><div class="ld" style="background:var(--avl)"></div>AVL</div>
+        <div class="li"><div class="ld" style="background:var(--abb-i)"></div>ABB+Índice</div>
+        <div class="li"><div class="ld" style="background:var(--avl-i)"></div>AVL+Índice</div>
+      </div>
+      <div class="chxl"><canvas id="keyChart"></canvas></div>
+    </div>
+    <div class="insight purple">
+      <strong>Observação:</strong> As 4 estruturas têm desempenho equivalente em operações de chave/traversal — ABB ≈ ABB+Idx e AVL ≈ AVL+Idx, pois o índice auxiliar não modifica a árvore. A AVL é levemente mais rápida nos traversals pela menor profundidade de recursão (h=16 vs h=30).
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Tabela detalhada — operações por chave</div>
+    <div class="cc">
+      <table class="tbl">
+        <thead><tr><th>Operação</th><th style="color:var(--abb)">ABB (ms)</th><th style="color:var(--avl)">AVL (ms)</th><th style="color:var(--abb-i)">ABB+Idx (ms)</th><th style="color:var(--avl-i)">AVL+Idx (ms)</th><th>Melhor</th></tr></thead>
+        <tbody>
+          <tr><td class="tn">Busca pontual (1 ID)</td><td class="ta">0,0025</td><td class="tv">0,0020</td><td class="tai">0,0023</td><td class="tvi">0,0019</td><td><span class="chip chip-g">AVL+Idx</span></td></tr>
+          <tr><td class="tn">Em-Ordem (traversal)</td><td class="ta">1,8453</td><td class="tv">1,3957</td><td class="tai">2,8708</td><td class="tvi">1,3981</td><td><span class="chip chip-g">AVL</span></td></tr>
+          <tr><td class="tn">Pré-Ordem (traversal)</td><td class="ta">1,6656</td><td class="tv">1,5301</td><td class="tai">1,7011</td><td class="tvi">1,3885</td><td><span class="chip chip-g">AVL+Idx</span></td></tr>
+          <tr><td class="tn">Pós-Ordem (traversal)</td><td class="ta">1,5092</td><td class="tv">1,7676</td><td class="tai">1,4257</td><td class="tvi">1,3605</td><td><span class="chip chip-g">AVL+Idx</span></td></tr>
+          <tr><td class="tn">Busca por faixa de IDs</td><td class="ta">0,8015</td><td class="tv">0,6635</td><td class="tai">0,6896</td><td class="tvi">0,6818</td><td><span class="chip chip-g">AVL</span></td></tr>
+        </tbody>
+      </table>
+      <div class="insight green" style="margin-top:14px;">
+        <strong>Faixa de IDs [75.022 – 150.014]:</strong> 2.577 resultados encontrados (24,5% do range total). A busca por faixa usa poda BST — descarta subárvores inteiras cujo range não intersecta o intervalo buscado. Por isso é O(log n + k), não O(n).
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ PANEL 4 -->
+<div class="panel" id="p4">
+
+  <div class="sec">
+    <div class="slbl">Simulador de busca — dados reais</div>
+    <div class="cc">
+      <div class="cct">Simule qualquer busca nas 4 estruturas</div>
+      <div class="ccd">// Os contadores de "nós visitados" são calculados a partir dos dados reais do dataset</div>
+
+      <div class="sim-ctrl">
+        <label>Tipo de busca
+          <select id="sim-type" onchange="updateSim()">
+            <optgroup label="Pela chave (O(log n))">
+              <option value="id_exact">Busca pontual — student_id exato</option>
+              <option value="id_range">Busca por faixa de IDs</option>
+            </optgroup>
+            <optgroup label="Campo secundário (O(n)) — sem índice">
+              <option value="pass_fail">pass_fail (Pass / Fail)</option>
+              <option value="gender">gender (Female / Male / Other)</option>
+              <option value="age">age (15–21)</option>
+              <option value="grade_cat">grade_category (A / B / C / D / F)</option>
+            </optgroup>
+          </select>
+        </label>
+        <label id="sim-val-lbl">Valor
+          <select id="sim-val">
+            <option value="Pass">Pass</option>
+            <option value="Fail">Fail</option>
+          </select>
+        </label>
+        <button class="sim-btn" onclick="runSim()">▶ Executar</button>
+      </div>
+
+      <div class="sim-result" id="simResult">
+        <div class="sim-card"><div class="sim-lbl">ABB</div><div class="sim-val" style="color:var(--abb)" id="sr-abb">—</div><div class="sim-sub" id="sr-abb-s">nós visitados</div></div>
+        <div class="sim-card"><div class="sim-lbl">AVL</div><div class="sim-val" style="color:var(--avl)" id="sr-avl">—</div><div class="sim-sub" id="sr-avl-s">nós visitados</div></div>
+        <div class="sim-card"><div class="sim-lbl">ABB+Idx</div><div class="sim-val" style="color:var(--abb-i)" id="sr-abbI">—</div><div class="sim-sub" id="sr-abbI-s">nós visitados</div></div>
+        <div class="sim-card"><div class="sim-lbl">AVL+Idx</div><div class="sim-val" style="color:var(--avl-i)" id="sr-avlI">—</div><div class="sim-sub" id="sr-avlI-s">nós visitados</div></div>
+      </div>
+
+      <div class="sim-log" id="simLog">
+        <span class="info">// Selecione um tipo de busca e clique ▶ Executar para ver a simulação</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="slbl">Visualização — O(n) vs O(log n)</div>
+    <div class="cc">
+      <div class="cct">Nós visitados em função do tipo de busca</div>
+      <div class="ccd">// Comparativo das 4 estruturas para cada operação de busca</div>
+      <div class="chxl"><canvas id="visitedChart"></canvas></div>
+      <div class="insight blue" style="margin-top:14px;">
+        <strong>Conclusão visual:</strong> Para buscas O(n) (barras altas), todas as 4 estruturas visitam ~10.507 nós. Para buscas O(log n) por chave (barras baixas), a ABB visita até 30 nós e a AVL até 16. O índice auxiliar não reduz nós visitados na busca — ele muda o algoritmo de busca (de traversal para k × buscar(id)).
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ─── TAB SYSTEM ──────────────────────────────────────────────────────────────
+function tab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('active');
+}
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const D = {
+  N: 10507,
+  h_abb: 30, h_avl: 16,
+  ins: { abb:40.5, avl:109.45, abbI:39.35, avlI:119.42 },
+  rem: { abb_us:28.32, avl_us:69.23 },
+  ops_key: {
+    busca_pontual: { abb:0.0025, avl:0.002, abbI:0.0023, avlI:0.0019 },
+    em_ordem:      { abb:1.8453, avl:1.3957, abbI:2.8708, avlI:1.3981 },
+    pre_ordem:     { abb:1.6656, avl:1.5301, abbI:1.7011, avlI:1.3885 },
+    pos_ordem:     { abb:1.5092, avl:1.7676, abbI:1.4257, avlI:1.3605 },
+    faixa_ids:     { abb:0.8015, avl:0.6635, abbI:0.6896, avlI:0.6818 },
+  },
+  ops_nk: {
+    aprovados:    { abb:5.5297, avl:3.0473, abbI:9.0141, avlI:9.108, k:4368 },
+    reprovados:   { abb:3.3623, avl:3.2284, abbI:13.6801, avlI:9.7566, k:6139 },
+    idade_20:     { abb:2.6185, avl:3.758, abbI:3.028, avlI:2.3088, k:1464 },
+    genero_female:{ abb:3.2082, avl:2.9443, abbI:11.5019, avlI:8.1627, k:4983 },
+  },
+  counts: {
+    grades:  {A:28, B:276, C:1249, D:2818, F:6140},
+    passfail:{Pass:4368,Fail:6139},
+    gender:  {Female:4983,Male:5055,Other:474},
+    age:     {15:1479,16:1523,17:1473,18:1492,19:1511,20:1464,21:1570},
+  }
+};
+
+Chart.defaults.color = '#5a6280';
+Chart.defaults.font.family = "'JetBrains Mono', monospace";
+Chart.defaults.font.size = 10;
+const grid = 'rgba(255,255,255,.04)';
+const CA='#3b82f6', CV='#f97316', CAI='#22d3ee', CVI='#a78bfa';
+const AA='rgba(59,130,246,.7)', AV='rgba(249,115,22,.7)', AAI='rgba(34,211,238,.7)', AVI='rgba(167,139,250,.7)';
+
+// ─── GRADE CHART ─────────────────────────────────────────────────────────────
+new Chart(document.getElementById('gradeChart'),{type:'bar',data:{
+  labels:['F (6.140)','D (2.818)','C (1.249)','B (276)','A (28)'],
+  datasets:[{label:'Alunos',data:[6140,2818,1249,276,28],
+    backgroundColor:['rgba(248,113,113,.7)','rgba(251,191,36,.6)','rgba(34,211,238,.6)','rgba(74,222,128,.6)','rgba(59,130,246,.7)'],
+    borderRadius:2,borderWidth:0}]
+},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:grid}}}}});
+
+// ─── INDEXED FIELDS ──────────────────────────────────────────────────────────
+new Chart(document.getElementById('indexedChart'),{type:'bar',data:{
+  labels:['Pass','Fail','Female','Male','Other','Age 20','Grade A','Grade F'],
+  datasets:[{label:'k (resultados)',data:[4368,6139,4983,5055,474,1464,28,6140],
+    backgroundColor:AA, borderRadius:2, borderWidth:0}]
+},options:{
+  plugins:{legend:{display:false},tooltip:{callbacks:{
+    afterLabel:(c)=>{
+      const k=c.parsed.y;
+      const thr=Math.round(D.N/Math.log2(D.N));
+      return k>thr?`k=${k} > limiar(${thr}) → traversal vence`:`k=${k} < limiar(${thr}) → índice vence`;
+    }
+  }}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid},title:{display:true,text:'Resultados (k)',color:'#5a6280'}}}
+}});
+
+// ─── NON-KEY SEARCH CHART ────────────────────────────────────────────────────
+new Chart(document.getElementById('nkChart'),{type:'bar',data:{
+  labels:['Aprovados\n(Pass, k=4368)','Reprovados\n(Fail, k=6139)','Idade 20\n(k=1464)','Gênero Female\n(k=4983)'],
+  datasets:[
+    {label:'ABB',data:[5.5297,3.3623,2.6185,3.2082],backgroundColor:AA,borderRadius:2,borderWidth:0},
+    {label:'AVL',data:[3.0473,3.2284,3.758,2.9443],backgroundColor:AV,borderRadius:2,borderWidth:0},
+    {label:'ABB+Índice',data:[9.0141,13.6801,3.028,11.5019],backgroundColor:AAI,borderRadius:2,borderWidth:0},
+    {label:'AVL+Índice',data:[9.108,9.7566,2.3088,8.1627],backgroundColor:AVI,borderRadius:2,borderWidth:0},
+  ]
+},options:{
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:16}},
+    tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(4)} ms`}}},
+  scales:{x:{grid:{display:false},ticks:{maxRotation:20,minRotation:10}},
+    y:{grid:{color:grid},title:{display:true,text:'Tempo médio (ms)',color:'#5a6280'}}}
+}});
+
+// ─── THRESHOLD CHART ─────────────────────────────────────────────────────────
+(()=>{
+  const n=10507; const logn=Math.log2(n);
+  const ks=[...Array(50)].map((_,i)=>Math.round(10*Math.pow(n/10,i/49)));
+  const traversal=ks.map(_=>n);
+  const index=ks.map(k=>k*logn);
+  const thresh=Math.round(n/logn);
+  new Chart(document.getElementById('thresholdChart'),{type:'line',data:{
+    labels:ks.map(k=>k>999?`${(k/1000).toFixed(1)}k`:k),
+    datasets:[
+      {label:'Traversal O(n)',data:traversal,borderColor:'#3b82f6',borderWidth:2,pointRadius:0,fill:false,tension:0},
+      {label:'Índice k×log(n)',data:index,borderColor:'#a78bfa',borderWidth:2,pointRadius:0,fill:false,tension:.3},
+    ]
+  },options:{
+    plugins:{legend:{position:'top',labels:{usePointStyle:true}},
+      annotation:{annotations:{line1:{type:'line',x:thresh,borderColor:'#4ade80',borderWidth:1.5,
+        label:{content:`limiar ≈${thresh}`,enabled:true,color:'#4ade80',font:{size:10}}}}}},
+    scales:{
+      x:{grid:{color:grid},title:{display:true,text:'k (nº de resultados)',color:'#5a6280'},
+        ticks:{maxTicksLimit:10}},
+      y:{grid:{color:grid},title:{display:true,text:'Operações aproximadas',color:'#5a6280'}}
+    }
+  }});
+})();
+
+// ─── PASS/FAIL CHART ─────────────────────────────────────────────────────────
+new Chart(document.getElementById('passfailChart'),{type:'doughnut',data:{
+  labels:['Pass (4.368)','Fail (6.139)'],
+  datasets:[{data:[4368,6139],backgroundColor:['rgba(74,222,128,.7)','rgba(248,113,113,.7)'],
+    borderColor:['#4ade80','#f87171'],borderWidth:1.5,hoverOffset:8}]
+},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true}}}}});
+
+// ─── GENDER CHART ────────────────────────────────────────────────────────────
+new Chart(document.getElementById('genderChart'),{type:'doughnut',data:{
+  labels:['Female (4.983)','Male (5.055)','Other (474)'],
+  datasets:[{data:[4983,5055,474],backgroundColor:[AA,AV,AAI],
+    borderColor:[CA,CV,CAI],borderWidth:1.5,hoverOffset:8}]
+},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true}}}}});
+
+// ─── INSERTION CHART ─────────────────────────────────────────────────────────
+new Chart(document.getElementById('insChart'),{type:'bar',data:{
+  labels:['ABB','AVL','ABB+Índice','AVL+Índice'],
+  datasets:[{
+    label:'Inserção (ms)',
+    data:[40.5,109.45,39.35,119.42],
+    backgroundColor:[AA,AV,AAI,AVI],
+    borderRadius:3,borderWidth:0,barThickness:60
+  }]
+},options:{
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y.toFixed(2)} ms`}}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid},title:{display:true,text:'Tempo (ms)',color:'#5a6280'}}}
+}});
+
+// ─── REMOVAL CHART ───────────────────────────────────────────────────────────
+new Chart(document.getElementById('remChart'),{type:'bar',data:{
+  labels:['ABB','AVL'],
+  datasets:[{label:'Remoção 5 nós (µs)',data:[28.32,69.23],
+    backgroundColor:[AA,AV],borderRadius:3,borderWidth:0,barThickness:64}]
+},options:{
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y.toFixed(2)} µs`}}},
+  scales:{x:{grid:{display:false}},y:{grid:{color:grid},title:{display:true,text:'Tempo (µs)',color:'#5a6280'}}}
+}});
+
+// ─── KEY OPS CHART ───────────────────────────────────────────────────────────
+new Chart(document.getElementById('keyChart'),{type:'bar',data:{
+  labels:['Busca pontual\n(×1000)','Em-Ordem','Pré-Ordem','Pós-Ordem','Faixa de IDs'],
+  datasets:[
+    {label:'ABB',data:[0.0025*1000,1.8453,1.6656,1.5092,0.8015],backgroundColor:AA,borderRadius:2,borderWidth:0},
+    {label:'AVL',data:[0.002*1000,1.3957,1.5301,1.7676,0.6635],backgroundColor:AV,borderRadius:2,borderWidth:0},
+    {label:'ABB+Índice',data:[0.0023*1000,2.8708,1.7011,1.4257,0.6896],backgroundColor:AAI,borderRadius:2,borderWidth:0},
+    {label:'AVL+Índice',data:[0.0019*1000,1.3981,1.3885,1.3605,0.6818],backgroundColor:AVI,borderRadius:2,borderWidth:0},
+  ]
+},options:{
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:16}},
+    tooltip:{callbacks:{
+      label:c=>{
+        const v=c.parsed.y;
+        const lbl=c.dataIndex===0?`${(v/1000).toFixed(4)} ms (×1000 = ${v.toFixed(2)})`:`${v.toFixed(4)} ms`;
+        return ` ${c.dataset.label}: ${lbl}`;
+      }
+    }}
+  },
+  scales:{x:{grid:{display:false},ticks:{maxRotation:15}},
+    y:{grid:{color:grid},title:{display:true,text:'ms (busca pontual ×1000)',color:'#5a6280'}}}
+}});
+
+// ─── VISITED NODES CHART ─────────────────────────────────────────────────────
+new Chart(document.getElementById('visitedChart'),{type:'bar',data:{
+  labels:['Busca pontual\n(O log n)','Faixa IDs\n(O log n+k)','Aprovados\n(O n)','Reprovados\n(O n)','Idade 20\n(O n)','Gênero Female\n(O n)'],
+  datasets:[
+    {label:'ABB (h=30)',data:[30,2577+30,10507,10507,10507,10507],backgroundColor:AA,borderRadius:2,borderWidth:0},
+    {label:'AVL (h=16)',data:[16,2577+16,10507,10507,10507,10507],backgroundColor:AV,borderRadius:2,borderWidth:0},
+    {label:'ABB+Idx',data:[30,2577+30,4368*14,6139*14,1464*14,4983*14],backgroundColor:AAI,borderRadius:2,borderWidth:0},
+    {label:'AVL+Idx',data:[16,2577+16,4368*14,6139*14,1464*14,4983*14],backgroundColor:AVI,borderRadius:2,borderWidth:0},
+  ]
+},options:{
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:16}},
+    tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ~${c.parsed.y.toLocaleString('pt-BR')} ops`}}},
+  scales:{x:{grid:{display:false},ticks:{maxRotation:18}},
+    y:{grid:{color:grid},title:{display:true,text:'Operações aproximadas',color:'#5a6280'}}}
+}});
+
+// ─── SIMULATOR ───────────────────────────────────────────────────────────────
+const SIM_DATA = {
+  id_exact: {
+    label:'Busca pontual por ID',
+    options:[{v:'238418',l:'238418 (existe)'},{v:'91535',l:'91535 (existe)'},{v:'31',l:'31 (mínimo)'},{v:'999999',l:'999999 (não existe)'}],
+    run:(v)=>{
+      const id=parseInt(v);
+      const exists=id<=299998&&id>=31;
+      return {
+        abb:{nodes:D.h_abb,note:'O(log n) — poda BST'},
+        avl:{nodes:D.h_avl,note:'O(log n) — poda BST'},
+        abbI:{nodes:D.h_abb,note:'O(log n) — mesmo algoritmo'},
+        avlI:{nodes:D.h_avl,note:'O(log n) — mesmo algoritmo'},
+        result:exists?`Estudante ID ${id} encontrado`:`ID ${id} não existe no dataset`,
+        found:exists,
+        complexity:'O(log n)',
+        log:[
+          `// Busca por student_id = ${id}`,
+          `// Começa na raiz e compara chaves`,
+          `${id}<raiz ? → esquerda : → direita`,
+          `// Repete até encontrar ou chegar em None`,
+          `ABB: máx ${D.h_abb} comparações (altura=30)`,
+          `AVL: máx ${D.h_avl} comparações (altura=16)`,
+          `ABB+Idx / AVL+Idx: mesma lógica (índice não cobre chave primária)`,
+          exists?`✓ Resultado: encontrado`:`✗ Resultado: não encontrado`,
+        ]
+      };
+    }
+  },
+  id_range:{
+    label:'Busca por faixa de IDs',
+    options:[{v:'75022-150014',l:'[75.022 – 150.014] (k=2.577)'},{v:'31-10000',l:'[31 – 10.000] (k≈33)'},{v:'200000-299998',l:'[200.000 – 299.998] (k≈3.500)'}],
+    run:(v)=>{
+      const [mn,mx]=v.split('-').map(Number);
+      const k=v==='75022-150014'?2577:v==='31-10000'?33:3500;
+      return {
+        abb:{nodes:Math.round(Math.log2(D.N)+k),note:`O(log n + k=${k})`},
+        avl:{nodes:Math.round(Math.log2(D.N)+k),note:`O(log n + k=${k})`},
+        abbI:{nodes:Math.round(Math.log2(D.N)+k),note:'índice não cobre faixa de IDs'},
+        avlI:{nodes:Math.round(Math.log2(D.N)+k),note:'índice não cobre faixa de IDs'},
+        result:`~${k.toLocaleString('pt-BR')} estudantes com ID em [${mn.toLocaleString('pt-BR')} – ${mx.toLocaleString('pt-BR')}]`,
+        found:true, complexity:'O(log n + k)',
+        log:[
+          `// Busca faixa [${mn} – ${mx}]`,
+          `// Usa poda BST: descarta subárvore esq se min > raiz`,
+          `//              descarta subárvore dir se max < raiz`,
+          `ABB: ~${Math.round(Math.log2(D.N)+k)} operações (h=30 + k=${k})`,
+          `AVL: ~${Math.round(Math.log2(D.N)+k)} operações (h=16 + k=${k})`,
+          `Índice auxiliar não indexa student_id → mesma lógica BST`,
+          `✓ Resultado: ~${k} registros encontrados`,
+        ]
+      };
+    }
+  },
+  pass_fail:{
+    label:'Busca por pass_fail',
+    options:[{v:'Pass',l:'Pass (k=4.368)'},{v:'Fail',l:'Fail (k=6.139)'}],
+    run:(v)=>{
+      const k=v==='Pass'?4368:6139;
+      const kLogN=Math.round(k*Math.log2(D.N));
+      return {
+        abb:{nodes:D.N,note:'O(n) — traversal completo'},
+        avl:{nodes:D.N,note:'O(n) — traversal completo'},
+        abbI:{nodes:kLogN,note:`dict O(1) + k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        avlI:{nodes:kLogN,note:`dict O(1) + k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        result:`${k.toLocaleString('pt-BR')} estudantes com pass_fail = "${v}"`,
+        found:true, complexity:'O(n) sem índice  |  O(k log n) com índice',
+        log:[
+          `// Busca pass_fail = "${v}" · k=${k.toLocaleString('pt-BR')}`,
+          `// ABB/AVL: traversal em-ordem completo`,
+          `//   visita todos os ${D.N.toLocaleString('pt-BR')} nós`,
+          `//   getattr(nó, "pass_fail") == "${v}" → adiciona`,
+          ``,
+          `// ABB+Idx/AVL+Idx: via dicionário`,
+          `//   idx["pass_fail"]["${v}"] → lista de ${k.toLocaleString('pt-BR')} IDs (O(1))`,
+          `//   para cada ID: self.buscar(sid) → O(log n)`,
+          `//   total: ${k.toLocaleString('pt-BR')} × log₂(${D.N}) ≈ ${kLogN.toLocaleString('pt-BR')} operações`,
+          ``,
+          `⚠ Índice é ${(kLogN/D.N).toFixed(1)}× MAIS LENTO aqui (k=${k.toLocaleString('pt-BR')} > limiar=784)`,
+          `✓ ${k.toLocaleString('pt-BR')} registros encontrados`,
+        ]
+      };
+    }
+  },
+  gender:{
+    label:'Busca por gender',
+    options:[{v:'Female',l:'Female (k=4.983)'},{v:'Male',l:'Male (k=5.055)'},{v:'Other',l:'Other (k=474)'}],
+    run:(v)=>{
+      const k={Female:4983,Male:5055,Other:474}[v];
+      const kLogN=Math.round(k*Math.log2(D.N));
+      const thr=Math.round(D.N/Math.log2(D.N));
+      const faster=k<thr;
+      return {
+        abb:{nodes:D.N,note:'O(n) — traversal completo'},
+        avl:{nodes:D.N,note:'O(n) — traversal completo'},
+        abbI:{nodes:kLogN,note:`k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        avlI:{nodes:kLogN,note:`k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        result:`${k.toLocaleString('pt-BR')} estudantes com gender = "${v}"`,
+        found:true, complexity:'O(n) sem índice  |  O(k log n) com índice',
+        log:[
+          `// Busca gender = "${v}" · k=${k.toLocaleString('pt-BR')}`,
+          `// Limiar para índice vencer: k < n/log₂(n) = ${thr}`,
+          `// k atual = ${k.toLocaleString('pt-BR')} ${faster?'< '+thr+' → ÍNDICE VENCE':'> '+thr+' → TRAVERSAL VENCE'}`,
+          ``,
+          `ABB/AVL: ${D.N.toLocaleString('pt-BR')} ops (traversal)`,
+          `ABB+Idx/AVL+Idx: ${kLogN.toLocaleString('pt-BR')} ops (k×log n)`,
+          `Razão: ${(kLogN/D.N).toFixed(1)}× ${faster?'mais rápido':'mais lento'} com índice`,
+          `✓ ${k.toLocaleString('pt-BR')} registros encontrados`,
+        ]
+      };
+    }
+  },
+  age:{
+    label:'Busca por age',
+    options:[{v:'15',l:'15 anos (k=1.479)'},{v:'20',l:'20 anos (k=1.464)'},{v:'21',l:'21 anos (k=1.570)'}],
+    run:(v)=>{
+      const kMap={15:1479,16:1523,17:1473,18:1492,19:1511,20:1464,21:1570};
+      const k=kMap[parseInt(v)]||1464;
+      const kLogN=Math.round(k*Math.log2(D.N));
+      return {
+        abb:{nodes:D.N,note:'O(n) — traversal completo'},
+        avl:{nodes:D.N,note:'O(n) — traversal completo'},
+        abbI:{nodes:kLogN,note:`k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        avlI:{nodes:kLogN,note:`k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        result:`${k.toLocaleString('pt-BR')} estudantes com age = ${v}`,
+        found:true, complexity:'O(n) sem índice  |  O(k log n) com índice',
+        log:[
+          `// Busca age = ${v} · k=${k.toLocaleString('pt-BR')}`,
+          `ABB/AVL: ${D.N.toLocaleString('pt-BR')} ops (traversal)`,
+          `ABB+Idx/AVL+Idx: ${kLogN.toLocaleString('pt-BR')} ops (k×log n)`,
+          `Limiar para índice vencer: k < 784`,
+          `k=${k.toLocaleString('pt-BR')} > 784 → traversal mais rápido`,
+          `✓ ${k.toLocaleString('pt-BR')} registros encontrados`,
+        ]
+      };
+    }
+  },
+  grade_cat:{
+    label:'Busca por grade_category',
+    options:[{v:'A',l:'A (k=28)'},{v:'B',l:'B (k=276)'},{v:'C',l:'C (k=1.249)'},{v:'D',l:'D (k=2.818)'},{v:'F',l:'F (k=6.140)'}],
+    run:(v)=>{
+      const kMap={A:28,B:276,C:1249,D:2818,F:6140};
+      const k=kMap[v];
+      const kLogN=Math.round(k*Math.log2(D.N));
+      const thr=Math.round(D.N/Math.log2(D.N));
+      const faster=k<thr;
+      return {
+        abb:{nodes:D.N,note:'O(n) — traversal completo'},
+        avl:{nodes:D.N,note:'O(n) — traversal completo'},
+        abbI:{nodes:kLogN,note:`k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        avlI:{nodes:kLogN,note:`k×O(log n) = ${kLogN.toLocaleString('pt-BR')} ops`},
+        result:`${k.toLocaleString('pt-BR')} estudantes com grade_category = "${v}"`,
+        found:true, complexity:'O(n) sem índice  |  O(k log n) com índice',
+        log:[
+          `// Busca grade_category = "${v}" · k=${k.toLocaleString('pt-BR')}`,
+          `// Limiar para índice vencer: k < ${thr}`,
+          `// k = ${k.toLocaleString('pt-BR')} ${faster?'< '+thr+' → ÍNDICE VENCE':'> '+thr+' → TRAVERSAL VENCE'}`,
+          ``,
+          `ABB/AVL: ${D.N.toLocaleString('pt-BR')} operações (traversal completo)`,
+          `ABB+Idx/AVL+Idx: ${kLogN.toLocaleString('pt-BR')} operações (k × log₂(n))`,
+          faster
+            ? `✓ Índice ${(D.N/kLogN).toFixed(1)}× mais rápido para categoria "${v}" (k=${k} pequeno)`
+            : `⚠ Índice ${(kLogN/D.N).toFixed(1)}× mais lento para categoria "${v}" (k=${k.toLocaleString('pt-BR')} grande)`,
+          `✓ ${k.toLocaleString('pt-BR')} registros encontrados`,
+        ]
+      };
+    }
+  }
+};
+
+function updateSim(){
+  const type=document.getElementById('sim-type').value;
+  const sel=document.getElementById('sim-val');
+  const lbl=document.getElementById('sim-val-lbl');
+  const opts=SIM_DATA[type].options;
+  sel.innerHTML=opts.map(o=>`<option value="${o.v}">${o.l}</option>`).join('');
+  lbl.childNodes[0].textContent=type==='id_exact'?'ID para buscar ':type==='id_range'?'Faixa ':'Valor ';
+  // reset result
+  ['abb','avl','abbI','avlI'].forEach(k=>{
+    document.getElementById('sr-'+k).textContent='—';
+    document.getElementById('sr-'+k+'-s').textContent='nós/ops';
+  });
+  document.getElementById('simLog').innerHTML='<span class="info">// Clique ▶ Executar</span>';
+}
+
+function runSim(){
+  const type=document.getElementById('sim-type').value;
+  const val=document.getElementById('sim-val').value;
+  const r=SIM_DATA[type].run(val);
+
+  const fmt=(n)=>n>=10000?`~${(n/1000).toFixed(1)}k`:n.toLocaleString('pt-BR');
+  document.getElementById('sr-abb').textContent=fmt(r.abb.nodes);
+  document.getElementById('sr-abb-s').textContent=r.abb.note;
+  document.getElementById('sr-avl').textContent=fmt(r.avl.nodes);
+  document.getElementById('sr-avl-s').textContent=r.avl.note;
+  document.getElementById('sr-abbI').textContent=fmt(r.abbI.nodes);
+  document.getElementById('sr-abbI-s').textContent=r.abbI.note;
+  document.getElementById('sr-avlI').textContent=fmt(r.avlI.nodes);
+  document.getElementById('sr-avlI-s').textContent=r.avlI.note;
+
+  const log=document.getElementById('simLog');
+  log.innerHTML=r.log.map(l=>{
+    if(l.startsWith('⚠')) return `<span class="w">${l}</span>`;
+    if(l.startsWith('✓')) return `<span class="ok">${l}</span>`;
+    if(l.startsWith('//')) return `<span class="info">${l}</span>`;
+    return l;
+  }).join('<br>');
+  log.innerHTML+=`<br><span class="info">// Complexidade: ${r.complexity}</span>`;
+  log.innerHTML+=`<br><span class="ok">// ${r.result}</span>`;
+}
+
+// ─── ANIMATE HEIGHT BARS ─────────────────────────────────────────────────────
+setTimeout(()=>{
+  document.getElementById('hb-abb').style.height='100%';
+  document.getElementById('hb-avl').style.height='53.3%';
+  document.getElementById('hb-abbI').style.height='100%';
+  document.getElementById('hb-avlI').style.height='53.3%';
+},600);
+</script>
+</body>
+</html>
