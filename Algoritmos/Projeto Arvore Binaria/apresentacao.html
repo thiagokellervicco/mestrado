@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apresentação — ABB vs AVL · Desempenho de Estudantes</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta name="apresentacao-build" content="2026-04-07-explicacao-benchmark-conclusao">
+  <title>Apresentação — ABB vs AVL</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -69,26 +72,20 @@
       color: var(--text);
       margin-bottom: 10px;
     }
-    .slide ul { margin: 6px 0 0 1.15em; }
-    .slide li { margin-bottom: 6px; color: #c5cce0; }
     .muted { color: var(--muted); font-family: var(--mono); font-size: 12px; margin-top: 12px; line-height: 1.45; }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 18px 22px;
-      margin-top: 14px;
-    }
     .grid2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-top: 12px;
+      margin-top: 16px;
     }
     @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
     .mini {
-      border-top: 3px solid var(--border);
-      padding-top: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top-width: 3px;
+      border-radius: 4px;
+      padding: 14px 16px;
     }
     .mini.abb { border-top-color: var(--abb); }
     .mini.avl { border-top-color: var(--avl); }
@@ -97,68 +94,13 @@
       font-size: 9px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .mini.abb h3 { color: var(--abb); }
     .mini.avl h3 { color: var(--avl); }
     .mini p { font-size: clamp(13px, 1.7vw, 16px); margin-bottom: 0; }
-    .kpi {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 14px;
-    }
-    @media (max-width: 820px) { .kpi { grid-template-columns: 1fr; } }
-    .kpi .box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 14px 16px;
-      border-radius: 4px;
-    }
-    .kpi .box .lab { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-    .kpi .box .num { font-size: clamp(22px, 3.5vw, 32px); font-weight: 800; letter-spacing: -0.03em; }
-    .kpi .box .num.a { color: var(--abb); }
-    .kpi .box .num.v { color: var(--avl); }
-    .kpi .box .num.n { color: var(--accent); }
-    table.tbl {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--mono);
-      font-size: clamp(10px, 1.35vw, 12px);
-      margin-top: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    table.tbl th, table.tbl td {
-      padding: 7px 10px;
-      border-bottom: 1px solid rgba(28, 36, 56, 0.9);
-      text-align: left;
-      vertical-align: middle;
-    }
-    table.tbl th {
-      background: rgba(158, 255, 71, 0.06);
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 9px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    table.tbl tr:last-child td { border-bottom: none; }
-    table.tbl td:nth-child(n+2), table.tbl th:nth-child(n+2) { text-align: right; }
-    table.tbl .w-abb { color: var(--abb); font-weight: 700; }
-    table.tbl .w-avl { color: var(--avl); font-weight: 700; }
-    .callout {
-      margin-top: 14px;
-      padding: 14px 18px;
-      border-left: 3px solid var(--avl);
-      background: rgba(255, 94, 46, 0.06);
-      font-size: clamp(13px, 1.7vw, 16px);
-      line-height: 1.45;
-    }
-    .callout strong { color: var(--avl); }
+    .slide ul { margin: 6px 0 0 1.15em; }
+    .slide li { margin-bottom: 6px; color: #c5cce0; }
     .bar {
       position: fixed;
       bottom: 0;
@@ -199,19 +141,6 @@
       font-weight: 600;
     }
     .slide a:hover { color: #cfff7a; border-bottom-color: rgba(158, 255, 71, 0.55); }
-    ul.linklist { list-style: none; margin: 10px 0 0 0; padding: 0; }
-    ul.linklist li {
-      margin-bottom: 12px;
-      padding: 10px 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      border-left: 3px solid var(--accent);
-    }
-    ul.linklist li strong { display: block; margin-bottom: 4px; color: var(--text); font-size: clamp(14px, 1.8vw, 16px); }
-    ul.linklist .path { font-family: var(--mono); font-size: 10px; color: var(--muted); word-break: break-all; line-height: 1.4; }
-    ul.linklist .tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--abb); margin-top: 6px; }
-    ul.linklist .tag.cs { color: #a78bfa; }
     .bench-wrap {
       margin-top: 10px;
       border: 1px solid var(--border);
@@ -236,248 +165,140 @@
       .bench-print-note { display: block !important; font-size: 11px; color: #333; }
     }
     .bench-print-note { display: none; }
+    .mini.lang-cs { border-top-color: var(--abb); }
+    .mini.lang-py { border-top-color: var(--accent); }
+    .mini.lang-cs h3 { color: var(--abb); }
+    .mini.lang-py h3 { color: var(--accent); }
+    ul.linklist { list-style: none; margin: 10px 0 0 0; padding: 0; }
+    ul.linklist li {
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      border-left: 3px solid var(--accent);
+    }
+    ul.linklist li strong { display: block; margin-bottom: 4px; color: var(--text); font-size: clamp(14px, 1.8vw, 16px); }
+    ul.linklist .path { font-family: var(--mono); font-size: 10px; color: var(--muted); word-break: break-all; line-height: 1.4; }
   </style>
 </head>
 <body>
   <div class="deck">
-    <section class="slide active" data-i="0">
+    <section class="slide scrollable active" data-i="0">
       <p class="muted" style="margin-bottom:10px;">Algoritmos e Programação · Projeto 2</p>
       <h1><span class="a">ABB</span> vs <span class="v">AVL</span><br>Desempenho de estudantes</h1>
-      <p class="muted">Comparação empírica em dataset real — chave <code style="color:var(--abb);">student_id</code>.</p>
-      <p style="margin-top:18px;"><strong>Thiago Keller</strong> e <strong>Ricardo Diniz</strong></p>
-      <p class="muted" style="margin-top:14px;">Números desta apresentação: <a href="reports/relatorio_latest.html">relatório mais recente</a> · execução <strong>22/03/2026</strong> · linguagem <strong>Python</strong></p>
-    </section>
+      <p class="muted" style="margin-top:0;">Comparação empírica em dataset real — chave <code style="color:var(--abb);">student_id</code>.</p>
+      <p style="margin-top:14px;"><strong>Thiago Keller</strong> e <strong>Ricardo Diniz</strong></p>
 
-    <section class="slide" data-i="1">
-      <h2>Objetivo</h2>
-      <p>Implementar e comparar <strong>ABB</strong> e <strong>AVL</strong> indexadas por <code style="font-family:var(--mono);color:var(--abb);">student_id</code>, medindo inserção, buscas, travessias e remoções sobre o mesmo conjunto de registros.</p>
-      <div class="card">
-        <p style="margin-bottom:0;">Foco no <strong>comportamento medido</strong>: altura, tempos de operação e trade-offs (carga vs consulta vs manutenção).</p>
-      </div>
-    </section>
-
-    <section class="slide scrollable" data-i="2">
-      <h2>O que é ABB? O que é AVL?</h2>
+      <h2 style="margin-top:22px;">O que é cada estrutura</h2>
       <div class="grid2">
         <div class="mini abb">
-          <h3>ABB — árvore binária de busca</h3>
-          <p>Árvore binária em que, em <strong>cada nó</strong>, as chaves da <strong>subárvore esquerda são menores</strong> e as da <strong>direita são maiores</strong> que a chave do nó (percurso <em>em-ordem</em> visita as chaves em ordem crescente).</p>
-          <p style="margin-top:10px;">A <strong>busca</strong> compara a chave com o nó atual e segue à esquerda ou à direita — o mesmo princípio da busca binária, mas na estrutura encadeada.</p>
-          <p style="margin-top:10px;"><strong>Inserção e remoção</strong> mantêm essa ordem; <strong>não há</strong>, por si só, reorganização para achatar a árvore.</p>
-          <p style="margin-top:10px;">A <strong>altura</strong> depende da <strong>ordem das inserções</strong>: com chaves quase ordenadas, a árvore pode ficar muito alta (pior caso <strong>O(n)</strong> de altura); com entradas “bem distribuídas”, costuma ficar próxima de <strong>O(log n)</strong>.</p>
+          <h3>ABB</h3>
+          <p>Árvore binária de busca: à esquerda chaves menores, à direita maiores. A <strong>altura</strong> depende da ordem das inserções (pior caso pode degradar).</p>
         </div>
         <div class="mini avl">
-          <h3>AVL — ABB balanceada</h3>
-          <p>Uma <strong>AVL</strong> é uma ABB com uma regra extra: em <strong>todo nó</strong>, o módulo da diferença entre as alturas da subárvore esquerda e da direita é <strong>no máximo 1</strong> (fator de balanceamento −1, 0 ou +1).</p>
-          <p style="margin-top:10px;">Após <strong>inserir</strong> ou <strong>remover</strong>, se o invariante quebrar, aplicam-se <strong>rotações</strong> (à esquerda/direita, simples ou duplas) até restabelecer o balanceamento.</p>
-          <p style="margin-top:10px;">Com isso, a <strong>altura</strong> da árvore com <em>n</em> nós permanece <strong>O(log n)</strong> no pior caso — e busca, inserção e remoção passam a ter custo <strong>O(log n)</strong> nesse pior caso.</p>
-          <p style="margin-top:10px;">O preço é <strong>mais trabalho</strong> em cada inserção/remoção (checagem de altura e rotações) do que numa ABB que não se rebalanceia.</p>
+          <h3>AVL</h3>
+          <p>ABB com balanceamento: em todo nó, |altura<sub>esq</sub> − altura<sub>dir</sub>| ≤ 1, ajustado com <strong>rotações</strong>. Altura O(log <em>n</em>) no pior caso.</p>
         </div>
       </div>
+
+      <h2 style="margin-top:22px;">O que medimos</h2>
+      <p>Implementamos ABB e AVL sobre registos de estudantes, ordenados por <code style="font-family:var(--mono);color:var(--abb);">student_id</code>. O projeto inclui implementações em <strong>Python</strong> e em <strong>C#</strong>.</p>
     </section>
 
-    <section class="slide" data-i="3">
-      <h2>Dados (execução referência)</h2>
+    <section class="slide scrollable" data-i="1">
+      <h2>Implementação — Python e C#</h2>
+      <p class="muted" style="margin-top:0;">Duas bases de código com a mesma modelagem de árvores e operações.</p>
+      <div class="grid2">
+        <div class="mini lang-cs">
+          <h3>C# · .NET</h3>
+          <p>Implementação equivalente: mesmas estruturas e operações.</p>
+          <p style="margin-top:12px;margin-bottom:0;"><a href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria/src/csharp/ProjetoArvoreBinaria" target="_blank" rel="noopener noreferrer">Código no GitHub</a></p>
+        </div>
+        <div class="mini lang-py">
+          <h3>Python</h3>
+          <p>Mesma lógica: medições reproduzíveis e integração com o benchmark.</p>
+          <p style="margin-top:12px;margin-bottom:0;"><a href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria/src/python" target="_blank" rel="noopener noreferrer">Código no GitHub</a></p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:22px;">Operações que implementamos e medimos</h2>
       <ul>
-        <li><strong>Arquivo:</strong> <code style="font-family:var(--mono);font-size:0.88em;">student_performance_prediction_dataset-2.xlsx</code></li>
-        <li><strong>Linhas carregadas:</strong> <strong>10.512</strong> (registros de estudantes com atributos acadêmicos e demográficos)</li>
-        <li><strong>Chave na árvore:</strong> <code style="font-family:var(--mono);">student_id</code> — ordenação e busca binária na estrutura</li>
+        <li><strong>Carga:</strong> inserção de todos os registos na árvore (chave <code style="font-family:var(--mono);font-size:0.9em;color:var(--abb);">student_id</code>).</li>
+        <li><strong>Busca:</strong> por um ID e por <strong>faixa de IDs</strong>.</li>
+        <li><strong>Travessias</strong> da árvore completa: <strong>em-ordem</strong>, <strong>pré-ordem</strong> e <strong>pós-ordem</strong>.</li>
+        <li><strong>Consultas por atributo</strong> (sem usar a ordenação da chave): nota, aprovados/reprovados, idade, gênero — percorrendo os registos carregados.</li>
+        <li><strong>Remoção:</strong> cenário com remoção de vários nós e reconstrução da árvore (tempos médios no relatório).</li>
       </ul>
-      <p class="muted">Faixa de IDs observada nesta execução: 31 a 299.998.</p>
+
+      <p style="margin-top:22px;margin-bottom:0;"><a href="#relatorios" class="go-slide" data-slide="2">Relatórios e execuções</a></p>
     </section>
 
-    <section class="slide" data-i="4">
-      <h2>Implementação</h2>
-      <p>Desenvolvemos o projeto em <strong>duas linguagens</strong> — <strong style="color:var(--abb);">C#</strong> (.NET) e <strong style="color:var(--accent);">Python</strong>. <strong>Nesta apresentação falamos somente da versão em Python</strong>: os números, relatórios e execuções citados são todos dessa implementação.</p>
-      <ul>
-        <li>Saída em <strong>relatório HTML</strong> na pasta <code style="font-family:var(--mono);font-size:0.88em;">reports/</code> e métricas no console.</li>
-        <li><strong>Visual:</strong> <a href="abb_avl_dashboard.html">Dashboard ABB vs AVL</a> — gráficos interativos</li>
-      </ul>
-    </section>
-
-    <section class="slide" data-i="5">
-      <h2>Operações medidas</h2>
-      <ul>
-        <li>Busca por um ID; travessias em-ordem, pré-ordem e pós-ordem (árvore completa)</li>
-        <li>Busca por faixa de IDs; filtros por nota, aprovados/reprovados, idade, gênero</li>
-        <li>Bloco de remoção: reconstrói a árvore e remove 5 identificadores (média de 5 execuções)</li>
-      </ul>
-      <p class="muted">Média de <strong>5 repetições</strong> por operação (exceto carga única), tempos em milissegundos.</p>
-    </section>
-
-    <section class="slide" data-i="6">
-      <h2>Ambiente da medição</h2>
-      <table class="tbl" style="margin-top:4px;">
-        <thead><tr><th>Item</th><th>Valor</th></tr></thead>
-        <tbody>
-          <tr><td>Sistema</td><td>Darwin 25.3.0 · arm64</td></tr>
-          <tr><td>CPU</td><td>Apple M1 (8 núcleos)</td></tr>
-          <tr><td>Clock (atual / mín / máx)</td><td>3204 / 600 / 3204 MHz</td></tr>
-          <tr><td>RAM (total / disponível)</td><td>8,59 GB / 2,68 GB</td></tr>
-        </tbody>
-      </table>
-      <p class="muted">Reproduzir a medição no mesmo tipo de máquina aproxima estes tempos; ordens de grandeza permanecem comparáveis entre ABB e AVL no mesmo hardware.</p>
-    </section>
-
-    <section class="slide" data-i="7">
-      <h2>Resultados — estrutura e carga</h2>
-      <div class="kpi">
-        <div class="box">
-          <div class="lab">Nós inseridos (ABB / AVL)</div>
-          <div class="num n">10.511</div>
-          <div class="muted" style="margin-top:4px;">igual nas duas estruturas</div>
-        </div>
-        <div class="box">
-          <div class="lab">Altura</div>
-          <div><span class="num a">30</span> <span class="muted" style="font-size:11px;">ABB</span> &nbsp; <span class="num v">16</span> <span class="muted" style="font-size:11px;">AVL</span></div>
-        </div>
-        <div class="box">
-          <div class="lab">Inserção total (vencedor: ABB)</div>
-          <div><span class="num a">93,6 ms</span> &nbsp; <span class="num v">191,4 ms</span></div>
-          <div class="muted" style="margin-top:4px;">Δ ≈ +97,8 ms (AVL mais cara na carga)</div>
-        </div>
-      </div>
-      <p class="muted" style="margin-top:14px;">A AVL reduz a altura de <strong>30</strong> para <strong>16</strong> nós — metade da profundidade máxima da ABB nesta sequência de inserções.</p>
-    </section>
-
-    <section class="slide scrollable" data-i="8">
-      <h2>Resultados — tempo médio por operação (ms)</h2>
-      <p class="muted" style="margin-top:0;">Média de 5 execuções · valores do relatório</p>
-      <table class="tbl">
-        <thead>
-          <tr><th>Operação</th><th>ABB</th><th>AVL</th><th>Vencedor</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Busca pontual (1 ID)</td><td>0,0054</td><td>0,0048</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Em-ordem (completo)</td><td>3,2873</td><td>3,2537</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Pré-ordem (completo)</td><td>3,1762</td><td>3,1659</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Pós-ordem (completo)</td><td>3,1736</td><td>3,1590</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Busca por faixa de IDs</td><td>2,5630</td><td>2,3911</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Busca por nota (8,0–10,0)</td><td>4,2650</td><td>3,9179</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Buscar aprovados</td><td>4,8546</td><td>4,7408</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Buscar reprovados</td><td>4,9996</td><td>4,8829</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Busca por idade (20 anos)</td><td>4,5324</td><td>4,3298</td><td class="w-avl">AVL</td></tr>
-          <tr><td>Busca por gênero (Female)</td><td>4,8456</td><td>4,7422</td><td class="w-avl">AVL</td></tr>
-        </tbody>
-      </table>
-      <p class="muted" style="margin-top:10px;">Diferenças nas travessias são pequenas (todas visitam O(n) nós); ganhos aparecem de forma mais clara em busca pontual, faixa e filtros.</p>
-    </section>
-
-    <section class="slide" data-i="9">
-      <h2>Resultados — remoção (5 nós + reconstrução)</h2>
-      <div class="kpi" style="grid-template-columns: 1fr 1fr;">
-        <div class="box">
-          <div class="lab">ABB</div>
-          <div class="num a">37.297,4 ms</div>
-          <div class="muted" style="margin-top:6px;">≈ 37,3 s</div>
-        </div>
-        <div class="box">
-          <div class="lab">AVL</div>
-          <div class="num v">215,8 ms</div>
-          <div class="muted" style="margin-top:6px;">≈ 0,22 s</div>
-        </div>
-      </div>
-      <div class="callout">
-        <strong>AVL</strong> vence por ordens de magnitude neste cenário de teste: árvore mais baixa e inserções/remoções menos custosas quando a estrutura permanece balanceada após reconstrução.
-      </div>
-      <p class="muted">Média de 5 execuções — mesmo protocolo do relatório.</p>
-    </section>
-
-    <section class="slide scrollable" data-i="10">
-      <h2>Benchmark — 4 árvores</h2>
-      <p class="muted" style="margin-top:0;">ABB, AVL, ABB+índice auxiliar e AVL+índice — alturas, tempos e abas (visão geral, busca sem chave, inserção/remoção, operações por chave, simulador).</p>
-      <div class="bench-wrap">
-        <iframe class="bench-frame" src="benchmark_arvores.html" title="Benchmark quatro árvores" loading="lazy"></iframe>
-      </div>
-      <p class="bench-print-note">Para impressão: abra <strong>benchmark_arvores.html</strong> no navegador.</p>
-      <p class="muted" style="margin-top:10px;"><a href="benchmark_arvores.html" target="_blank" rel="noopener noreferrer">Abrir em nova aba</a></p>
-    </section>
-
-    <section class="slide scrollable" data-i="11">
-      <h2>Outras dimensões — outras formas de busca</h2>
-      <p>Neste trabalho a árvore ordena só por <code style="font-family:var(--mono);color:var(--abb);">student_id</code>. Consultas por <strong>nota</strong>, <strong>idade</strong>, <strong>gênero</strong> ou <strong>aprovação</strong> não usam essa ordem: em geral é preciso <strong>varrer</strong> os registros (custo próximo de O(n)), com ganho pequeno de ABB vs AVL.</p>
-      <ul>
-        <li><strong>Índices secundários:</strong> outra árvore de busca ou <strong>tabela hash</strong> por atributo (ex.: nota final) — busca O(log n) ou O(1) naquela dimensão, ao preço de mais memória e atualização ao inserir/remover.</li>
-        <li><strong>Várias chaves:</strong> <strong>árvore B/B+</strong> (como em SGBDs) ou chave composta ordenada — boa para intervalos em uma dimensão e para disco.</li>
-        <li><strong>Várias dimensões numéricas:</strong> <strong>k-d tree</strong>, <strong>range tree</strong> ou estruturas de intervalos — faixas em nota <em>e</em> idade ao mesmo tempo, com custos e implementação mais pesados.</li>
-        <li><strong>Filtros categóricos:</strong> <strong>índice invertido</strong> ou mapa <em>valor → lista de IDs</em> — útil para gênero, curso, etc.</li>
-      </ul>
-      <p class="muted">A escolha depende do que mais se consulta: uma árvore por ID é ótima para “achar o estudante X”; para analíticas por nota ou perfil, costuma-se combinar estruturas ou usar um motor de consulta indexado.</p>
-    </section>
-
-    <section class="slide scrollable" data-i="12">
-      <h2>Links — execuções e artefatos</h2>
-      <p class="muted" style="margin-top:0;">Abra a partir da pasta do projeto (mesmo nível que <code style="font-family:var(--mono);">apresentacao.html</code>).</p>
+    <section class="slide scrollable" id="relatorios" data-i="2" aria-label="Relatórios e execuções">
+      <h2>Relatórios e execuções</h2>
       <ul class="linklist">
-        <li>
-          <strong><a href="benchmark_arvores.html">Benchmark — 4 árvores (ABB, AVL, + índice)</a></strong>
-          <span class="path">benchmark_arvores.html</span>
-        </li>
-        <li>
-          <strong><a href="abb_avl_dashboard.html">Dashboard interativo (Chart.js)</a></strong>
-          <span class="path">abb_avl_dashboard.html</span>
-        </li>
         <li>
           <strong><a href="reports/relatorio_latest.html">Relatório mais recente (espelho)</a></strong>
           <span class="path">reports/relatorio_latest.html</span>
         </li>
         <li>
-          <strong><a href="reports/index.html">Índice de relatórios + links no GitHub</a></strong>
+          <strong><a href="reports/index.html">Índice de todas as execuções (HTML)</a></strong>
           <span class="path">reports/index.html</span>
         </li>
       </ul>
-      <h2 style="margin-top:22px;">Todas as execuções (HTML)</h2>
-      <ul id="lista-execucoes-apresentacao" class="linklist"></ul>
-      <p id="lista-execucoes-vazia" class="muted" hidden>Nenhuma execução em <code>reports_data.js</code>. Rode o benchmark e abra <a href="reports/index.html">reports/index.html</a>.</p>
-      <noscript>
-        <p class="muted">Ative JavaScript para listar todas as execuções ou abra <a href="reports/index.html">reports/index.html</a>.</p>
-      </noscript>
-      <p class="muted" style="margin-top:12px;">Repositório no GitHub: <a href="https://github.com/thiagokellervicco/mestrado/tree/master/Algoritmos/Projeto%20Arvore%20Binaria" target="_blank" rel="noopener noreferrer">Algoritmos/Projeto Arvore Binaria</a></p>
     </section>
 
-    <section class="slide" data-i="13">
-      <h2>Demonstração</h2>
-      <p>Na raiz do projeto, com o ambiente Python configurado:</p>
-      <div class="card" style="font-family:var(--mono);font-size:12px;color:var(--accent);">
-        python src/python/main.py
+    <section class="slide scrollable" data-i="3">
+      <h2>Benchmark — 4 árvores</h2>
+      <p class="muted" style="margin-top:0;">ABB, AVL, ABB+índice e AVL+índice — alturas, tempos e abas (visão geral, buscas, inserção/remoção, simulador).</p>
+      <div class="bench-wrap">
+        <iframe class="bench-frame" src="benchmark_arvores.html?v=20260407" title="Benchmark quatro árvores" loading="lazy"></iframe>
       </div>
-      <p class="muted" style="margin-top:14px;">Gera métricas no console e relatório HTML em <code style="font-family:var(--mono);font-size:0.9em;">reports/</code>.</p>
+      <p class="bench-print-note">Para impressão: abra <strong>benchmark_arvores.html</strong> no navegador.</p>
+      <p class="muted" style="margin-top:10px;"><a href="benchmark_arvores.html" target="_blank" rel="noopener noreferrer">Abrir benchmark em nova aba</a></p>
     </section>
 
-    <section class="slide scrollable" data-i="14">
+    <section class="slide scrollable" data-i="4">
       <h2>Conclusão</h2>
       <p class="muted" style="margin-top:0;">Medições neste trabalho:</p>
-      <ul style="margin-bottom:14px;">
+      <ul style="margin-bottom:0;">
         <li><strong>Carga:</strong> ABB <strong>~94 ms</strong> vs AVL <strong>~191 ms</strong> — inserção sem rotação é mais barata na prática neste dataset.</li>
         <li><strong>Forma:</strong> altura <strong>30 → 16</strong> com AVL — confirma o papel do balanceamento.</li>
-        <li><strong>Consultas:</strong> AVL vence em todas as operações listadas no benchmark (diferenças pequenas a moderadas, exceto…).</li>
+        <li><strong>Consultas:</strong> AVL vence em todas as operações listadas no benchmark (diferenças pequenas a moderadas, exceto na remoção com reconstrução).</li>
         <li><strong>Remoção + reconstrução:</strong> diferença extrema (<strong>37 s</strong> vs <strong>216 ms</strong>) — custo amortizado e profundidade da ABB neste teste.</li>
       </ul>
-      <p>Este projeto demonstrou, com dados reais e medições precisas, <strong>três conclusões centrais</strong> sobre estruturas de dados em árvore:</p>
+    </section>
 
-      <div class="card" style="margin-top:14px;">
-        <p style="margin-bottom:0;"><strong>Primeira</strong> — <strong>O balanceamento da AVL tem custo e benefício bem definidos.</strong> A inserção é <strong>2,7×</strong> mais lenta (overhead das rotações), mas o ganho na altura (<strong>h = 16</strong> vs <strong>h = 30</strong>) acelera todas as buscas e travessias. Em sistemas de <strong>leitura intensiva</strong>, a AVL é claramente superior. Em <strong>carga em lote</strong> com poucas consultas, a ABB é preferível.</p>
-      </div>
+    <section class="slide scrollable" data-i="5">
+      <h2>Conclusão</h2>
+      <p style="margin-top:0;">Este projeto demonstrou, com dados reais e medições precisas, <strong>três conclusões centrais</strong> sobre estruturas de dados em árvore:</p>
 
-      <div class="card" style="margin-top:12px;">
-        <p style="margin-bottom:0;"><strong>Segunda</strong> — <strong>Buscas por campo secundário são irredutíveis a O(n) em árvores indexadas por outro campo.</strong> Nenhuma estrutura de árvore, independente do balanceamento, pode pular nós ao buscar por <code style="font-family:var(--mono);font-size:0.9em;">pass_fail</code> ou <code style="font-family:var(--mono);font-size:0.9em;">gender</code> — porque esses campos não participaram da decisão de posicionamento dos nós. A única alternativa eficiente é manter <strong>árvores paralelas</strong> ou <strong>índices externos</strong>.</p>
-      </div>
+      <p style="margin-top:16px;"><strong>Primeira</strong> — <strong>O balanceamento da AVL tem custo e benefício bem definidos.</strong> A inserção é <strong>2,7×</strong> mais lenta (overhead das rotações), mas o ganho na altura (<strong>h = 16</strong> vs <strong>h = 30</strong>) acelera todas as buscas e travessias. Em sistemas de <strong>leitura intensiva</strong>, a AVL é claramente superior. Em <strong>carga em lote</strong> com poucas consultas, a ABB é preferível.</p>
 
-      <div class="card" style="margin-top:12px;">
-        <p style="margin-bottom:0;"><strong>Terceira</strong> — <strong>O índice auxiliar só vale quando <em>k</em> ≪ <em>n</em> / log <em>n</em>.</strong> Para o dataset com <strong>n = 10.512</strong>, o limiar é <strong>≈ 784</strong> resultados. Buscas com <em>k</em> grande (ex.: aprovados com <strong>k = 4.368</strong>) são sistematicamente mais lentas com índice do que sem — o overhead de <em>k</em> × buscar(id) supera o custo do percurso linear. O resultado contraintuitivo do benchmark é, na verdade, matematicamente previsível pela inequação <strong><em>k</em> × log <em>n</em> &gt; <em>n</em></strong>.</p>
-      </div>
+      <p style="margin-top:14px;"><strong>Segunda</strong> — <strong>Buscas por campo secundário são irredutíveis a O(n) em árvores indexadas por outro campo.</strong> Nenhuma estrutura de árvore, independente do balanceamento, pode pular nós ao buscar por <code style="font-family:var(--mono);font-size:0.9em;">pass_fail</code> ou <code style="font-family:var(--mono);font-size:0.9em;">gender</code> — porque esses campos não participaram da decisão de posicionamento dos nós. A única alternativa eficiente é manter <strong>árvores paralelas</strong> ou <strong>índices externos</strong>.</p>
 
-      <p style="margin-top:22px;">Obrigado pela atenção.</p>
-      <p class="muted" style="margin-top:20px;">Thiago Keller e Ricardo Diniz</p>
+      <p style="margin-top:14px;"><strong>Terceira</strong> — <strong>O índice auxiliar só vale quando <em>k</em> ≪ <em>n</em> / log <em>n</em>.</strong> Para o dataset com <strong>n = 10.512</strong>, o limiar é <strong>≈ 784</strong> resultados. Buscas com <em>k</em> grande (ex.: aprovados com <strong>k = 4.368</strong>) são sistematicamente mais lentas com índice do que sem — o overhead de <em>k</em> × buscar(id) supera o custo do percurso linear. O resultado contraintuitivo do benchmark é, na verdade, matematicamente previsível pela inequação <strong><em>k</em> × log <em>n</em> &gt; <em>n</em></strong>.</p>
+    </section>
+
+    <section class="slide scrollable" data-i="6">
+      <h2>Obrigado</h2>
+      <p style="margin-top:0;">Obrigado pela atenção.</p>
+      <p style="margin-top:28px;"><strong>Thiago Keller e Ricardo Diniz</strong></p>
+      <ul style="list-style:none;margin:16px 0 0 0;padding:0;">
+        <li style="margin-bottom:12px;"><strong>Thiago Keller</strong> — <a href="https://www.linkedin.com/in/thiago-keller/?locale=pt" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li>
+          <!-- Ricardo: cole apenas o URL do LinkedIn no href abaixo (entre aspas). -->
+          <strong>Ricardo Diniz</strong> — <a href="" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </li>
+      </ul>
     </section>
   </div>
 
   <div class="bar">
-    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">15</span></span>
+    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">7</span></span>
     <div class="dots" id="dots"></div>
   </div>
 
-  <script src="reports/reports_data.js"></script>
   <script>
     (function () {
       var slides = [].slice.call(document.querySelectorAll('.slide'));
@@ -514,45 +335,13 @@
         else if (e.key === 'End') show(n - 1);
       });
 
-      var ul = document.getElementById('lista-execucoes-apresentacao');
-      var emptyEl = document.getElementById('lista-execucoes-vazia');
-      var items = window.PROJETO_ARVORE_RELATORIOS || [];
-      var arquivoRefApresentacao = 'relatorio_20260322_213149.html';
-
-      function isCSharp(lang) {
-        var u = (lang || '').toLowerCase();
-        return u.indexOf('c#') !== -1 || u.indexOf('csharp') !== -1;
-      }
-
-      if (ul) {
-        if (!items.length) {
-          if (emptyEl) emptyEl.hidden = false;
-        } else {
-          items.forEach(function (r) {
-            var li = document.createElement('li');
-            var href = 'reports/' + (r.file || '');
-            var strong = document.createElement('strong');
-            var a = document.createElement('a');
-            a.href = href;
-            a.textContent = r.label || r.file || href;
-            strong.appendChild(a);
-            li.appendChild(strong);
-            var path = document.createElement('span');
-            path.className = 'path';
-            path.textContent = href;
-            li.appendChild(path);
-            var tag = document.createElement('div');
-            tag.className = 'tag' + (isCSharp(r.language) ? ' cs' : '');
-            var langLine = (r.language || '?').trim();
-            if (r.file === arquivoRefApresentacao) {
-              langLine += ' · base dos números desta apresentação';
-            }
-            tag.textContent = langLine;
-            li.appendChild(tag);
-            ul.appendChild(li);
-          });
-        }
-      }
+      [].forEach.call(document.querySelectorAll('a.go-slide'), function (a) {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var t = parseInt(a.getAttribute('data-slide'), 10);
+          if (!isNaN(t)) show(t);
+        });
+      });
     })();
   </script>
 </body>
