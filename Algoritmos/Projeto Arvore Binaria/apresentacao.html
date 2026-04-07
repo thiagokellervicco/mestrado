@@ -180,6 +180,78 @@
     }
     ul.linklist li strong { display: block; margin-bottom: 4px; color: var(--text); font-size: clamp(14px, 1.8vw, 16px); }
     ul.linklist .path { font-family: var(--mono); font-size: 10px; color: var(--muted); word-break: break-all; line-height: 1.4; }
+    table.langcmp {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      font-size: clamp(12px, 1.45vw, 15px);
+    }
+    table.langcmp th, table.langcmp td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    table.langcmp thead th {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(158, 255, 71, 0.06);
+      color: var(--accent);
+    }
+    table.langcmp tbody td:first-child {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      width: 28%;
+    }
+    table.langcmp td.cs { color: var(--abb); font-weight: 600; }
+    table.langcmp td.py { color: var(--accent); font-weight: 600; }
+    table.langcmp tbody tr:last-child td { border-bottom: none; }
+    table.langcmp code { font-family: var(--mono); font-size: 0.82em; color: inherit; }
+    table.cmp-exec {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      font-size: clamp(10px, 1.25vw, 13px);
+      font-family: var(--mono);
+    }
+    table.cmp-exec th, table.cmp-exec td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: right;
+      vertical-align: middle;
+    }
+    table.cmp-exec th:first-child, table.cmp-exec td:first-child {
+      text-align: left;
+      font-family: var(--sans);
+      font-size: clamp(11px, 1.35vw, 14px);
+      color: #c5cce0;
+    }
+    table.cmp-exec thead th {
+      background: rgba(158, 255, 71, 0.06);
+      color: var(--accent);
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    table.cmp-exec td.py-abb { color: var(--abb); }
+    table.cmp-exec td.py-avl { color: #7dd3fc; }
+    table.cmp-exec td.cs-abb { color: #a5b4fc; }
+    table.cmp-exec td.cs-avl { color: #fde68a; }
+    table.cmp-exec tbody tr:last-child td { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -209,6 +281,44 @@
     <section class="slide scrollable" data-i="1">
       <h2>Implementação — Python e C#</h2>
       <p class="muted" style="margin-top:0;">Duas bases de código com a mesma modelagem de árvores e operações.</p>
+
+      <table class="langcmp" aria-label="Comparação entre implementações em C# e Python">
+        <thead>
+          <tr>
+            <th scope="col">Critério</th>
+            <th scope="col">C#</th>
+            <th scope="col">Python</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ambiente</td>
+            <td class="cs">.NET 8 · linguagem C#</td>
+            <td class="py">Python 3</td>
+          </tr>
+          <tr>
+            <td>Tipagem</td>
+            <td class="cs">Estática (compilada)</td>
+            <td class="py">Dinâmica</td>
+          </tr>
+          <tr>
+            <td>Papel neste trabalho</td>
+            <td class="cs">Implementação completa, alinhada à lógica medida</td>
+            <td class="py">Base das medições e integração com o benchmark</td>
+          </tr>
+          <tr>
+            <td>Estruturas e operações</td>
+            <td class="cs">ABB, AVL, mesmo protocolo de testes</td>
+            <td class="py">Mesmas estruturas e protocolo de testes</td>
+          </tr>
+          <tr>
+            <td>Pasta no repositório</td>
+            <td class="cs"><code>src/csharp/ProjetoArvoreBinaria</code></td>
+            <td class="py"><code>src/python</code></td>
+          </tr>
+        </tbody>
+      </table>
+
       <div class="grid2">
         <div class="mini lang-cs">
           <h3>C# · .NET</h3>
@@ -231,10 +341,64 @@
         <li><strong>Remoção:</strong> cenário com remoção de vários nós e reconstrução da árvore (tempos médios no relatório).</li>
       </ul>
 
-      <p style="margin-top:22px;margin-bottom:0;"><a href="#relatorios" class="go-slide" data-slide="2">Relatórios e execuções</a></p>
+      <p style="margin-top:22px;margin-bottom:0;"><a href="#relatorios" class="go-slide" data-slide="3">Relatórios e execuções</a></p>
     </section>
 
-    <section class="slide scrollable" id="relatorios" data-i="2" aria-label="Relatórios e execuções">
+    <section class="slide scrollable" data-i="2">
+      <h2>Comparativo de tempos — Python vs C#</h2>
+      <p class="muted" style="margin-top:0;">Valores em <strong>ms</strong> extraídos de duas execuções de referência no mesmo dataset (10.512 linhas). Operações com média de 5 repetições, exceto a carga.</p>
+      <table class="cmp-exec" aria-label="Tempos Python versus C#">
+        <thead>
+          <tr>
+            <th scope="col">Métrica</th>
+            <th scope="col">Python · ABB</th>
+            <th scope="col">Python · AVL</th>
+            <th scope="col">C# · ABB</th>
+            <th scope="col">C# · AVL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Carga (inserção total)</td>
+            <td class="py-abb">93.648</td>
+            <td class="py-avl">191.412</td>
+            <td class="cs-abb">6.182</td>
+            <td class="cs-avl">8.105</td>
+          </tr>
+          <tr>
+            <td>Busca pontual (1 ID)</td>
+            <td class="py-abb">0.0054</td>
+            <td class="py-avl">0.0048</td>
+            <td class="cs-abb">0.0489</td>
+            <td class="cs-avl">0.0139</td>
+          </tr>
+          <tr>
+            <td>Travessia em-ordem</td>
+            <td class="py-abb">3.2873</td>
+            <td class="py-avl">3.2537</td>
+            <td class="cs-abb">0.5601</td>
+            <td class="cs-avl">0.9619</td>
+          </tr>
+          <tr>
+            <td>Busca por faixa de IDs</td>
+            <td class="py-abb">2.5630</td>
+            <td class="py-avl">2.3911</td>
+            <td class="cs-abb">0.8785</td>
+            <td class="cs-avl">0.3582</td>
+          </tr>
+          <tr>
+            <td>Remoção + reconstrução (5 nós)</td>
+            <td class="py-abb">37297.414</td>
+            <td class="py-avl">215.790</td>
+            <td class="cs-abb">1879.799</td>
+            <td class="cs-avl">8.229</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin-top:14px;">Referências: Python 22/03/2026 21:31:49 (<code style="font-size:10px;">relatorio_20260322_213149.html</code>) · C# 22/03/2026 21:27:35 (<code style="font-size:10px;">relatorio_20260322_212735.html</code>). Os tempos absolutos entre linguagens não são diretamente comparáveis (runtime .NET vs CPython); o quadro mostra o retrato de cada implementação no mesmo hardware.</p>
+    </section>
+
+    <section class="slide scrollable" id="relatorios" data-i="3" aria-label="Relatórios e execuções">
       <h2>Relatórios e execuções</h2>
       <ul class="linklist">
         <li>
@@ -248,7 +412,7 @@
       </ul>
     </section>
 
-    <section class="slide scrollable" data-i="3">
+    <section class="slide scrollable" data-i="4">
       <h2>Benchmark — 4 árvores</h2>
       <p class="muted" style="margin-top:0;">ABB, AVL, ABB+índice e AVL+índice — alturas, tempos e abas (visão geral, buscas, inserção/remoção, simulador).</p>
       <div class="bench-wrap">
@@ -258,7 +422,7 @@
       <p class="muted" style="margin-top:10px;"><a href="benchmark_arvores.html" target="_blank" rel="noopener noreferrer">Abrir benchmark em nova aba</a></p>
     </section>
 
-    <section class="slide scrollable" data-i="4">
+    <section class="slide scrollable" data-i="5">
       <h2>Conclusão</h2>
       <p class="muted" style="margin-top:0;">Medições neste trabalho:</p>
       <ul style="margin-bottom:0;">
@@ -269,7 +433,7 @@
       </ul>
     </section>
 
-    <section class="slide scrollable" data-i="5">
+    <section class="slide scrollable" data-i="6">
       <h2>Conclusão</h2>
       <p style="margin-top:0;">Este projeto demonstrou, com dados reais e medições precisas, <strong>três conclusões centrais</strong> sobre estruturas de dados em árvore:</p>
 
@@ -280,7 +444,7 @@
       <p style="margin-top:14px;"><strong>Terceira</strong> — <strong>O índice auxiliar só vale quando <em>k</em> ≪ <em>n</em> / log <em>n</em>.</strong> Para o dataset com <strong>n = 10.512</strong>, o limiar é <strong>≈ 784</strong> resultados. Buscas com <em>k</em> grande (ex.: aprovados com <strong>k = 4.368</strong>) são sistematicamente mais lentas com índice do que sem — o overhead de <em>k</em> × buscar(id) supera o custo do percurso linear. O resultado contraintuitivo do benchmark é, na verdade, matematicamente previsível pela inequação <strong><em>k</em> × log <em>n</em> &gt; <em>n</em></strong>.</p>
     </section>
 
-    <section class="slide scrollable" data-i="6">
+    <section class="slide scrollable" data-i="7">
       <h2>Obrigado</h2>
       <p style="margin-top:0;">Obrigado pela atenção.</p>
       <p style="margin-top:28px;"><strong>Thiago Keller e Ricardo Diniz</strong></p>
@@ -294,7 +458,7 @@
   </div>
 
   <div class="bar">
-    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">7</span></span>
+    <span><kbd>←</kbd> <kbd>→</kbd> <kbd>Espaço</kbd> · <span id="cur">1</span> / <span id="tot">8</span></span>
     <div class="dots" id="dots"></div>
   </div>
 
