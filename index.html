@@ -176,6 +176,19 @@
       transition: background 0.2s, border-color 0.2s;
     }
 
+    .materia-card {
+      position: relative;
+    }
+
+    .required-star {
+      position: absolute;
+      top: 0.65rem;
+      right: 0.85rem;
+      color: var(--accent);
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
     .project-card:hover {
       background: var(--surface-hover);
       border-color: rgba(201, 169, 89, 0.3);
@@ -282,8 +295,24 @@
     <ul class="project-list materia-cards">
       <li>
         <a href="algoritmos-e-programacao.html" class="project-card materia-card">
+          <span class="required-star" aria-hidden="true">★</span>
           <h3>Algoritmos e Programação</h3>
           <p>Projetos de algoritmos clássicos em C#: ordenação, árvores balanceadas (AVL) e estruturas de dados.</p>
+          <span class="link-hint">Ver projetos da matéria →</span>
+        </a>
+      </li>
+      <li>
+        <a href="engenharia-de-software.html" class="project-card materia-card">
+          <span class="required-star" aria-hidden="true">★</span>
+          <h3>Engenharia de Software</h3>
+          <p>Projetos e atividades da disciplina com foco em qualidade, arquitetura e práticas de desenvolvimento.</p>
+          <span class="link-hint">Ver projetos da matéria →</span>
+        </a>
+      </li>
+      <li>
+        <a href="topicos-avancados.html" class="project-card materia-card">
+          <h3>Tópicos Avançados</h3>
+          <p>Conteúdos avançados da área com foco em aplicações e discussões aprofundadas.</p>
           <span class="link-hint">Ver projetos da matéria →</span>
         </a>
       </li>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tópicos Avançados — Projetos e materiais da disciplina optativa do Mestrado em Computação Aplicada.">
+  <title>Tópicos Avançados — Thiago Keller</title>
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2e/Mackenzie_M.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0f;
+      --surface: #16161a;
+      --surface-hover: #1e1e24;
+      --text: #e8e6e3;
+      --text-muted: #9a9690;
+      --accent: #c9a959;
+      --border: rgba(255,255,255,0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .layout {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    h1 em { font-style: italic; color: var(--accent); }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .project-list { list-style: none; }
+
+    .project-card {
+      display: block;
+      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .project-card:hover {
+      background: var(--surface-hover);
+      border-color: rgba(201, 169, 89, 0.3);
+    }
+
+    .project-card h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .project-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <a href="index.html" class="back-link">← Voltar ao portfólio</a>
+
+    <span class="badge">Matéria</span>
+    <h1>Tópicos <em>Avançados</em></h1>
+    <p class="subtitle">Projetos e entregas da disciplina de Tópicos Avançados.</p>
+
+    <ul class="project-list">
+      <li>
+        <div class="project-card">
+          <h3>Conteúdo em construção</h3>
+          <p>Os materiais desta disciplina serão adicionados em breve.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
