@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Modelos de Linguagem e Generativos — Projeto principal da disciplina (80%) e notebooks individuais (20%) do Mestrado em Computação Aplicada.">
-  <title>Modelos de Linguagem e Generativos — Thiago Keller</title>
+  <meta name="description" content="Materiais do projeto principal da disciplina de Modelos de Linguagem e Generativos.">
+  <title>Projeto da Disciplina — Materiais</title>
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/2/2e/Mackenzie_M.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,12 +17,11 @@
       --text: #e8e6e3;
       --text-muted: #9a9690;
       --accent: #c9a959;
-      --accent-dim: rgba(201, 169, 89, 0.15);
       --border: rgba(255,255,255,0.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'DM Sans', system-ui, sans-serif;
       background: var(--bg);
@@ -48,6 +46,7 @@
       margin-bottom: 2rem;
       transition: color 0.2s;
     }
+
     .back-link:hover { color: var(--accent); }
 
     .badge {
@@ -75,21 +74,26 @@
       font-size: 1rem;
       color: var(--text-muted);
       margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .authors {
+      font-size: 0.95rem;
+      color: var(--text-muted);
       margin-bottom: 2.5rem;
+      line-height: 1.7;
     }
 
-    .section-title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text);
-      margin: 2.5rem 0 1rem;
-      letter-spacing: -0.01em;
+    .authors a {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    .project-list {
-      list-style: none;
+    .authors a:hover {
+      text-decoration: underline;
     }
+
+    .project-list { list-style: none; }
 
     .project-card {
       display: block;
@@ -108,7 +112,7 @@
       border-color: rgba(201, 169, 89, 0.3);
     }
 
-    .project-card h3 {
+    .project-card h2 {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 1.2rem;
       font-weight: 600;
@@ -121,11 +125,11 @@
       line-height: 1.5;
     }
 
-    .project-card .link-hint {
+    .link-hint {
       font-size: 0.75rem;
       color: var(--accent);
       margin-top: 0.5rem;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 0.35rem;
     }
@@ -133,33 +137,35 @@
 </head>
 <body>
   <div class="layout">
-    <a href="index.html" class="back-link">← Voltar ao portfólio</a>
+    <a href="../../modelos-de-linguagem.html" class="back-link">← Voltar para Modelos de Linguagem</a>
 
-    <span class="badge">Matéria</span>
-    <h1>Modelos de Linguagem e <em>Generativos</em></h1>
-    <p class="subtitle">Projeto principal da disciplina (80%) + um ou mais notebooks individuais (20%)</p>
+    <span class="badge">Projeto</span>
+    <h1>Materiais da Entrega <em>Principal</em></h1>
+    <p class="subtitle">Acesse abaixo o notebook, a apresentação em PPT e o artigo.</p>
+    <p class="authors">
+      Trabalho desenvolvido por: <a href="https://www.linkedin.com/in/thiago-keller" target="_blank" rel="noopener noreferrer">Thiago Keller</a>, <a href="https://www.linkedin.com/in/renato-rosa-guimar%C3%A3es-6158a25a/" target="_blank" rel="noopener noreferrer">Renato Rosa</a>, Alex Faiotto e Lucas.
+    </p>
 
-    <h2 class="section-title">Projetos</h2>
     <ul class="project-list">
       <li>
-        <a href="Modelos%20de%20Linguagem%20e%20Generativos/Projeto/recursos-projeto.html" class="project-card">
-          <h3>Projeto da Disciplina (80%)</h3>
-          <p>Entrega principal da matéria em Modelos de Linguagem e Generativos.</p>
-          <span class="link-hint">Abrir materiais do projeto →</span>
+        <a href="https://github.com/thiagokellervicco/mestrado/blob/master/Modelos%20de%20Linguagem%20e%20Generativos/Projeto/ProjetoFinalModelosLinguagem.ipynb" class="project-card" target="_blank" rel="noopener noreferrer">
+          <h2>Notebook</h2>
+          <p>Arquivo principal com o desenvolvimento do projeto em Jupyter Notebook.</p>
+          <span class="link-hint">Ver no GitHub →</span>
         </a>
       </li>
       <li>
-        <a href="https://github.com/thiagokellervicco/mestrado/blob/master/Modelos%20de%20Linguagem%20e%20Generativos/Notebooks/SCIKIT_ML_Thiago_Keller.ipynb" class="project-card">
-          <h3>Notebook 1 — Regressão com Scikit-Learn</h3>
-          <p>Análise de regressão no dataset California Housing — exploração de dados, pré-processamento e modelagem.</p>
-          <span class="link-hint">Ver notebook no GitHub →</span>
+        <a href="./apresentacao.pptx" class="project-card">
+          <h2>PPT</h2>
+          <p>Slides de apresentação do projeto com objetivos, método e resultados.</p>
+          <span class="link-hint">Abrir arquivo →</span>
         </a>
       </li>
       <li>
-        <a href="https://github.com/thiagokellervicco/mestrado/blob/master/Modelos%20de%20Linguagem%20e%20Generativos/Notebooks/SCIKIT_MLP_Thiago_Keller.ipynb" class="project-card">
-          <h3>Notebook 2 — MLP Classificação Multiclasse</h3>
-          <p>Rede neural MLP para classificação no dataset Wine (3 classes), com treinamento e avaliação. Este e outros notebooks compõem, em conjunto, os 20% da matéria.</p>
-          <span class="link-hint">Ver notebook no GitHub →</span>
+        <a href="./artigo.pdf" class="project-card">
+          <h2>Artigo</h2>
+          <p>Documento do artigo com introdução, metodologia, análise e conclusões.</p>
+          <span class="link-hint">Abrir arquivo →</span>
         </a>
       </li>
     </ul>
