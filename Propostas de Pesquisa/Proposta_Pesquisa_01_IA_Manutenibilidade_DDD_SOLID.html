@@ -116,6 +116,13 @@
       -webkit-hyphens: auto;
     }
 
+    .doc-lead a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .doc-lead a:hover { opacity: 0.85; text-decoration: underline; }
+
     article {
       text-align: justify;
       hyphens: auto;
@@ -198,6 +205,13 @@
       text-align: justify;
     }
 
+    .id-list a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .id-list a:hover { opacity: 0.85; text-decoration: underline; }
+
     @media print {
       body { background: #fff; color: #111; }
       .back-link { display: none; }
@@ -219,16 +233,19 @@
       <span class="badge">Proposta 01</span>
       <h1>Mestrado em Computação <em>Aplicada</em></h1>
       <div class="hero-rule" aria-hidden="true"></div>
-      <p class="doc-lead">Proposta de pesquisa aplicada (Mestrado Profissional) — Universidade Presbiteriana Mackenzie.</p>
+      <p class="doc-lead">Proposta de pesquisa aplicada (Mestrado Profissional) — <a href="https://www.linkedin.com/school/mackenzie1870/" target="_blank" rel="noopener noreferrer">Universidade Presbiteriana Mackenzie</a>. Dissertação: <a href="#titulo-provisorio">Validação arquitetural e governança de código assistido por IA generativa (DDD e SOLID)</a>. Coordenação: <a href="https://www.linkedin.com/in/val%C3%A9ria-farinazzo-martins-4062aa45/" target="_blank" rel="noopener noreferrer">Dra. Valéria Farinazzo Martins</a>. Orientador: <a href="https://www.linkedin.com/in/fabiolopesphd/" target="_blank" rel="noopener noreferrer">Prof. Dr. Fabio Lopes</a>.</p>
     </div>
 
     <article>
       <ul class="id-list">
+        <li><strong>Dissertação:</strong> <a href="#titulo-provisorio">Validação arquitetural e governança de código assistido por IA generativa (DDD e SOLID)</a></li>
+        <li><strong>Coordenadora:</strong> <a href="https://www.linkedin.com/in/val%C3%A9ria-farinazzo-martins-4062aa45/" target="_blank" rel="noopener noreferrer">Dra. Valéria Farinazzo Martins</a></li>
+        <li><strong>Orientador:</strong> <a href="https://www.linkedin.com/in/fabiolopesphd/" target="_blank" rel="noopener noreferrer">Prof. Dr. Fabio Lopes</a></li>
         <li><strong>Linha de pesquisa:</strong> Engenharia de Software e Sistemas Inteligentes</li>
         <li><strong>Área de interesse:</strong> Qualidade de software, IA generativa, DDD/SOLID e aderência arquitetural em sistemas assistidos</li>
       </ul>
 
-      <h2>1. Título provisório</h2>
+      <h2 id="titulo-provisorio">1. Título provisório</h2>
       <p class="title-blockquote">Desenvolvimento de um mecanismo de validação arquitetural para governança de código assistido por Inteligência Artificial Generativa.</p>
 
       <h2>2. O Problema</h2>
